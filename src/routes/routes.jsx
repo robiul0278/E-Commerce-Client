@@ -19,7 +19,6 @@ import ManageUser from "../pages/dashboard/admin/ManageUser";
 import Cart from "../pages/products/Cart";
 import Checkout from "../pages/checkout/Checkout";
 import ManageProducts from "../pages/dashboard/seller/ManageProducts";
-import EditProduct from "../pages/dashboard/seller/EditProduct";
 
 
 export const router = createBrowserRouter([
@@ -91,21 +90,6 @@ export const router = createBrowserRouter([
                         <ManageProducts />
                     </SellerPrivateRoute>
 
-            },
-            {
-                path: "/dashboard/edit-products",
-                element:
-                    <EditProduct>
-                        <ManageProducts />
-                    </EditProduct>
-
-            },
-            {
-                path: '/dashboard/edit-products',
-                element:
-                    <EditProduct>
-                        <ManageProducts />
-                    </EditProduct>,
             },
             // Buyer Route 
             {

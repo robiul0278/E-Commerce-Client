@@ -23,18 +23,18 @@ const Register = () => {
         const email = data.email;
         const password = data.password;
         const role = data.role;
+        const name = data.name;
         const status = role === "buyer" ? "approved" : "pending";
         const wishlist = []
         const cart = []
 
-        const userData = { email, password, role, status, wishlist, cart };
+        const userData = { name, email, password, role, status, wishlist, cart };
 
         try {
             RegisterUser(email, password)
                 .then(() => {
                     axios.post("https://gadget-shop-server-bay.vercel.app/user", userData)
                         .then((res) => {
-                            console.log(res)
                             if (res.data.insertedId) {
                                 toast.success('Register successful!');
                                 navigate('/');
@@ -57,6 +57,15 @@ const Register = () => {
                     </div>
                     <div className="card bg-base-100 w-full max-w-sm">
                         <form form onSubmit={handleSubmit(onSubmit)} className="card-body">
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Name</span>
+                                </label>
+                                <input type="text" placeholder="Your full name" className="input input-sm  input-bordered"
+                                    {...register("name", { required: true })}
+                                />
+                                {errors.name && <span className='text-red-500 font-mono'>Name is required !</span>}
+                            </div>
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">Email</span>

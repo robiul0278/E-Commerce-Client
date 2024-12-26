@@ -25,9 +25,9 @@ const FeaturedProducts = () => {
 
     <div className="font-[sans-serif]">
       <div className="p-4 mx-auto lg:max-w-7xl md:max-w-4xl sm:max-w-xl max-sm:max-w-sm">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-6 sm:mb-10">Featured Products</h2>
+        <h2 className="md:text-2xl text-xl font-extrabold text-gray-800 mb-6 sm:mb-10">Featured Products</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-xl:gap-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {
             loading ? (
               <Loading />

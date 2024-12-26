@@ -2,7 +2,6 @@ import { Link, NavLink } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import NavActiveUser from "./NavActiveUser";
 import useUserData from "../hooks/useUserData";
-import { FaRegHeart } from "react-icons/fa6";
 import { BsCartPlus } from "react-icons/bs";
 const Navbar = () => {
     const { user } = useAuth();
@@ -11,7 +10,7 @@ const Navbar = () => {
 
 
     return (
-        <div className="navbar bg-base-200 flex justify-between px-16">
+        <div className="navbar  bg-base-200 flex justify-between lg:px-16">
             <div className="navbar-start ">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -45,7 +44,7 @@ const Navbar = () => {
                         </li>
                     </ul>
                 </div>
-               <Link to="/"> <h2 className="btn btn-ghost font-bold text-xl">Mobile shop</h2></Link>
+               <Link to="/"> <h2 className="btn btn-ghost font-bold md:text-xl text-[15px]">Mobile shop</h2></Link>
             </div>
             <div className="navbar-center absolute left-1/2 transform -translate-x-1/2 hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
@@ -64,7 +63,7 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <div className="dropdown dropdown-end mr-6">
+                <div className="dropdown dropdown-end mr-2 md:mr-6">
                     <Link to="/cart">
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
                         <div className="indicator text-2xl">
@@ -73,17 +72,6 @@ const Navbar = () => {
                             font-bold indicator-item">{userData?.cart?.length || 0}</span>
                         </div>
                     </div>
-                    </Link>
-                </div>
-                <div className="dropdown dropdown-end mr-6">
-                    <Link to="/dashboard/my-wishlist">
-                        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-                            <div className="indicator text-2xl">
-                                <FaRegHeart />
-                                <span className="badge text-blue-600 badge-sm font-serif
-                            font-bold indicator-item">{userData?.wishlist?.length || 0}</span>
-                            </div>
-                        </div>
                     </Link>
                 </div>
                 {

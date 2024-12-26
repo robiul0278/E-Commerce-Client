@@ -28,7 +28,7 @@ const Products = () => {
   useEffect(() => {
     setLoading(true);
     const fetch = async () => {
-      axios.get(`https://gadget-shop-server-bay.vercel.app/all-product?title=${search}&page=${page}&limit=${9}&sort=${sort}&brand=${brand}&category=${category}`)
+      axios.get(`https://gadget-shop-server-bay.vercel.app/all-product?title=${search}&page=${page}&limit=${10}&sort=${sort}&brand=${brand}&category=${category}`)
         .then((res) => {
           // console.log(res.data);
           setProducts(res.data.products);
