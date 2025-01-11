@@ -64,7 +64,7 @@ const Products = () => {
 
 
   return (
-    <div className="bg-gray-50 px-4 py-6 sm:px-6 lg:px-8 shadow-sm rounded-md">
+    <div className="bg-gray-50 py-6 sm:px-6 shadow-sm rounded-md">
       {/* Page Title */}
       <div className="text-center mb-6">
         <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl tracking-tight">
@@ -106,7 +106,7 @@ const Products = () => {
                 {products.length === 0 ? (
                   <NotFound />
                 ) : (
-                  <div className="min-h-screen grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 py-6 px-16 gap-6">
+                  <div className="min-h-screen grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 py-6 gap-6">
                     {products.map((product) => (
                       <ProductsCard key={product._id} product={product} />
                     ))}

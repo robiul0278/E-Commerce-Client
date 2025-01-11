@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 
 const Banner = () => {
   return (
-<div className="font-sans mt-3">
+<div className="font-sans">
 <div className="bg-gray-50 font-[sans-serif] px-4 relative md:p-5 container shadow-lg shadow-[#f6effa] mx-auto rounded overflow-hidden">
       <div className="grid sm:grid-cols-2 max-sm:gap-6">
         <div className="text-center p-6 flex flex-col justify-center items-center">

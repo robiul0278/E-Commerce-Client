@@ -87,11 +87,11 @@ const ProductsCard = ({ product }) => {
       </div>
 
       <div>
-        <div className="flex gap-2">
-          <h5 className="text-base font-bold text-gray-800">{product?.title}</h5>
-          <h6 className="text-base text-gray-800 font-bold ml-auto">${product?.price}</h6>
+        <div className="text-start  gap-2">
+          <h5 className="text-[15px] font-semibold text-gray-800">{product?.title}</h5>
+          <h4 className="text-[14px] font-semibold text-blue-700 ml-auto">BDT {product?.price}</h4>
         </div>
-        <p className="text-gray-500 text-[13px] mt-2">{product?.description?.slice(0, 70)}{product?.description?.length > 70 && '...'}.</p>
+        {/* <p className="text-gray-500 text-[13px] mt-2">{product?.description?.slice(0, 70)}{product?.description?.length > 70 && '...'}.</p> */}
         <div className="flex items-center gap-2 mt-4">
           <div
             onClick={handleAddWishlist}
@@ -108,7 +108,7 @@ const ProductsCard = ({ product }) => {
            onClick={handleAddToCart}
             type="button"
             className={`text-sm px-2 h-9 font-semibold w-full tracking-wide ml-auto outline-none border-none rounded ${userData?.role === 'buyer' || !userData?.isLoggedIn
-              ? ' bg-purple-700 hover:bg-purple-800 text-white'
+              ? ' bg-blue-700 hover:bg-blue-800 text-white'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
               }`}
             disabled={userData?.isLoggedIn && userData?.role !== 'buyer'}
