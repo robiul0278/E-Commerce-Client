@@ -80,45 +80,52 @@ const ProductsCard = ({ product }) => {
   };
 
   return (
-    <div className="border p-2 w-full rounded cursor-pointer hover:-translate-y-1 transition-all relative">
-      <div className="mb-4 bg-gray-100 rounded p-4">
-        <img src={product?.image} alt="Product 1"
-          className="aspect-[33/35] w-full object-contain" />
+    <div className="max-w-xs bg-white overflow-hidden relative group">
+      {/* Discount Badge */}
+      <div className="absolute bg-red-500 text-white text-xs font-bold rounded px-3 py-1 left-2 top-2 z-10">
+        35%
       </div>
 
-      <div>
-        <div className="text-start  gap-2">
-          <h5 className="text-[15px] font-semibold text-gray-800">{product?.title}</h5>
-          <h4 className="text-[14px] font-semibold text-blue-700 ml-auto">BDT {product?.price}</h4>
+      {/* Heart Icon */}
+      <button onClick={handleAddWishlist} type="button" className="absolute bg-gray-200 rounded-full text-black font-bold px-2 py-2 right-2 top-2 z-10">
+        <FaRegHeart />
+      </button>
+
+      {/* Product Image */}
+      <div className="relative">
+        <img
+          src={product?.image || "https://via.placeholder.com/150"}
+          loading="lazy"
+          alt="AK-900 Wired Keyboard"
+          className="w-full object-cover bg-gray-100 p-5"
+        />
+        {/* Add to Cart Button */}
+        <button
+        onClick={handleAddToCart}
+          className="absolute bottom-0 left-0 right-0 bg-red-500 text-white text-sm font-bold py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        >
+          Add to Cart
+        </button>
+      </div>
+
+      {/* Card Content */}
+      <div className="p-4">
+        {/* Product Title */}
+        <h2 className="text-gray-800 font-semibold text-sm">AK-900 Wired Keyboard</h2>
+
+        {/* Price Section */}
+        <div className="mt-2 flex items-center space-x-2">
+          <span className="text-red-500 font-semibold text-md">$960</span>
+          <span className="text-gray-500 line-through">$1160</span>
         </div>
-        {/* <p className="text-gray-500 text-[13px] mt-2">{product?.description?.slice(0, 70)}{product?.description?.length > 70 && '...'}.</p> */}
-        <div className="flex items-center gap-2 mt-4">
-          <div
-            onClick={handleAddWishlist}
-            className={`w-12 h-9 flex items-center justify-center rounded cursor-pointer ${userData?.role === 'buyer' || !userData?.isLoggedIn
-              ? 'bg-red-100 hover:bg-blue-700 hover:text-white text-red-800'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              }`}
-            disabled={userData?.isLoggedIn && userData?.role !== 'buyer'}
-            title="Wishlist"
-          >
-            <FaRegHeart />
-          </div>
-          <button
-           onClick={handleAddToCart}
-            type="button"
-            className={`text-sm px-2 h-9 font-semibold w-full tracking-wide ml-auto outline-none border-none rounded ${userData?.role === 'buyer' || !userData?.isLoggedIn
-              ? ' bg-blue-700 hover:bg-blue-800 text-white'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              }`}
-            disabled={userData?.isLoggedIn && userData?.role !== 'buyer'}
-          >
-            Add to cart
-          </button>
+
+        {/* Rating */}
+        <div className="mt-1 flex items-center text-yellow-400">
+          {Array(4).fill("⭐").join("")}
+          <span className="text-gray-500 ml-2">(75)</span>
         </div>
       </div>
     </div>
-
   )
 }
 

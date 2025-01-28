@@ -1,18 +1,18 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Footer from '../shared/Footer'
-import ResponsiveNavbar from '../shared/ResponsiveNavbar'
+import Navbar from '../shared/Navbar'
+import { Toaster } from 'react-hot-toast'
 
 const MainLayout = () => {
   return (
-    <div>
-      <ResponsiveNavbar />
-      <div className='max-w-[1390px] mx-auto mt-32'>
-        <Outlet />
-      </div>
+    <div className='max-w-[1440px] mx-auto bg-white'>
+      <Navbar/>
+      <Outlet />
       <Footer />
+      <Toaster/>
     </div>
   )
 }
 
-export default MainLayout
+export default MainLayout;

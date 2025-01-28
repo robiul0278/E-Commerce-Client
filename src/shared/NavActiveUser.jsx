@@ -11,27 +11,20 @@ const NavActiveUser = () => {
     }
     return (
         <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                <div className="w-10 rounded-full">
+            <button type="button" tabIndex={0}>
+                <div className="lg:w-8 w-7 rounded-full">
                     <img
+                        className=""
                         alt="Tailwind CSS Navbar component"
                         src={`${user?.photoURL || "/profile.png"}`}
                     />
                 </div>
-            </div>
+            </button>
             <ul
                 tabIndex={0}
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                 <li>
                 <div className="dropdown dropdown-end mr-6">
-                    {/* <Link to="/dashboard/my-wishlist">
-
-                            <div className="indicator">
-                                My Wishlist <FaRegHeart />
-                                <span className="badge text-blue-600 badge-sm font-serif
-                            font-bold indicator-item">{userData?.wishlist?.length || 0}</span>
-                            </div>
-                    </Link> */}
                 </div>
                 </li>
                 <li className="mb-2">
@@ -43,6 +36,7 @@ const NavActiveUser = () => {
                 <li><button onClick={handleLogout} className="btn btn-sm btn-outline">Logout</button></li>
             </ul>
         </div>
+
     )
 }
 

@@ -1,26 +1,26 @@
 
-import Accordion from "../../components/home/Accordion"
 import Banner from "../../components/home/Banner"
-import FeaturedProducts from "../../components/home/FeaturedProducts"
+import BestSelling from "../../components/home/BestSelling"
+import Category from "../../components/home/Category"
+import CategoryBanner from "../../components/home/CategoryBanner"
+import FlashSale from "../../components/home/FlashSale"
+import NewArrival from "../../components/home/NewArrival"
+import OurProducts from "../../components/home/OurProducts"
 import UserReview from "../../components/home/UserReview"
-import Statistics from "../Statistics"
 
 const HomePage = () => {
     return (
-        <div >
-            <Banner />
-            <FeaturedProducts />
-            <div className="pb-10">
-                <UserReview />
-            </div>
-            <div className="mb-10">
-                <Accordion />
-            </div>
-            <div className="mb-10">
-                <Statistics />
-            </div>
+        <div className="lg:w-[1170px] mx-auto">
+            <Banner/>
+            <Category/>
+            <FlashSale/>
+            <CategoryBanner/>
+            <BestSelling/>
+            <OurProducts/>
+            <NewArrival/>
+            <UserReview />
         </div>
     )
 }
 
-export default HomePage
+export default HomePage;
