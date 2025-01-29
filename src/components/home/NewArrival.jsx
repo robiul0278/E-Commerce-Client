@@ -1,7 +1,7 @@
 
 const NewArrival = () => {
   return (
-    <div className="flex flex-col lg:flex-row justify-between mt-10 lg:gap-5 gap-2 bg-white p-5 lg:p-0">
+    <div className="flex flex-col md:flex-row lg:flex-row justify-between mt-10 lg:gap-5 gap-2 bg-white p-5 lg:p-0">
       {/* PlayStation 5 - Big Banner */}
       <div className="relative md:col-span-2 rounded-md overflow-hidden shadow-lg bg-black px-10 w-full">
         <img

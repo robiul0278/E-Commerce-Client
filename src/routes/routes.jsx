@@ -3,12 +3,9 @@ import MainLayout from "../layouts/MainLayout";
 import HomePage from "../pages/home/HomePage";
 import About from "../pages/About";
 import ContactUs from "../pages/ContactUs";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
 import DashboardLayout from "../layouts/DashboardLayout";
 import PrivateRoute from "./PrivateRoute";
 import Overview from "../pages/dashboard/Overview";
-
 import Products from "../pages/products/Products";
 import AddProduct from "../pages/dashboard/seller/AddProduct";
 import SellerPrivateRoute from "./SellerPrivateRoute";
@@ -19,6 +16,8 @@ import ManageUser from "../pages/dashboard/admin/ManageUser";
 import Cart from "../pages/products/Cart";
 import Checkout from "../pages/checkout/Checkout";
 import ManageProducts from "../pages/dashboard/seller/ManageProducts";
+import AuthLogin from "../pages/AuthLogin";
+import AuthRegister from "../pages/AuthRegister";
 
 
 export const router = createBrowserRouter([
@@ -48,11 +47,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/login",
-                element: <Login />
+                element: <AuthLogin/>
             },
             {
                 path: "/register",
-                element: <Register />
+                element: <AuthRegister />
             },
             {
                 path: "/checkout",
