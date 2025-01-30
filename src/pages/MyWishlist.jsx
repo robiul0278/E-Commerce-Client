@@ -1,27 +1,23 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import useUserData from './../../../hooks/useUserData';
-import Loading from "../../Loading";
 import toast, { Toaster } from "react-hot-toast";
 import { CiCircleRemove } from "react-icons/ci";
+import useUserData from "../hooks/useUserData";
 
 const MyWishlist = () => {
   const userData = useUserData()
   const [wishlist, setWishlist] = useState();
-  const [loading, setLoading] = useState(false);
   const [latestData, setLatestData] = useState(true);
   const token = localStorage.getItem("access-token")
 
   useEffect(() => {
     const fetchWishlist = async () => {
-      setLoading(true);
       await axios.get(`https://gadget-shop-server-bay.vercel.app/wishlist/${userData?._id}`, {
         headers: {
           authorization: `Bearer ${token}`,
         }
       }).then((res) => {
         setWishlist(res.data)
-        setLoading(false);
       }).catch((error) => {
         console.error("Error fetching wishlist:", error)
       })
@@ -59,10 +55,6 @@ const MyWishlist = () => {
 
   return (
     <>
-      {
-        loading ?
-          (<Loading />
-          ) : (
             <div className="overflow-x-auto container mx-auto">
               <table className="min-w-[90%] shadow-md border mx-auto border-gray-100 my-6">
                 <thead>
@@ -100,8 +92,6 @@ const MyWishlist = () => {
               </table>
               <Toaster />
             </div>
-          )
-      }
     </>
 
   )

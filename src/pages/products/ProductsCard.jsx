@@ -3,12 +3,14 @@ import axios from "axios";
 import useUserData from "../../hooks/useUserData";
 import toast from "react-hot-toast";
 import { FaRegHeart } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useCart from "../../hooks/useCart";
 
 
 const ProductsCard = ({ product }) => {
   const userData = useUserData();
   const navigate = useNavigate();
+  const [refetch] = useCart();
 
   const token = localStorage.getItem("access-token");
 
@@ -38,6 +40,7 @@ const ProductsCard = ({ product }) => {
       .then(res => {
         if (res.data.modifiedCount) {
           toast.success('Added to cart successfully!');
+          refetch()
         }
       })
       .catch(error => {
@@ -109,10 +112,9 @@ const ProductsCard = ({ product }) => {
       </div>
 
       {/* Card Content */}
-      <div className="p-4">
+      <Link to={product?._id ? `/view/${product._id}` : "#"} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="p-4 ">
         {/* Product Title */}
-        <h2 className="text-gray-800 font-semibold text-sm">AK-900 Wired Keyboard</h2>
-
+        <h2 className="text-gray-800 font-semibold text-sm hover:underline">AK-900 Wired Keyboard</h2>
         {/* Price Section */}
         <div className="mt-2 flex items-center space-x-2">
           <span className="text-red-500 font-semibold text-md">$960</span>
@@ -124,7 +126,7 @@ const ProductsCard = ({ product }) => {
           {Array(4).fill("⭐").join("")}
           <span className="text-gray-500 ml-2">(75)</span>
         </div>
-      </div>
+      </Link>
     </div>
   )
 }

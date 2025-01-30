@@ -2,19 +2,25 @@ import useAuth from '../hooks/useAuth';
 import useUserData from '../hooks/useUserData';
 import NavActiveUser from './NavActiveUser';
 import { Link } from 'react-router-dom';
-import { FaRegHeart } from 'react-icons/fa6';
 import { LuCircleUserRound, LuShoppingCart } from 'react-icons/lu';
 import { IoClose, IoSearch } from 'react-icons/io5';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { useState } from 'react';
+import { Heart } from 'lucide-react';
+import Cart from '../components/Cart';
 
 const Navbar = () => {
     const { user } = useAuth();
     const userData = useUserData();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isCartOpen, setCartOpen] = useState(false);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
+    };
+
+    const setIsCartOpen = () => {
+        setCartOpen(!isCartOpen);
     };
 
     return (
@@ -67,6 +73,14 @@ const Navbar = () => {
                                 to="/products"
                                 className="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold"
                             >
+                                Products
+                            </Link>
+                        </li>
+                        <li className="px-3">
+                            <Link
+                                to="/shop"
+                                className="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold"
+                            >
                                 Shop
                             </Link>
                         </li>
@@ -103,20 +117,22 @@ const Navbar = () => {
 
                         <div className="flex items-center space-x-4">
                             {/* Wishlist */}
-                            <Link to="/dashboard/my-wishlist" aria-label="Wishlist">
-                                <div className="flex flex-col items-center justify-center cursor-pointer">
+                            <Link to="/my-wishlist" aria-label="Wishlist">
+                                <div className="flex flex-col items-center justify-center gap-0.5 cursor-pointer">
                                     <div className="relative">
-                                        <FaRegHeart size={18} />
-                                        <span className="absolute left-auto ml-2 -top-3 rounded-full bg-[#DB4444] px-1 py-0 text-[10px] text-white">
+                                    <Heart size={18} />
+                                        <span className="absolute left-auto ml-2 -top-2.5 rounded-full bg-[#DB4444] px-1 py-0 text-[10px] text-white">
                                             {userData?.wishlist?.length || 0}
                                         </span>
                                     </div>
                                 </div>
+
                             </Link>
 
                             {/* Cart */}
-                            <Link to="/cart" aria-label="Cart">
-                                <div className="flex flex-col items-center justify-center gap-0.5 cursor-pointer">
+                            <Link aria-label="Cart">
+                                <div className="flex flex-col items-center justify-center gap-0.5 cursor-pointer"
+                                    onClick={() => setIsCartOpen(true)}>
                                     <div className="relative">
                                         <LuShoppingCart size={20} />
                                         <span className="absolute left-auto ml-2 -top-2.5 rounded-full bg-[#DB4444] px-1 py-0 text-[10px] text-white">
@@ -150,15 +166,13 @@ const Navbar = () => {
 
                 {/* Mobile Menu */}
                 <div
-                    className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity ${
-                        isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                    }`}
+                    className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity ${isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                        }`}
                     onClick={toggleMenu}
                 ></div>
                 <div
-                    className={`fixed top-0 right-0 h-full w-64 bg-white z-50 transform transition-transform ${
-                        isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-                    }`}
+                    className={`fixed top-0 right-0 h-full w-64 bg-white z-50 transform transition-transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+                        }`}
                 >
                     {/* Close Button */}
                     <button
@@ -209,6 +223,8 @@ const Navbar = () => {
                     </ul>
                 </div>
             </header>
+            {/* Shopping Cart Modal */}
+            {isCartOpen && <Cart onClose={() => setIsCartOpen(false)} />}
         </section>
     );
 };

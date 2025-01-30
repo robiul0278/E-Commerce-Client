@@ -8,16 +8,15 @@ import PrivateRoute from "./PrivateRoute";
 import Overview from "../pages/dashboard/Overview";
 import Products from "../pages/products/Products";
 import AddProduct from "../pages/dashboard/seller/AddProduct";
-import SellerPrivateRoute from "./SellerPrivateRoute";
-import BuyerPrivateRoute from "./BuyerPrivateRoute";
-import MyWishlist from "../pages/dashboard/buyer/MyWishlist";
 import AdminPrivateRoute from "./AdminPrivateRoute";
 import ManageUser from "../pages/dashboard/admin/ManageUser";
-import Cart from "../pages/products/Cart";
 import Checkout from "../pages/checkout/Checkout";
 import ManageProducts from "../pages/dashboard/seller/ManageProducts";
 import AuthLogin from "../pages/AuthLogin";
 import AuthRegister from "../pages/AuthRegister";
+import Shop from "../pages/shop/Shop";
+import ProductView from "../pages/ProductView";
+import MyWishlist from "../pages/MyWishlist";
 
 
 export const router = createBrowserRouter([
@@ -34,8 +33,16 @@ export const router = createBrowserRouter([
                 element: <Products />
             },
             {
-                path: "/cart",
-                element: <Cart />
+                path: "/shop",
+                element: <Shop />
+            },
+            {
+                path: "/view/:id",
+                element: <ProductView />
+            },
+            {
+                path: "/my-wishlist",
+                element: <MyWishlist />
             },
             {
                 path: "/about",
@@ -67,37 +74,28 @@ export const router = createBrowserRouter([
                 path: "/dashboard/overview",
                 element: <Overview />
             },
-            // Admin Route 
             {
                 path: "/dashboard/manage-users", element:
                     <AdminPrivateRoute>
                         <ManageUser />
                     </AdminPrivateRoute>
             },
-            // Seller Route 
             {
                 path: "/dashboard/add-product",
                 element:
-                    <SellerPrivateRoute>
+                    <AdminPrivateRoute>
                         <AddProduct />
-                    </SellerPrivateRoute>
+                    </AdminPrivateRoute>
             },
             {
                 path: "/dashboard/manage-products",
                 element:
-                    <SellerPrivateRoute>
+                    <AdminPrivateRoute>
                         <ManageProducts />
-                    </SellerPrivateRoute>
+                    </AdminPrivateRoute>
 
             },
-            // Buyer Route 
-            {
-                path: "/dashboard/my-wishlist",
-                element:
-                    <BuyerPrivateRoute>
-                        <MyWishlist />
-                    </BuyerPrivateRoute>
-            }
+
         ]
     }
 ])

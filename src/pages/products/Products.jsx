@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Filtering from "../../components/query/Filtering";
 import SearchQuery from "../../components/query/SearchQuery";
-import Sorting from "../../components/query/Sorting";
 import axios from "axios";
 import Loading from "../Loading";
 import NotFound from "./NotFound";
@@ -82,7 +81,6 @@ const Products = () => {
           {/* Search Bar */}
           <SearchQuery handleSearch={handleSearch} />
           {/* Sorting Dropdown */}
-          <Sorting setSort={setSort} />
         </div>
 
         {/* Main Layout: Filters on the Left, Products on the Right */}
@@ -90,6 +88,7 @@ const Products = () => {
           {/* Filters Section */}
           <div className="col-span-2 ">
             <Filtering
+              setSort={setSort}
               setBrand={setBrand}
               setCategory={setCategory}
               handleReset={handleReset}

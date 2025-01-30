@@ -1,10 +1,10 @@
 
 const Loading = () => {
   return (
-    <div className="flex items-center justify-center h-60 text-white">
+    <div className="flex items-center justify-center h-60 text-black">
     <button type="button"
-           className="px-5 py-2.5 flex items-center justify-center text-white text-sm tracking-wider font-semibold border-none outline-none">
-           <svg xmlns="http://www.w3.org/2000/svg" width="18px" fill="#fff" className="mr-2 inline animate-spin"
+           className="px-5 py-2.5 flex items-center justify-center text-black text-sm tracking-wider font-semibold border-none outline-none">
+           <svg xmlns="http://www.w3.org/2000/svg" width="18px" fill="#000000" className="mr-2 inline animate-spin"
              viewBox="0 0 26.349 26.35">
              <circle cx="13.792" cy="3.082" r="3.082" data-original="#000000" />
              <circle cx="13.792" cy="24.501" r="1.849" data-original="#000000" />

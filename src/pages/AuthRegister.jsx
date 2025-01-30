@@ -13,7 +13,6 @@ const AuthRegister = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     // State to store error message
-
     const {
         register,
         handleSubmit,
