@@ -1,26 +1,39 @@
 import useAuth from '../hooks/useAuth';
-import useUserData from '../hooks/useUserData';
 import NavActiveUser from './NavActiveUser';
-import { Link } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import { LuCircleUserRound, LuShoppingCart } from 'react-icons/lu';
-import { IoClose, IoSearch } from 'react-icons/io5';
+import { IoClose } from 'react-icons/io5';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { useState } from 'react';
 import { Heart } from 'lucide-react';
 import Cart from '../components/Cart';
+import useCart from '../hooks/useCart';
+import useWishlist from '../hooks/useWishlist';
+import MyWishlist from '../components/MyWishlist';
+import NavbarSearch from '../components/NavbarSearch';
 
 const Navbar = () => {
     const { user } = useAuth();
-    const userData = useUserData();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isCartOpen, setCartOpen] = useState(false);
+    const [isWishlistOpen, setWishlistOpen] = useState(false);
+    const [cart] = useCart();
+    const [wishlist] = useWishlist();
 
+    // Search Term 
+
+    // responsive menu 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    // open Cart
     const setIsCartOpen = () => {
         setCartOpen(!isCartOpen);
+    };
+    // open wishlist 
+    const setIsWishlistOpen = () => {
+        setWishlistOpen(!isWishlistOpen);
     };
 
     return (
@@ -70,14 +83,6 @@ const Navbar = () => {
                         </li>
                         <li className="px-3">
                             <Link
-                                to="/products"
-                                className="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold"
-                            >
-                                Products
-                            </Link>
-                        </li>
-                        <li className="px-3">
-                            <Link
                                 to="/shop"
                                 className="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold"
                             >
@@ -104,43 +109,27 @@ const Navbar = () => {
 
                     {/* Search, Wishlist, and Cart */}
                     <div className="flex items-center gap-x-6 gap-y-4">
-                        <div className="lg:flex md:flex border-none overflow-hidden rounded-md max-w-[243px] mx-auto bg-[#F5F5F5] hidden ">
-                            <input
-                                type="text"
-                                placeholder="Search Something..."
-                                className="w-full outline-none px-5 py-3 bg-[#F5F5F5] text-[12px]"
-                            />
-                            <button type="button" className="flex items-center justify-center px-3">
-                                <IoSearch size={18} />
-                            </button>
-                        </div>
-
+                       <div className='lg:flex md:flex hidden'> <NavbarSearch/></div>
                         <div className="flex items-center space-x-4">
                             {/* Wishlist */}
-                            <Link to="/my-wishlist" aria-label="Wishlist">
-                                <div className="flex flex-col items-center justify-center gap-0.5 cursor-pointer">
-                                    <div className="relative">
+                            <button onClick={() => setIsWishlistOpen(true)} className="flex flex-col items-center justify-center gap-0.5 cursor-pointer">
+                                <div className="relative">
                                     <Heart size={18} />
-                                        <span className="absolute left-auto ml-2 -top-2.5 rounded-full bg-[#DB4444] px-1 py-0 text-[10px] text-white">
-                                            {userData?.wishlist?.length || 0}
-                                        </span>
-                                    </div>
+                                    <span className="absolute left-auto ml-2 -top-2.5 rounded-full bg-[#DB4444] px-1 py-0 text-[10px] text-white">
+                                        {wishlist?.length || 0}
+                                    </span>
                                 </div>
-
-                            </Link>
-
+                            </button>
                             {/* Cart */}
-                            <Link aria-label="Cart">
-                                <div className="flex flex-col items-center justify-center gap-0.5 cursor-pointer"
-                                    onClick={() => setIsCartOpen(true)}>
-                                    <div className="relative">
-                                        <LuShoppingCart size={20} />
-                                        <span className="absolute left-auto ml-2 -top-2.5 rounded-full bg-[#DB4444] px-1 py-0 text-[10px] text-white">
-                                            {userData?.cart?.length || 0}
-                                        </span>
-                                    </div>
+                            <button onClick={() => setIsCartOpen(true)} className="flex flex-col items-center justify-center gap-0.5 cursor-pointer"
+                            >
+                                <div className="relative">
+                                    <LuShoppingCart size={20} />
+                                    <span className="absolute left-auto ml-2 -top-2.5 rounded-full bg-[#DB4444] px-1 py-0 text-[10px] text-white">
+                                        {cart?.length || 0}
+                                    </span>
                                 </div>
-                            </Link>
+                            </button>
 
                             {/* User Account */}
                             {user ? (
@@ -156,7 +145,7 @@ const Navbar = () => {
 
                         {/* Mobile Menu Icon */}
                         <button
-                            className="block lg:hidden text-2xl"
+                            className="block lg:hidden text-2xl pr-2"
                             onClick={toggleMenu}
                         >
                             <AiOutlineMenu />
@@ -171,7 +160,7 @@ const Navbar = () => {
                     onClick={toggleMenu}
                 ></div>
                 <div
-                    className={`fixed top-0 right-0 h-full w-64 bg-white z-50 transform transition-transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+                    className={`fixed top-0 right-0 h-full w-10/12 bg-white z-50 transform transition-transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
                         }`}
                 >
                     {/* Close Button */}
@@ -183,7 +172,7 @@ const Navbar = () => {
                     </button>
 
                     {/* Menu Items */}
-                    <ul className="mt-10 space-y-6 text-center">
+                    <ul className="mt-10 space-y-2 w-full text-start p-4">
                         <li>
                             <Link
                                 to="/"
@@ -193,15 +182,17 @@ const Navbar = () => {
                                 Home
                             </Link>
                         </li>
+                        <hr />
                         <li>
                             <Link
-                                to="/products"
+                                to="/shop"
                                 className="text-[#333] hover:text-[#007bff] text-[15px] font-semibold"
                                 onClick={toggleMenu}
                             >
                                 Shop
                             </Link>
                         </li>
+                        <hr />
                         <li>
                             <Link
                                 to="/contact"
@@ -211,6 +202,7 @@ const Navbar = () => {
                                 Contact
                             </Link>
                         </li>
+                        <hr />
                         <li>
                             <Link
                                 to="/about"
@@ -219,12 +211,18 @@ const Navbar = () => {
                             >
                                 About
                             </Link>
+                            
+                        </li>
+                        <hr />
+                        <li>
+                            <NavbarSearch/>
                         </li>
                     </ul>
                 </div>
             </header>
             {/* Shopping Cart Modal */}
             {isCartOpen && <Cart onClose={() => setIsCartOpen(false)} />}
+            {isWishlistOpen && <MyWishlist onClose={() => setIsWishlistOpen(false)} />}
         </section>
     );
 };

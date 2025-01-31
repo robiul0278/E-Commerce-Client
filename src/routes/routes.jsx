@@ -6,7 +6,6 @@ import ContactUs from "../pages/ContactUs";
 import DashboardLayout from "../layouts/DashboardLayout";
 import PrivateRoute from "./PrivateRoute";
 import Overview from "../pages/dashboard/Overview";
-import Products from "../pages/products/Products";
 import AddProduct from "../pages/dashboard/seller/AddProduct";
 import AdminPrivateRoute from "./AdminPrivateRoute";
 import ManageUser from "../pages/dashboard/admin/ManageUser";
@@ -16,7 +15,6 @@ import AuthLogin from "../pages/AuthLogin";
 import AuthRegister from "../pages/AuthRegister";
 import Shop from "../pages/shop/Shop";
 import ProductView from "../pages/ProductView";
-import MyWishlist from "../pages/MyWishlist";
 
 
 export const router = createBrowserRouter([
@@ -29,20 +27,12 @@ export const router = createBrowserRouter([
                 element: <HomePage />,
             },
             {
-                path: "/products",
-                element: <Products />
-            },
-            {
                 path: "/shop",
                 element: <Shop />
             },
             {
                 path: "/view/:id",
                 element: <ProductView />
-            },
-            {
-                path: "/my-wishlist",
-                element: <MyWishlist />
             },
             {
                 path: "/about",

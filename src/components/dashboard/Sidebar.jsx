@@ -9,8 +9,8 @@ import { RiStickyNoteAddLine } from "react-icons/ri";
 const buyerRoutes = [
   {
     id: 1,
-    title: "My Wishlist",
-    route: "/dashboard",
+    title: "My Order",
+    route: "/dashboard/my-order",
     icon: <MdOutlineInventory2 />
   },
 ]
@@ -37,7 +37,7 @@ const adminRoutes = [
 
 const Sidebar = () => {
   const { user, Logout } = useAuth();
-  const userData = useUserData();
+  const [userData] = useUserData();
   // console.log(user)
   const handleLogout = () => {
     Logout();

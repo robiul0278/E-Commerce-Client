@@ -6,7 +6,7 @@ import Loading from "../../Loading";
 import EditProduct from "./EditProduct";
 
 const ManageProducts = () => {
-  const userData = useUserData()
+  const [userData] = useUserData()
   const [products, setProducts] = useState();
   const [loading, setLoading] = useState(false);
   const [latestData, setLatestData] = useState(true);

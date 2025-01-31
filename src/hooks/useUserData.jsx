@@ -1,27 +1,24 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import useAuth from "./useAuth";
-import axios from "axios";
+import useAxiosSecure from "./useAxiosSecure";
 
 const useUserData = () => {
-  const { user, loading } = useAuth();
-  const [userData, setUserData] = useState(null);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const res = await axios.get(`https://gadget-shop-server-bay.vercel.app/user/${user.email}`);
-        setUserData(res.data);
-      } catch (error) {
-        console.error("Failed to fetch user data:", error);
-      }
-    };
-
-    if (user?.email && !loading) {
-      fetchUserData();
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
+  const email = user?.email;
+  const { data: userData = {}, isLoading, refetch } = useQuery({
+    queryKey: ['user', email],
+    enabled: !!email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/user/${email}`, {
+        headers: {
+          "Cache-Control": "no-cache" 
+        }
+      });
+      return res.data;
     }
-  }, [user, loading]);
-
-  return userData;
-};
+  })
+  return [userData, isLoading, refetch];
+}
 
 export default useUserData;

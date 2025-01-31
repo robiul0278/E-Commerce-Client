@@ -6,7 +6,7 @@ import useUserData from "../hooks/useUserData";
 
 const AdminPrivateRoute = ({children}) => {
     const {user, loading} = useAuth();
-    const userData = useUserData();
+    const [userData] = useUserData();
     const location = useLocation();
 
     if (loading || !userData?.role) {

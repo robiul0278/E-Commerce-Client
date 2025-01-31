@@ -11,10 +11,10 @@ import Loading from '../Loading';
 import NotFound from '../products/NotFound';
 import Filtering from '../../components/query/Filtering';
 import ProductsCard from '../products/ProductsCard';
+import { useSearchParams } from 'react-router-dom';
 const { Header, Sider, Content } = Layout;
 const Shop = () => {
     const [products, setProducts] = useState([]);
-    console.log(products);
     // loading 
     const [loading, setLoading] = useState(false);
     // query 
@@ -28,11 +28,15 @@ const Shop = () => {
     // pagination 
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
+    // Search Query 
+    const [searchParams] = useSearchParams();
+    const searchQuery = searchParams.get("search") || "";
+
 
     useEffect(() => {
         setLoading(true);
         const fetch = async () => {
-            axios.get(`https://gadget-shop-server-bay.vercel.app/all-product?page=${page}&limit=${12}&sort=${sort}&brand=${brand}&category=${category}`)
+            axios.get(`https://gadget-shop-server-bay.vercel.app/all-product?page=${page}&limit=${12}&sort=${sort}&brand=${brand}&category=${category}&search=${searchQuery}`)
                 .then((res) => {
                     // console.log(res.data);
                     setProducts(res.data.products);
@@ -43,7 +47,7 @@ const Shop = () => {
                 })
         }
         fetch();
-    }, [brand, sort, category, page]);
+    }, [brand, sort, category, page,searchQuery]);
 
     const handleReset = () => {
         setBrand("");
@@ -67,7 +71,7 @@ const Shop = () => {
 
     return (
         <Layout>
-            <Sider trigger={null} style={{ padding: 10 }} width={300} theme='light' collapsible collapsed={collapsed}>
+            <Sider className='hidden lg:flex md:flex' trigger={null} style={{ padding: 10 }} width={300} theme='light' collapsible collapsed={collapsed}>
                 <div className="demo-logo-vertical" />
                 <Filtering
                     setSort={setSort}
@@ -86,6 +90,7 @@ const Shop = () => {
                     }}
                 >
                     <Button
+                    className='lg:flex md:flex hidden'
                         type="text"
                         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                         onClick={() => setCollapsed(!collapsed)}
