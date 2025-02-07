@@ -73,10 +73,10 @@ const BestSelling = () => {
             </div>
             <div className="flex items-center justify-center space-x-1">
               <button ref={prevRef} className="rounded-full p-2 bg-gray-200" aria-label="Previous">
-                <MdArrowBack size={10}/>
+                <MdArrowBack size={14}/>
               </button>
               <button ref={nextRef} className="rounded-full p-2 bg-gray-200" aria-label="Next">
-                <MdArrowForward size={10}/>
+                <MdArrowForward size={14}/>
               </button>
             </div>
           </div>

@@ -7,20 +7,18 @@ import { AiOutlineMenu } from 'react-icons/ai';
 import { useState } from 'react';
 import { Heart } from 'lucide-react';
 import Cart from '../components/Cart';
-import useCart from '../hooks/useCart';
 import useWishlist from '../hooks/useWishlist';
 import MyWishlist from '../components/MyWishlist';
 import NavbarSearch from '../components/NavbarSearch';
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
     const { user } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isCartOpen, setCartOpen] = useState(false);
     const [isWishlistOpen, setWishlistOpen] = useState(false);
-    const [cart] = useCart();
     const [wishlist] = useWishlist();
-
-    // Search Term 
+    const products = useSelector((state) => state.cart.products)
 
     // responsive menu 
     const toggleMenu = () => {
@@ -126,7 +124,7 @@ const Navbar = () => {
                                 <div className="relative">
                                     <LuShoppingCart size={20} />
                                     <span className="absolute left-auto ml-2 -top-2.5 rounded-full bg-[#DB4444] px-1 py-0 text-[10px] text-white">
-                                        {cart?.length || 0}
+                                        {products?.length > 0 ? products?.length : 0 }
                                     </span>
                                 </div>
                             </button>
