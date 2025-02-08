@@ -3,6 +3,7 @@ import { Minus, Plus, Trash2, X } from 'lucide-react';
 import { useDispatch, useSelector } from "react-redux";
 import { decreaseQuantity, increaseQuantity, removeFromCart } from '../redux/features/cartSlice';
 import { useState, useEffect } from 'react';
+import empty from "../../public/empty.svg";
 
 const Cart = ({ onClose }) => {
     const cart = useSelector((state) => state.cart);
@@ -10,21 +11,34 @@ const Cart = ({ onClose }) => {
     const [show, setShow] = useState(false);
 
     useEffect(() => {
-        setShow(true); // Show cart when it mounts
+        setShow(true); // Show cart when it mounts functionality
         return () => setShow(false); // Hide cart when it's unmounted
     }, []);
 
+    const handleClose = () => {
+        // Delay the closing transition for 500ms to let the transition happen
+        setShow(false);
+        setTimeout(() => {
+            onClose();
+        }, 300); // This matches the duration of the transition
+    };
+
     return (
         <div
-            className={`fixed inset-0 w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}
-            onClick={onClose}>
+            className="fixed inset-0 w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] font-sans"
+            onClick={handleClose} 
+            aria-hidden="true">
             <div
-                className={`w-full max-w-sm bg-white shadow-lg relative ml-auto h-screen transition-transform transform ${show ? 'translate-x-0' : 'translate-x-full'} duration-300`}
+                className={`w-full max-w-sm bg-white shadow-lg relative ml-auto h-screen transition-all duration-500
+                    ${show ? 'translate-x-0' : 'translate-x-full'}`} 
                 onClick={(e) => e.stopPropagation()}>
-                <div className="overflow-auto p-6 h-[calc(100vh-124px)]">
+                    <div className="overflow-auto p-6 h-[calc(100vh-124px)]">
                     <div className="flex items-center gap-4 text-gray-800">
-                        <h3 className="text-2xl font-bold flex-1">Shopping cart</h3>
-                        <button onClick={onClose} className="text-xl p-2 rounded-full hover:bg-gray-200">
+                        <h3 className="text-2xl font-bold flex-1">My Wishlist</h3>
+                        <button 
+                            onClick={handleClose} 
+                            className="text-xl p-2 rounded-full hover:bg-gray-200" 
+                            aria-label="Close wishlist">
                             <X />
                         </button>
                     </div>
@@ -68,9 +82,9 @@ const Cart = ({ onClose }) => {
                             </div>
                         ))
                     ) : (
-                        <div className="flex h-1/2 text-center items-center justify-center">
-                            <h1>Please add to Cart!</h1>
-                        </div>
+              <div className="flex flex-col h-full items-center justify-center">
+                        <img src={empty} alt="empty wishlist" className="max-w-full max-h-full p-20" />
+                    </div>
                     )}
                 </div>
 

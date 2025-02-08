@@ -1,24 +1,15 @@
 /* eslint-disable react/prop-types */
-import axios from "axios";
 import toast from "react-hot-toast";
 import { FaRegHeart } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
-import useUserData from "../../hooks/useUserData";
-import useWishlist from "../../hooks/useWishlist";
-import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/features/cartSlice";
+import { addToWishlist } from "../../redux/features/wishlistSlice";
 
 
 const ProductsCard = ({ product }) => {
-  const [userData] = useUserData();
-  const { user } = useAuth();
-  const navigate = useNavigate();
-  const [, , refetchWishlist] = useWishlist();
-
-
-  const token = localStorage.getItem("access-token");
   const dispatch = useDispatch();
+  const products = useSelector((state) => state.wishlist);
 
   const handleAddToCart = (e, product) => {
     e.stopPropagation()
@@ -26,42 +17,13 @@ const ProductsCard = ({ product }) => {
     dispatch(addToCart(product))
     toast.success('Product Added Successfully!');
   }
-  
-  const handleAddWishlist = async () => {
-    if (!user?.email) {
-      toast.error('Please log in to add to cart');
-      navigate("/login");
-      return;
-    }
-    if (userData?.role !== 'buyer') {
-      toast.error('Only buyers can purchase products.');
-      return;
-    }
 
-    try {
-      const res = await axios.patch('https://gadget-shop-server-bay.vercel.app/add-wishlist',
-        {
-          userEmail: userData?.email,
-          productId: product._id,
-        },
-        { headers: { authorization: `Bearer ${token}` } }
-      );
-
-      if (res.data.success) {
-        refetchWishlist();
-        toast.success(res.data.message);
-      }
-    } catch (error) {
-      if (error.response?.status === 409) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error('Failed to add to cart');
-        console.log(error);
-      }
-    }
+  const handleAddWishlist = (e, product) => {
+    e.stopPropagation()
+    e.preventDefault()
+    dispatch(addToWishlist(product));
+    toast.success("Added to wishlist!");
   };
-
-
 
   return (
     <div className="max-w-xs bg-white overflow-hidden relative group">
@@ -71,7 +33,9 @@ const ProductsCard = ({ product }) => {
       </div>
 
       {/* Heart Icon */}
-      <button onClick={handleAddWishlist} type="button" className="absolute bg-gray-200 rounded-full text-black font-bold px-2 py-2 right-2 top-2 z-10 hover:bg-red-400">
+      <button onClick={(e) => handleAddWishlist(e, product)} type="button" className={`absolute bg-gray-200 rounded-full text-black font-bold px-2 py-2 right-2 top-2 z-10 
+    ${products?.products.some((item) => item._id === product._id) ? "bg-red-400 text-white cursor-not-allowed" : "hover:bg-red-400 hover:text-white"}`}
+        disabled={products?.products.some((item) => item._id === product._id)} >
         <FaRegHeart />
       </button>
 
@@ -85,8 +49,7 @@ const ProductsCard = ({ product }) => {
         />
         {/* Add to Cart Button */}
         <button
-          onClick={(e)=>handleAddToCart(e,product)}
-          // className="absolute bottom-0 left-0 right-0 bg-red-500 text-white text-sm font-bold py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          onClick={(e) => handleAddToCart(e, product)}
           className="absolute bottom-0 left-0 right-0 bg-gray-400 hover:bg-gray-500 text-white text-sm font-bold py-2 opacity-100 group-hover:opacity-100 transition-opacity duration-300"
         >
           Add to Cart

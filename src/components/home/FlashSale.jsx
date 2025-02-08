@@ -121,14 +121,14 @@ const FlashSale = () => {
         </div>
       </div>
       {/* Product Section */}
-      <div className="mt-5">
+      <div className="mt-5 ">
         {isLoading ? (
           <Loading />
         ) : (
           <Swiper
             modules={[Navigation, Autoplay]}
             autoplay={{
-              delay: 2500,
+              delay: 3500,
               disableOnInteraction: false,
             }}
             slidesPerView={slidesPerView}
@@ -148,6 +148,7 @@ const FlashSale = () => {
               </SwiperSlide>
             ))}
           </Swiper>
+
         )}
       </div>
     </section>

@@ -81,7 +81,7 @@ const Footer = () => {
             </a>
           </div>
 
-          <p className='text-gray-400 text-sm'>© ReadymadeUI. All rights reserved.
+          <p className='text-gray-400 text-sm'>© gadgetshop.com All rights reserved.
           </p>
         </div>
       </div>
