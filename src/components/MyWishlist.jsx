@@ -33,19 +33,19 @@ const MyWishlist = ({ onClose }) => {
     return (
         <div
             className="fixed inset-0 w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] font-sans"
-            onClick={handleClose} 
+            onClick={handleClose}
             aria-hidden="true">
             <div
                 className={`w-full max-w-sm bg-white shadow-lg relative ml-auto h-screen transition-all duration-500
-                    ${show ? 'translate-x-0' : 'translate-x-full'}`} 
+                    ${show ? 'translate-x-0' : 'translate-x-full'}`}
                 onClick={(e) => e.stopPropagation()}>
-                
+
                 <div className="overflow-auto p-6 h-[calc(100vh-124px)]">
                     <div className="flex items-center gap-4 text-gray-800">
                         <h3 className="text-2xl font-bold flex-1">My Wishlist</h3>
-                        <button 
-                            onClick={handleClose} 
-                            className="text-xl p-2 rounded-full hover:bg-gray-200" 
+                        <button
+                            onClick={handleClose}
+                            className="text-xl p-2 rounded-full hover:bg-gray-200"
                             aria-label="Close wishlist">
                             <X />
                         </button>
@@ -60,24 +60,24 @@ const MyWishlist = ({ onClose }) => {
                                 <div key={item._id} className="space-y-4 mt-12">
                                     <div className="flex flex-col sm:flex-row sm:justify-between items-center sm:items-start gap-4">
                                         <div className="flex items-start gap-4 w-full">
-                                            <div className="w-24 h-24 sm:w-28 sm:h-28 shrink-0 bg-gray-100 p-2 rounded-md">
-                                                <img 
-                                                    src={item?.image} 
-                                                    className="w-full h-full object-contain" 
-                                                    alt={item?.name} 
+                                            <div className="w-24 h-24 sm:w-28 sm:h-28  shadow shadow-slate-300 rounded-md">
+                                                <img
+                                                    src={item?.image}
+                                                    className="w-full h-full object-contain rounded-md"
+                                                    alt={item?.name}
                                                     loading="lazy"
                                                 />
                                             </div>
 
                                             <div className="flex flex-col flex-1">
                                                 <h3 className="text-sm sm:text-base font-bold text-gray-800">{item?.name || "Smart Watch Timex"}</h3>
-                                                <h4 className="text-sm sm:text-base font-bold text-gray-800">${item?.price || "60.00"}</h4>
+                                                <h4 className="text-sm sm:text-base text-gray-800">{item?.price || "00.00"}৳</h4>
 
                                                 <div className="flex items-center justify-between mt-5">
                                                     <button
                                                         onClick={() => dispatch(removeToWishlist(item?._id))}
                                                         type="button"
-                                                        className="font-semibold text-red-600 hover:text-red-700 text-xs flex items-center gap-1"
+                                                        className="font-semibold text-[#49B2FF] hover:text-[#3682b9] text-xs flex items-center gap-1 hover:scale-95 transition duration-300"
                                                         aria-label={`Remove ${item?.name} from wishlist`}>
                                                         <Trash2 />
                                                     </button>
@@ -87,8 +87,8 @@ const MyWishlist = ({ onClose }) => {
                                                         disabled={isInCart}
                                                         type="button"
                                                         className={`px-3 text-sm font-semibold py-2 rounded-md tracking-wide transition 
-                                                            ${isInCart ? "bg-red-400 cursor-not-allowed" : "bg-red-600 hover:bg-red-700"} 
-                                                            text-white`}
+                                                            ${isInCart ? "bg-[#A6D4FF] cursor-not-allowed text-[#FFFFFF]" : "rounded border border-[#49B2FF] hover:scale-95"} 
+                                                            text-[#49B2FF]`}
                                                         aria-label={isInCart ? `Already in Cart` : `Add ${item?.name} to Cart`}>
                                                         {isInCart ? "Already in Cart" : "Add to Cart"}
                                                     </button>
@@ -101,13 +101,8 @@ const MyWishlist = ({ onClose }) => {
                             );
                         })
                     ) : (
-                        <div className="flex flex-col h-full items-center justify-center">
-                            <img 
-                                src={empty} 
-                                alt="empty wishlist" 
-                                className="max-w-full max-h-full p-20" 
-                                loading="lazy"
-                            />
+                        <div className="flex items-center justify-center">
+                            <img src={empty} alt="empty wishlist" className="p-28" />
                         </div>
                     )}
                 </div>
@@ -116,15 +111,9 @@ const MyWishlist = ({ onClose }) => {
                 <div className="p-4 absolute bottom-0 w-full border-t bg-white">
                     <ul className="text-gray-800 divide-y">
                         <li className="flex flex-wrap gap-4 text-lg font-bold">
-                            Subtotal <span className="ml-auto">${products.totalPrice}</span>
+                            Subtotal <span className="ml-auto">{products.totalPrice}৳</span>
                         </li>
                     </ul>
-                    {/* <button 
-                        type="button" 
-                        className="mt-6 text-sm font-semibold px-4 py-2.5 w-full bg-red-600 hover:bg-red-700 text-white rounded-md tracking-wide"
-                        aria-label="Add all items to cart">
-                        All Add To Cart
-                    </button> */}
                 </div>
             </div>
         </div>

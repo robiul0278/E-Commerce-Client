@@ -1,38 +1,18 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
 import Swal from "sweetalert2";
+import useAllUser from "../../../hooks/useAllUser";
+import { Search } from "lucide-react";
 
 const ManageUser = () => {
-  const [users, setUsers] = useState([]);
-  const [latestData, setLatestData] = useState(true);
-  // loading 
-  const [loading, setLoading] = useState(false);
-
   const token = localStorage.getItem("access-token");
+  const [allUser, isLoading, refetch] = useAllUser();
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      setLoading(true);
-      await axios.get(`https://gadget-shop-server-bay.vercel.app/user`, {
-        headers: {
-          authorization: `Bearer ${token}`,
-        }
-      }).then((res) => {
-        setUsers(res.data)
-        setLoading(false);
-      }).catch((error) => {
-        console.error("Error fetching users:", error)
-      })
-    }
-    // Fix the condition to check both userData and token
-    if (token) {
-      fetchUsers()
-    }
-  }, [token,latestData])
 
-  const changeUserRole = (id,role) => {
-    const userData = {role}
+  const changeUserRole = (id, role) => {
+
+    const Role = { role };
+
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -43,25 +23,26 @@ const ManageUser = () => {
       confirmButtonText: "Yes, change it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.patch(`https://gadget-shop-server-bay.vercel.app/user/${id}`, userData, {
+        axios.patch(`http://localhost:5000/user/${id}`, Role, {
           headers: {
             authorization: `Bearer ${token}`,
           }
         })
           .then((res) => {
+            console.log(res);
             if (res.data.matchedCount > 0) {
               Swal.fire({
                 title: "Role Changed!",
                 text: "Your role has been change",
                 icon: "success"
               });
-              setLatestData(!latestData);
+              refetch();
             } else {
               Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "User not found!",
-            });
+                icon: "error",
+                title: "Oops...",
+                text: "User not found!",
+              });
             }
           })
       }
@@ -87,13 +68,13 @@ const ManageUser = () => {
                 text: "Your file has been deleted",
                 icon: "success"
               });
-              setLatestData(!latestData);
+              refetch();
             } else {
               Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Something went wrong!",
-            });
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
+              });
             }
           })
       }
@@ -101,75 +82,201 @@ const ManageUser = () => {
   }
 
   return (
-    <div className="p-6">
-      <div className="bg-gray-800 border py-10 px-6  shadow-lg text-white">
-        <h1 className="text-3xl font-bold tracking-wider text-center">Manage Users</h1>
-        <p className="mt-4 text-sm text-center justify-center mx-auto">
-          Effortlessly view, edit, and manage user accounts in one centralized platform.
-          Stay in control with streamlined tools to ensure a seamless user experience.
-        </p>
-      </div>
+    <>
+      <div className="min-h-screen bg-gray-50">
+        {/* Header */}
+        <header className="bg-white shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <h1 className="text-xl font-semibold text-gray-900">Manage User</h1>
+          </div>
+        </header>
 
-      <div className="overflow-x-auto font-[sans-serif]">
-        <table className="min-w-full bg-white ">
-          <thead className="bg-gray-700 whitespace-nowrap">
-            <tr className="">
-              <th className="p-4 text-left text-sm font-medium text-white">
-                Name
-              </th>
-              <th className="p-4 text-left text-sm font-medium text-white">
-                Email
-              </th>
-              <th className="p-4 text-left text-sm font-medium text-white">
-                Role
-              </th>
-              {/* <th className="p-4 text-left text-sm font-medium text-white">
-                Status
-              </th> */}
-              <th className="p-4 text-left text-sm font-medium text-white">
-                Actions
-              </th>
-            </tr>
-          </thead>
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Filters and Actions */}
+          <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+              <div className="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4">
+                {/* Search */}
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Search orders..."
+                    className="w-full md:w-80 pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  <Search className="w-5 h-5 text-gray-400 absolute right-4 top-2.5" />
+                </div>
+              </div>
+            </div>
+          </div>
 
-          {
-            loading ? (
-              <></>
-
-            ) : (
-              users.map((user) => (
-                <tbody key={user._id} className="whitespace-nowrap border">
-                  <td className="p-4 text-sm">
-                    {user?.name}
-                  </td>
-                  <td className="p-4 text-sm">
-                    {user?.email}          </td>
-                    <td className="border border-gray-300 px-4 py-2 text-center">
-                  <select
-                    value={user?.role || "default"}
-                    onChange={(e) => changeUserRole(user._id, e.target.value)}
-                    className="border rounded p-1"
-                  >
-                    <option value="buyer">Buyer</option>
-                    <option value="seller">Seller</option>
-                    <option value="admin">Admin</option>
-                  </select>
-                </td>
-                  {/* <td className="p-4 text-sm">
-                    {user?.status}
-                  </td> */}
-                  <td className="p-4">
-                    <button onClick={() => handleDeleteUser(user?._id)} className="ml-3" title="Delete">
-                      <RiDeleteBinLine className="w-5 fill-red-500 hover:fill-red-700 text-xl" />
-                    </button>
-                  </td>
+          {/* Orders Table */}
+          <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-200">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                       Image
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                       Name
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Email
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Role
+                    </th>
+                    <th className="flex item-center  px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {!isLoading ? <>
+                    {allUser.map((user) => {
+                      return (
+                        <tr key={user.id} className="hover:bg-gray-50">
+                          <td className="px-6 whitespace-nowrap text-sm font-medium text-blue-600">
+                            <img src={user?.photoURL} alt="profile" className="h-14 w-14 rounded-full object-cover bg-gray-300" />
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-medium text-gray-900">
+                              {user.name}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {user.email}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            <select
+                              value={user?.role || "default"}
+                              onChange={(e) => changeUserRole(user._id, e.target.value)}
+                              className="border rounded p-1"
+                            >
+                              <option value="user">User</option>
+                              <option value="admin">Admin</option>
+                            </select>
+                          </td>
+                          <td className="flex item-center px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button onClick={() => handleDeleteUser(user?._id)} className="ml-3" title="Delete">
+                              <RiDeleteBinLine className="w-5 fill-red-500 hover:fill-red-700 text-xl" />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </> : <>
+                    <tr className="animate-pulse">
+                      <td className="flex item-center justify-center">
+                        <div className="size-10 rounded-full bg-gray-200"></div>
+                      </td>
+                      <td >
+                        <div className="h-2 rounded bg-gray-200"></div>
+                      </td>
+                      <td>
+                        <div className="h-2 rounded bg-gray-200"></div>
+                      </td>
+                      <td>
+                        <div className="h-2 rounded bg-gray-200"></div>
+                      </td>
+                      <td>
+                        <div className="h-2 rounded bg-gray-200"></div>
+                      </td>
+                    </tr>
+                    <tr className="animate-pulse">
+                      <td className="flex item-center justify-center">
+                        <div className="size-10 rounded-full bg-gray-200"></div>
+                      </td>
+                      <td >
+                        <div className="h-2 rounded bg-gray-200"></div>
+                      </td>
+                      <td>
+                        <div className="h-2 rounded bg-gray-200"></div>
+                      </td>
+                      <td>
+                        <div className="h-2 rounded bg-gray-200"></div>
+                      </td>
+                      <td>
+                        <div className="h-2 rounded bg-gray-200"></div>
+                      </td>
+                    </tr>
+                    <tr className="animate-pulse">
+                      <td className="flex item-center justify-center">
+                        <div className="size-10 rounded-full bg-gray-200"></div>
+                      </td>
+                      <td >
+                        <div className="h-2 rounded bg-gray-200"></div>
+                      </td>
+                      <td>
+                        <div className="h-2 rounded bg-gray-200"></div>
+                      </td>
+                      <td>
+                        <div className="h-2 rounded bg-gray-200"></div>
+                      </td>
+                      <td>
+                        <div className="h-2 rounded bg-gray-200"></div>
+                      </td>
+                    </tr>
+                  </>}
                 </tbody>
-              ))
-            )
-          }
-        </table>
+              </table>
+            </div>
+
+            {/* Pagination */}
+            <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+              <div className="flex-1 flex justify-between sm:hidden">
+                <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                  Previous
+                </button>
+                <button className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                  Next
+                </button>
+              </div>
+              <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-sm text-gray-700">
+                    Showing <span className="font-medium">1</span> to{' '}
+                    <span className="font-medium">5</span> of{' '}
+                    <span className="font-medium">1,234</span> results
+                  </p>
+                </div>
+                <div>
+                  <nav
+                    className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                    aria-label="Pagination"
+                  >
+                    <button className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                      Previous
+                    </button>
+                    <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                      1
+                    </button>
+                    <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                      2
+                    </button>
+                    <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                      3
+                    </button>
+                    <button className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                      Next
+                    </button>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
-    </div>
+
+
+
+
+
+
+
+
+    </>
   )
 }
 

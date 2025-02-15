@@ -5,16 +5,20 @@ import About from "../pages/About";
 import ContactUs from "../pages/ContactUs";
 import DashboardLayout from "../layouts/DashboardLayout";
 import PrivateRoute from "./PrivateRoute";
-import Overview from "../pages/dashboard/Overview";
-import AddProduct from "../pages/dashboard/seller/AddProduct";
 import AdminPrivateRoute from "./AdminPrivateRoute";
-import ManageUser from "../pages/dashboard/admin/ManageUser";
 import Checkout from "../pages/checkout/Checkout";
-import ManageProducts from "../pages/dashboard/seller/ManageProducts";
 import AuthLogin from "../pages/AuthLogin";
 import AuthRegister from "../pages/AuthRegister";
 import Shop from "../pages/shop/Shop";
 import ProductView from "../pages/ProductView";
+import ManageUser from "../pages/dashboard/admin/ManageUser";
+import ManageProducts from "../pages/dashboard/admin/ManageProduct";
+import AddProduct from "../pages/dashboard/admin/AddProduct";
+import OrderDetails from "../pages/dashboard/user/OrderDetails";
+import Profile from "../pages/dashboard/Profile";
+import ManageOrders from "../pages/dashboard/admin/ManageOrders";
+import OverView from "../pages/dashboard/admin/OverView";
+import FlashSale from "../pages/dashboard/admin/FlashSale";
 
 
 export const router = createBrowserRouter([
@@ -61,11 +65,26 @@ export const router = createBrowserRouter([
         element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
         children: [
             {
-                path: "/dashboard/overview",
-                element: <Overview />
+                path: "/dashboard/profile",
+                element: <Profile />
             },
             {
-                path: "/dashboard/manage-users", element:
+                path: "/dashboard/overview", 
+                element:
+                    <AdminPrivateRoute>
+                        <OverView />
+                    </AdminPrivateRoute>
+            },
+            {
+                path: "/dashboard/flash-sale", 
+                element:
+                    <AdminPrivateRoute>
+                        <FlashSale />
+                    </AdminPrivateRoute>
+            },
+            {
+                path: "/dashboard/manage-users", 
+                element:
                     <AdminPrivateRoute>
                         <ManageUser />
                     </AdminPrivateRoute>
@@ -85,7 +104,18 @@ export const router = createBrowserRouter([
                     </AdminPrivateRoute>
 
             },
+            {
+                path: "/dashboard/manage-orders",
+                element:
+                    <AdminPrivateRoute>
+                        <ManageOrders />
+                    </AdminPrivateRoute>
 
+            },
+            {
+                path: "/dashboard/my-order",
+                element: <OrderDetails />
+            },
         ]
     }
 ])

@@ -32,8 +32,8 @@ const Category = () => {
         <section className="lg:mt-16 p-5 lg:p-0">
             <div className="flex flex-col gap-5">
                 <div className="flex items-center space-x-2">
-                    <div className="w-3 h-7 rounded bg-orange-600" />
-                    <h1 className="text-orange-600">Categories</h1>
+                    <div className="w-3 h-7 rounded bg-[#49B2FF]" />
+                    <h1 className="text-[#49B2FF]">Categories</h1>
                 </div>
                 <div className="flex items-center gap-16 justify-between">
                     <h1 className="text-2xl font-bold">Browse By Category</h1>

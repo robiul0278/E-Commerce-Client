@@ -35,9 +35,9 @@ const Navbar = () => {
 
     return (
         <section className="sticky bg-white top-0  z-50">
-            <header className="flex flex-col shadow-sm">
+            <header className="flex flex-col shadow-sm shadow-slate-300">
                 {/* Navbar Header Section */}
-                <div className="bg-black text-white items-center justify-center w-full py-1 text-center">
+                <div className="bg-[#49B2FF] text-white items-center justify-center w-full py-1 text-center">
                     <h2 className="text-[10px] lg:text-[12px]">
                         Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!
                         <a
@@ -50,31 +50,21 @@ const Navbar = () => {
                 </div>
 
                 {/* Main Navbar Section */}
-                <div className="flex lg:w-[1170px] mx-auto items-center justify-between w-full  lg:px-0 p-1 bg-white">
+                <div className="flex lg:w-[1170px] mx-auto items-center justify-between w-full  lg:px-2 py-3 bg-white">
                     {/* Logo Section */}
-                    <div>
-                        <a href="/" className="max-sm">
-                            <img
-                                src="https://i.ibb.co/71L9XbW/gadgets-1.png"
-                                alt="logo"
-                                className="lg:w-36 w-24"
-                            />
-                        </a>
-                        <a href="/" className="hidden">
-                            <img
-                                src="https://i.ibb.co/5BY0SRK/Untitled-design.png"
-                                alt="logo"
-                                className="w-16"
-                            />
-                        </a>
-                    </div>
+                    <div className='ml-2'>
+    <a href="/" className="font-bold text-xl sm:text-2xl md:text-3xl text-[#49B2FF]">
+        E-Commerce
+    </a>
+</div>
+
                     {/* Desktop Navigation Links */}
                     <ul className="hidden lg:flex">
                         <li className="px-3">
                             <NavLink
                                 to="/"
                                 className={({ isActive }) =>
-                                    isActive ? 'text-red-600 text-[15px] block font-semibold' : 'text-[#333] text-[15px] block font-semibold'
+                                    isActive ? 'text-[#49B2FF] text-[15px] block font-semibold' : 'text-[#333] text-[15px] block font-semibold hover:text-[#49B2FF] transition duration-300'
                                 }
                             >
                                 Home
@@ -84,7 +74,7 @@ const Navbar = () => {
                             <NavLink
                                 to="/shop"
                                 className={({ isActive }) =>
-                                    isActive ? 'text-red-600 text-[15px] block font-semibold' : 'text-[#333] hover:text-[#007bff] text-[15px] block font-semibold'
+                                    isActive ? 'text-[#49B2FF] text-[15px] block font-semibold' : 'text-[#333] hover:text-[#49B2FF] text-[15px] block font-semibold transition duration-300'
                                 }
                             >
                                 Shop
@@ -94,7 +84,7 @@ const Navbar = () => {
                             <NavLink
                                 to="/contact"
                                 className={({ isActive }) =>
-                                    isActive ? 'text-red-600 text-[15px] block font-semibold' : 'text-[#333] hover:text-[#007bff] text-[15px] block font-semibold'
+                                    isActive ? 'text-[#49B2FF] text-[15px] block font-semibold' : 'text-[#333] hover:text-[#49B2FF] text-[15px] block font-semibold transition duration-300'
                                 }
                             >
                                 Contact
@@ -104,7 +94,7 @@ const Navbar = () => {
                             <NavLink
                                 to="/about"
                                 className={({ isActive }) =>
-                                    isActive ? 'text-red-600 text-[15px] block font-semibold' : 'text-[#333] hover:text-[#007bff] text-[15px] block font-semibold'
+                                    isActive ? 'text-[#49B2FF] text-[15px] block font-semibold' : 'text-[#333] hover:text-[#49B2FF] text-[15px] block font-semibold transition duration-300'
                                 }
                             >
                                 About
@@ -121,7 +111,7 @@ const Navbar = () => {
                             <button onClick={() => setIsWishlistOpen(true)} className="flex flex-col items-center justify-center gap-0.5 cursor-pointer">
                                 <div className="relative">
                                     <Heart size={18} />
-                                    <span className="absolute left-auto ml-1 -top-2.5 rounded-full bg-[#DB4444] px-1 py-0 text-[10px] text-white">
+                                    <span className="absolute left-auto ml-1 -top-2.5 rounded-full bg-[#49B2FF] px-1 py-0 text-[10px] text-white">
                                         {wishlist?.length > 0 ? wishlist?.length : 0}
                                     </span>
                                 </div>
@@ -131,7 +121,7 @@ const Navbar = () => {
                             >
                                 <div className="relative">
                                     <LuShoppingCart size={20} />
-                                    <span className="absolute left-auto ml-1 -top-2.5 rounded-full bg-[#DB4444] px-1 py-0 text-[10px] text-white">
+                                    <span className="absolute left-auto ml-1 -top-2.5 rounded-full bg-[#49B2FF] px-1 py-0 text-[10px] text-white">
                                         {cart?.length > 0 ? cart?.length : 0}
                                     </span>
                                 </div>
@@ -192,7 +182,7 @@ const Navbar = () => {
                         <li>
                             <NavLink
                                 to="/shop"
-                                className="text-[#333] hover:text-[#007bff] text-[15px] font-semibold"
+                                className="text-[#333] hover:text-[#49B2FF] text-[15px] font-semibold"
                                 onClick={toggleMenu}
                             >
                                 Shop
@@ -202,7 +192,7 @@ const Navbar = () => {
                         <li>
                             <NavLink
                                 to="/contact"
-                                className="text-[#333] hover:text-[#007bff] text-[15px] font-semibold"
+                                className="text-[#333] hover:text-[#49B2FF] text-[15px] font-semibold"
                                 onClick={toggleMenu}
                             >
                                 Contact
@@ -212,7 +202,7 @@ const Navbar = () => {
                         <li>
                             <NavLink
                                 to="/about"
-                                className="text-[#333] hover:text-[#007bff] text-[15px] font-semibold"
+                                className="text-[#333] hover:text-[#49B2FF] text-[15px] font-semibold"
                                 onClick={toggleMenu}
                             >
                                 About

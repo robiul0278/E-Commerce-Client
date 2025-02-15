@@ -4,102 +4,117 @@ import useAuth from "../../hooks/useAuth"
 import useUserData from "../../hooks/useUserData";
 import { MdOutlineInventory2 } from "react-icons/md";
 import { RiStickyNoteAddLine } from "react-icons/ri";
+import { CiViewTable } from "react-icons/ci";
 
 
-const buyerRoutes = [
+const userRoutes = [
   {
     id: 1,
+    title: "My Profile",
+    route: "/dashboard/profile",
+    icon:  <CiViewTable size={22} className="mr-1" />
+  },
+  {
+    id: 2,
     title: "My Order",
     route: "/dashboard/my-order",
-    icon: <MdOutlineInventory2 />
+    icon: <MdOutlineInventory2 size={22} />
   },
 ]
 const adminRoutes = [
   {
     id: 1,
-    title: "Manage Users",
-    route: "/dashboard/manage-users",
-    icon: <MdOutlineInventory2 />
+    title: "Overview",
+    route: "/dashboard/overview",
+    icon: <MdOutlineInventory2 size={20} />
   },
   {
     id: 2,
-    title: "Add Product",
-    route: "/dashboard/add-product",
-    icon: <RiStickyNoteAddLine />
+    title: "Manage Orders",
+    route: "/dashboard/manage-orders",
+    icon: <MdOutlineInventory2 size={20} />
   },
   {
     id: 3,
+    title: "Add Product",
+    route: "/dashboard/add-product",
+    icon: <RiStickyNoteAddLine size={20} />
+  },
+  {
+    id: 3,
+    title: "Flash Sale",
+    route: "/dashboard/flash-sale",
+    icon: <RiStickyNoteAddLine size={20} />
+  },
+  {
+    id: 4,
     title: "Manage Product",
     route: "/dashboard/manage-products",
-    icon: <MdOutlineInventory2 />
-  }
+    icon: <MdOutlineInventory2 size={20} />
+  },
+  {
+    id: 5,
+    title: "Manage Users",
+    route: "/dashboard/manage-users",
+    icon: <MdOutlineInventory2 size={20} />
+  },
+
 ]
 
 const Sidebar = () => {
-  const { user, Logout } = useAuth();
-  const [userData] = useUserData();
-  // console.log(user)
+  const { Logout } = useAuth();
+  const [userData, isLoading,] = useUserData();
   const handleLogout = () => {
     Logout();
   }
 
   return (
     <nav
-      className="bg-[#2e2e48] shadow-lg h-screen fixed top-0 left-0  py-6 px-10 font-[sans-serif] flex flex-col overflow-auto">
-
+      className=" h-screen fixed top-0 left-0  py-6 px-10 font-[sans-serif] flex flex-col overflow-auto">
       <div className="flex flex-wrap items-center cursor-pointer pb-5">
         <div className="relative">
-          <img src={`${user?.photoURL || "/profile.png"}`} className="w-12 h-12 rounded-full border-white" />
+          <img src={`${userData?.photoURL || "/profile.png"}`} className="w-12 h-12 rounded-full border-white" />
           <span className="h-3 w-3 rounded-full bg-green-600 border-2 border-white block absolute bottom-0 right-0"></span>
         </div>
-
         <div className="ml-4">
-          <p className="text-sm text-gray-300">{user?.displayName || "Mr. Alex"}</p>
+          <p className="text-sm text-white font-semibold">{userData?.name || "Mr. Alex"}</p>
         </div>
       </div>
 
-      <ul className="space-y-10 flex-1 mt-4 mb-10">
-        <li>
-          <a href="javascript:void(0)" className="text-gray-300 hover:text-white text-sm flex items-center rounded-md">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-[18px] h-[18px] mr-4"
-              viewBox="0 0 512 512">
-              <path
-                d="M197.332 170.668h-160C16.746 170.668 0 153.922 0 133.332v-96C0 16.746 16.746 0 37.332 0h160c20.59 0 37.336 16.746 37.336 37.332v96c0 20.59-16.746 37.336-37.336 37.336zM37.332 32A5.336 5.336 0 0 0 32 37.332v96a5.337 5.337 0 0 0 5.332 5.336h160a5.338 5.338 0 0 0 5.336-5.336v-96A5.337 5.337 0 0 0 197.332 32zm160 480h-160C16.746 512 0 495.254 0 474.668v-224c0-20.59 16.746-37.336 37.332-37.336h160c20.59 0 37.336 16.746 37.336 37.336v224c0 20.586-16.746 37.332-37.336 37.332zm-160-266.668A5.337 5.337 0 0 0 32 250.668v224A5.336 5.336 0 0 0 37.332 480h160a5.337 5.337 0 0 0 5.336-5.332v-224a5.338 5.338 0 0 0-5.336-5.336zM474.668 512h-160c-20.59 0-37.336-16.746-37.336-37.332v-96c0-20.59 16.746-37.336 37.336-37.336h160c20.586 0 37.332 16.746 37.332 37.336v96C512 495.254 495.254 512 474.668 512zm-160-138.668a5.338 5.338 0 0 0-5.336 5.336v96a5.337 5.337 0 0 0 5.336 5.332h160a5.336 5.336 0 0 0 5.332-5.332v-96a5.337 5.337 0 0 0-5.332-5.336zm160-74.664h-160c-20.59 0-37.336-16.746-37.336-37.336v-224C277.332 16.746 294.078 0 314.668 0h160C495.254 0 512 16.746 512 37.332v224c0 20.59-16.746 37.336-37.332 37.336zM314.668 32a5.337 5.337 0 0 0-5.336 5.332v224a5.338 5.338 0 0 0 5.336 5.336h160a5.337 5.337 0 0 0 5.332-5.336v-224A5.336 5.336 0 0 0 474.668 32zm0 0"
-                data-original="#000000" />
-            </svg>
-            <NavLink to="/dashboard/overview">Overview</NavLink>
-          </a>
-        </li>
-        {userData?.role === "buyer" &&
-          buyerRoutes.map((route) => (
-            <li key={route.id}>
-              <NavLink
-                to={route.route}
-                className="text-gray-300 hover:text-white text-sm flex items-center rounded-md"
-              >
-                {route.icon}
-                <span className="ml-2">{route.title}</span>
-              </NavLink>
-            </li>
-          ))}
-
-        {userData?.role === "admin" &&
-          adminRoutes.map((route) => (
-            <li key={route.id}>
-              <NavLink
-                to={route.route}
-                className="text-gray-300 hover:text-white text-sm flex items-center rounded-md"
-              >
-                {route.icon}
-                <span className="ml-2">{route.title}</span>
-              </NavLink>
-            </li>
-          ))}
+      <ul className="space-y-10 flex-1 mt-4 mb-10 ">
+        {!isLoading ? <>
+          {userData?.role === "user" &&
+            userRoutes.map((route) => (
+              <li key={route.id}>
+                <NavLink
+                  to={route.route}
+                  className="text-white  hover:text-white text-sm flex items-center rounded-md"
+                >
+                  {route.icon}
+                  <span className="ml-2">{route.title}</span>
+                </NavLink>
+              </li>
+            ))}
+          {userData?.role === "admin" &&
+            adminRoutes.map((route) => (
+              <li key={route.id}>
+                <NavLink
+                  to={route.route}
+                  className="text-white hover:text-white text-sm flex items-center rounded-md"
+                >
+                  {route.icon}
+                  <span className="ml-1">{route.title}</span>
+                </NavLink>
+              </li>
+            ))}
+        </> : <>
+          <li className="skeleton h-4 w-full"></li>
+          <li className="skeleton h-4 w-full"></li>
+        </>}
       </ul>
-
       <ul className="space-y-6 flex-2 mb-5">
         <li>
-          <a href="javascript:void(0)" className="text-gray-300 hover:text-white text-sm flex items-center rounded-md">
+          <a href="javascript:void(0)" className="text-white hover:text-white text-sm flex items-center rounded-md">
             <svg
               viewBox="0 0 1024 1024"
               fill="currentColor"
@@ -111,7 +126,7 @@ const Sidebar = () => {
           </a>
         </li>
         <li>
-          <a href="javascript:void(0)" className="text-gray-300 hover:text-white text-sm flex items-center rounded-md">
+          <a href="javascript:void(0)" className="text-white hover:text-white text-sm flex items-center rounded-md">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-[18px] h-[18px] mr-4"
               viewBox="0 0 6.35 6.35">
               <path

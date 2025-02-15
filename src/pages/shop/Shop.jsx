@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-} from '@ant-design/icons';
-import { Button, Layout, theme } from 'antd';
+import { Layout, theme } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
 import Pagination from '../../components/pagination';
 import axios from 'axios';
@@ -21,7 +17,7 @@ const Shop = () => {
     const [sort, setSort] = useState("");
     // filtering
     const [brand, setBrand] = useState("");
-    const [category, setCategory] = useState("");
+    const [subCategory, setSubCategory] = useState("");
     // set update Query 
     const [filterBrand, setFilterBrand] = useState([]);
     const [filterCategory, setFilterCategory] = useState([]);
@@ -31,12 +27,20 @@ const Shop = () => {
     // Search Query 
     const [searchParams] = useSearchParams();
     const searchQuery = searchParams.get("search") || "";
-
+    const categoryQuery = searchParams.get("category") || "";
+    const subCategoryQuery = searchParams.get("sub-category") || "";
 
     useEffect(() => {
+        if (subCategoryQuery) {
+            setSubCategory(subCategoryQuery);
+        }
+    },[subCategoryQuery])
+
+    useEffect(() => {
+        if (subCategory === "" && subCategoryQuery !== "") return;
         setLoading(true);
         const fetch = async () => {
-            axios.get(`https://gadget-shop-server-bay.vercel.app/all-product?page=${page}&limit=${12}&sort=${sort}&brand=${brand}&category=${category}&search=${searchQuery}`)
+            axios.get(`https://gadget-shop-server-bay.vercel.app/all-product?page=${page}&limit=${12}&sort=${sort}&brand=${brand}&category=${categoryQuery}&sub_category=${subCategory}&search=${searchQuery}`)
                 .then((res) => {
                     // console.log(res.data);
                     setProducts(res.data.products);
@@ -47,11 +51,11 @@ const Shop = () => {
                 })
         }
         fetch();
-    }, [brand, sort, category, page,searchQuery]);
+    }, [brand, sort,categoryQuery, subCategory,subCategoryQuery, page,searchQuery]);
 
     const handleReset = () => {
         setBrand("");
-        setCategory("");
+        setSubCategory("");
         setSort("");
         window.location.reload();
     }
@@ -64,19 +68,18 @@ const Shop = () => {
     };
 
     // ============== Ant =============================
-    const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
 
     return (
         <Layout>
-            <Sider className='hidden lg:flex md:flex' trigger={null} style={{ padding: 10 }} width={300} theme='light' collapsible collapsed={collapsed}>
+            <Sider className='hidden lg:flex md:flex' trigger={null} style={{ padding: 10 }} width={300} theme='light' collapsible >
                 <div className="demo-logo-vertical" />
                 <Filtering
                     setSort={setSort}
                     setBrand={setBrand}
-                    setCategory={setCategory}
+                    setSubCategory={setSubCategory}
                     handleReset={handleReset}
                     filterBrand={filterBrand}
                     filterCategory={filterCategory}
@@ -89,7 +92,7 @@ const Shop = () => {
                         background: colorBgContainer,
                     }}
                 >
-                    <Button
+                    {/* <Button
                     className='lg:flex md:flex hidden'
                         type="text"
                         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -99,7 +102,7 @@ const Shop = () => {
                             width: 64,
                             height: 64,
                         }}
-                    />
+                    /> */}
                 </Header>
                 <Content
                 
@@ -113,13 +116,15 @@ const Shop = () => {
                 >
                     <div className="col-span-10">
                         {loading ? (
-                            <Loading />
+                            <div className='h-screen'>
+                                <Loading />
+                            </div>
                         ) : (
                             <>
                                 {products.length === 0 ? (
                                     <NotFound />
                                 ) : (
-                                    <div className="min-h-screen grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                                    <div className="min-h-screen grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                                         {products.map((product) => (
                                             <ProductsCard key={product._id} product={product} />
                                         ))}

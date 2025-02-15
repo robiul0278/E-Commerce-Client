@@ -17,19 +17,18 @@ const handleFirebaseError = (error) => {
             return "The email address is already in use!";
         case "auth/invalid-email":
             return "The email address is not valid.";
-        case "auth/operation-not-allowed":
-            return "Email/password accounts are not enabled.";
-        case "auth/weak-password":
-            return "The password is too weak.";
         case "auth/user-not-found":
             return "No user found with this email.";
         case "auth/wrong-password":
-            return "Incorrect password.";
+            return "invalid email & password.";
+        case "auth/invalid-credential":
+            return "invalid email & password.";
+        case "auth/popup-closed-by-user":
+            return "You cancel google login!";
         default:
             return errorMessage; // Default to Firebase's error message
     }
 };
-
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -44,17 +43,29 @@ const AuthProvider = ({ children }) => {
             });
     }
 
-    const LoginUser = (email, password) => {
-        return signInWithEmailAndPassword(auth, email, password);
+    const LoginUser = async (email, password) => {
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            return userCredential; 
+        } catch (error) {
+            throw new Error(handleFirebaseError(error));
+        }
     }
+    
 
     const Logout = () => {
         return signOut(auth)
     }
 
-    const GoogleLogin = () => {
-        return signInWithPopup(auth, googleProvider)
-    }
+    const GoogleLogin = async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            return result; // Return user data if successful
+        } catch (error) {
+            throw new Error(handleFirebaseError(error));
+        }
+    };
+    
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {

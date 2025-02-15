@@ -9,8 +9,9 @@ import axios from "axios";
 import Loading from "../../pages/Loading";
 import ProductsCard from "../../pages/products/ProductsCard";
 import { ChevronsRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-const BestSelling = () => {
+const PhoneTablets = () => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [slidesPerView, setSlidesPerView] = useState(5);
@@ -18,13 +19,19 @@ const BestSelling = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
+  const navigate = useNavigate();
+
+  const handleCategory = (category) => {
+    navigate(`/shop?category=${category}`);
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  };
 
   // Fetch products from API
   useEffect(() => {
     setLoading(true);
     const fetch = async () => {
       try {
-        const res = await axios.get(`https://gadget-shop-server-bay.vercel.app/all-product?limit=${12}`);
+        const res = await axios.get(`https://gadget-shop-server-bay.vercel.app/all-product?category=${"phones-tablets"}`);
         setProducts(res.data.products);
         setLoading(false);
       } catch (error) {
@@ -60,24 +67,29 @@ const BestSelling = () => {
     <section className="p-5 lg:p-0 lg:my-16">
       <div className="flex flex-col gap-5">
         <div className="flex items-center space-x-2">
-          <div className="w-3 h-7 rounded bg-orange-600" />
-          <h1 className="text-orange-600">This Month</h1>
+          <div className="w-3 h-7 rounded bg-[#49B2FF]" />
+          <h1 className="text-[#49B2FF]">Products</h1>
         </div>
         <div className="flex items-center gap-2 lg:gap-16 justify-between space-x-1">
-          <h1 className="lg:text-2xl font-bold">Best Selling </h1>
+          <h1 className="lg:text-2xl font-bold">Phone & Tablets</h1>
           {/* Custom navigation buttons */}
-          <div className="flex ml-auto items-center justify-center lg:space-x-5 space-x-2 text-black">
-            <div className="flex items-center text-[10px] lg:text-[12px] text-gray-500">
-              <button className="font-semibold">All</button>
-              <ChevronsRight className="lg:w-5 w-4" />
-            </div>
-            <div className="flex items-center justify-center space-x-1">
-              <button ref={prevRef} className="rounded-full p-2 bg-gray-200" aria-label="Previous">
-                <MdArrowBack size={14}/>
+          <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center lg:space-x-5 space-x-2 text-black ">
+              <button 
+               
+              onClick={() => handleCategory("phones-tablets")}
+              className="flex items-center text-[10px] lg:text-[12px] text-gray-500 transition duration-300 hover:text-[#49B2FF] hover:scale-95">
+                <span className="font-semibold">All</span>
+                <ChevronsRight className="lg:w-5 w-4" />
               </button>
-              <button ref={nextRef} className="rounded-full p-2 bg-gray-200" aria-label="Next">
-                <MdArrowForward size={14}/>
-              </button>
+              <div className="flex items-center justify-center space-x-1">
+                <button type="button" ref={prevRef} className="rounded-full p-2 bg-gray-200 transition duration-300 hover:bg-[#49B2FF] hover:text-white hover:scale-95 " aria-label="Previous">
+                  <MdArrowBack size={14} />
+                </button>
+                <button type="button" ref={nextRef} className="rounded-full p-2 bg-gray-200 transition duration-300 hover:bg-[#49B2FF] hover:text-white hover:scale-95" aria-label="Next">
+                  <MdArrowForward size={14} />
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -94,7 +106,7 @@ const BestSelling = () => {
               disableOnInteraction: false,
             }}
             slidesPerView={slidesPerView}
-            spaceBetween={20}
+            spaceBetween={5}
             navigation={{
               prevEl: prevRef.current,
               nextEl: nextRef.current,
@@ -105,8 +117,8 @@ const BestSelling = () => {
             }}
           >
             {products.map((product) => (
-              <SwiperSlide key={product.id}>
-                <ProductsCard product={product} />
+              <SwiperSlide key={product.id} className="md:p-2 lg:p-2">
+                <ProductsCard product={product}  />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -116,4 +128,4 @@ const BestSelling = () => {
   );
 };
 
-export default BestSelling;
+export default PhoneTablets;

@@ -1,6 +1,6 @@
 import { CiMail } from "react-icons/ci";
 import { FcGoogle } from "react-icons/fc";
-import { IoEyeOutline } from "react-icons/io5";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { useState } from "react";
@@ -12,6 +12,12 @@ const AuthRegister = () => {
     const { RegisterUser } = useAuth();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+   const togglePassword = () => setShowPassword(!showPassword);
+
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+   const toggleConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+
     // State to store error message
     const {
         register,
@@ -22,32 +28,42 @@ const AuthRegister = () => {
 
     const onSubmit = (data) => {
         setLoading(true);
-        const name = data.name;
+
         const email = data.email;
         const password = data.password;
-        const role = "buyer";
-        const wishlist = []
-        const cart = []
 
-        const authData = { name, email, password, role, wishlist, cart };
-
-        console.log(authData);
-
-        try {
-            RegisterUser(email, password)
-                .then(() => {
-                    axios.post("https://gadget-shop-server-bay.vercel.app/user", authData)
-                        .then((res) => {
-                            if (res.data.insertedId) {
-                                toast.success('Register successful!');
-                                setLoading(false);
-                                navigate('/');
-                            }
-                        })
-                });
-        } catch (error) {
-            console.log(error);
+        const userData = {
+            name: data.name,
+            email: data.email,
+            photoURL: "",
+            role: "user",
+            createdAt: new Date(),
         }
+
+        RegisterUser(email, password)
+            .then(() => {
+                axios.post("https://gadget-shop-server-bay.vercel.app/user", userData)
+                    .then((res) => {
+                        console.log(res);
+                        if (res.data.insertedId) {
+                            toast.success('Login successful!');
+                            setLoading(false);
+                            navigate('/');
+                        }
+                    })
+                    .catch((err) => {
+                        console.error("Axios Error:", err);
+                        toast.error("Failed to save user data!");
+                        setLoading(false);
+                    });
+            })
+            .catch((firebaseError) => {
+                // console.error("Firebase Error:", firebaseError);
+                toast.error(firebaseError.message); // Display Firebase error message
+                setLoading(false);
+            });
+
+
     };
     return (
         <div className="font-[sans-serif] bg-gray-50">
@@ -55,7 +71,7 @@ const AuthRegister = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className="lg:col-span-2 max-w-md w-full p-6 space-y-5 mx-auto">
                     <div className="mb-12">
                         <h3 className="text-gray-800 text-4xl font-extrabold">Register</h3>
-                        <Link to="/login" className="text-gray-800 text-sm mt-6">You have an account <a href="javascript:void(0);" className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Login here</a></Link>
+                        <Link to="/login" className="text-gray-800 text-sm mt-6">You have an account <a href="javascript:void(0);" className="text-[#49B2FF] font-semibold hover:underline ml-1 whitespace-nowrap">Login here</a></Link>
                     </div>
                     {/* Name  */}
                     <div>
@@ -80,7 +96,9 @@ const AuthRegister = () => {
                                 className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none"
                                 {...register("email", { required: true })}
                             />
-                            <CiMail className="w-[18px] h-[18px] text-gray-800 absolute right-2 cursor-pointer" />
+                           <span className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-600 p-2 z-50">
+                            <CiMail className="w-5 h-5"/>
+                            </span>
                         </div>
                         {errors.email && <span className='text-red-500 font-mono text-sm'>Email is required !</span>}
                     </div>
@@ -89,7 +107,7 @@ const AuthRegister = () => {
                         <label className="text-gray-800 text-sm block mb-2">Password</label>
                         <div className="relative flex items-center">
                             <input
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 placeholder="Enter password"
                                 className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none"
                                 {...register("password", {
@@ -112,7 +130,13 @@ const AuthRegister = () => {
                                     }
                                 })}
                             />
-                            <IoEyeOutline className="w-[18px] h-[18px] text-gray-800 absolute right-2 cursor-pointer" />
+                            <button
+                                type="button"
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-400 p-2 z-50"
+                                onClick={togglePassword}
+                            >
+                                {showPassword ? <IoEyeOffOutline className="w-5 h-5" /> : <IoEyeOutline className="w-5 h-5" />}
+                            </button>
                         </div>
                         {errors.password && (
                             <span className="text-red-500 font-mono text-sm">{errors.password.message}</span>
@@ -123,24 +147,12 @@ const AuthRegister = () => {
                         <label className="text-gray-800 text-sm block mb-2">Confirm Password</label>
                         <div className="relative flex items-center">
                             <input
-                                type="password"
+                                type={showConfirmPassword ? "text" : "password"}
                                 placeholder="Enter password"
                                 className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none"
                                 {...register("confirmPassword", {
                                     required: "Confirm Password is required!",
                                     validate: (value) => {
-                                        if (!/[A-Z]/.test(value)) {
-                                            return "Password must include at least one uppercase letter!";
-                                        }
-                                        if (!/[a-z]/.test(value)) {
-                                            return "Password must include at least one lowercase letter!";
-                                        }
-                                        if (!/[0-9]/.test(value)) {
-                                            return "Password must include at least one number!";
-                                        }
-                                        if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
-                                            return "Password must include at least one special character!";
-                                        }
                                         if (watch("password") && watch("password") !== value) {
                                             return "Passwords do not match!";
                                         }
@@ -148,7 +160,13 @@ const AuthRegister = () => {
                                     },
                                 })}
                             />
-                            <IoEyeOutline className="w-[18px] h-[18px] text-gray-800 absolute right-2 cursor-pointer" />
+                            <button
+                                type="button"
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-400 p-2 z-50"
+                                onClick={toggleConfirmPassword}
+                            >
+                                {showConfirmPassword ? <IoEyeOffOutline className="w-5 h-5" /> : <IoEyeOutline className="w-5 h-5" />}
+                            </button>
                         </div>
 
                         {errors.confirmPassword && (
@@ -157,26 +175,10 @@ const AuthRegister = () => {
                             </span>
                         )}
                     </div>
-
-
-                    <div className="flex flex-wrap items-center justify-between gap-4 mt-6">
-                        <div className="flex items-center">
-                            <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
-                            <label className="text-gray-800 ml-3 block text-sm">
-                                Remember me
-                            </label>
-                        </div>
-                        <div>
-                            <a href="jajvascript:void(0);" className="text-blue-600 text-sm font-semibold hover:underline">
-                                Forgot Password?
-                            </a>
-                        </div>
-                    </div>
-                    {/* Submit Button  */}
                     <div className="">
                         <button
                             type="submit"
-                            className="w-full py-2.5 px-5 text-sm tracking-wide rounded-md text-white bg-red-700 hover:bg-red-600 focus:outline-none"
+                            className="w-full py-2.5 px-5 text-sm tracking-wide rounded-md text-white bg-[#49B2FF] hover:bg-[#297cb8] transition duration-300 focus:outline-none"
                         >
                             {!loading ? "Register" : "Wait..."}
                         </button>

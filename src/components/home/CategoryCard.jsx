@@ -1,41 +1,64 @@
 import { Cable, Calculator, Camera, Fan, Headphones, Smartphone, Speaker, Watch } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const CategoryCard = () => {
+  const navigate = useNavigate();
+
+  const handleSubCategory = (category) => {
+    navigate(`/shop?sub-category=${category}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   return (
-    <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-8 gap-5 py-4">
-      <div className="flex flex-col items-center justify-center border border-gray-300 rounded-md py-8 hover:bg-red-500 transition hover:text-white w-full max-w-[150px]">
+    <ul className="grid grid-cols-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-8 md:gap-5  lg:gap-5 gap-2 py-4">
+      <li 
+      onClick={() => handleSubCategory("smartphones")}
+      className="flex flex-col items-center cursor-pointer justify-center shadow shadow-slate-300 rounded-md p-2 md:p-5 lg:p-5 hover:bg-[#49B2FF] transition duration-300 hover:text-white w-full max-w-[150px] ">
         <Smartphone className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
-        <p className="mt-2 text-sm font-semibold">Smart Phone</p>
-      </div>
-      <div className="flex flex-col items-center justify-center border border-gray-300 rounded-md py-8 hover:bg-red-500 transition hover:text-white w-full max-w-[150px]">
+        <p className="mt-2 text-sm text-center font-semibold">Smart Phone</p>
+      </li>
+      <li 
+        onClick={() => handleSubCategory("watch")}
+      className="flex flex-col items-center cursor-pointer justify-center shadow shadow-slate-300 rounded-md p-2 md:p-5 lg:p-5 hover:bg-[#49B2FF] transition duration-300 hover:text-white w-full max-w-[150px]">
         <Watch className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
-        <p className="mt-2 text-sm font-semibold">Watches</p>
-      </div>
-      <div className="flex flex-col items-center justify-center border border-gray-300 rounded-md py-8 hover:bg-red-500 transition hover:text-white w-full max-w-[150px]">
+        <p className="mt-2 text-sm text-center font-semibold ">Watches</p>
+      </li>
+      <li 
+        onClick={() => handleSubCategory("headphone")}
+      className="flex flex-col items-center cursor-pointer justify-center shadow shadow-slate-300 rounded-md p-2 md:p-5 lg:p-5 hover:bg-[#49B2FF] transition duration-300 hover:text-white w-full max-w-[150px]">
         <Headphones className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
-        <p className="mt-2 text-sm font-semibold">Headphones</p>
-      </div>
-      <div className="flex flex-col items-center justify-center border border-gray-300 rounded-md py-8 hover:bg-red-500 transition hover:text-white w-full max-w-[150px]">
+        <p className="mt-2 text-sm text-center font-semibold">Headphones</p>
+      </li>
+      <li 
+        onClick={() => handleSubCategory("camera")}
+      className="flex flex-col items-center cursor-pointer justify-center shadow shadow-slate-300 rounded-md p-2 md:p-5 lg:p-5 hover:bg-[#49B2FF] transition duration-300 hover:text-white w-full max-w-[150px]">
         <Camera className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
-        <p className="mt-2 text-sm font-semibold">Cameras</p>
-      </div>
-      <div className="flex flex-col items-center justify-center border border-gray-300 rounded-md py-8 hover:bg-red-500 transition hover:text-white w-full max-w-[150px]">
+        <p className="mt-2 text-sm text-center font-semibold">Cameras</p>
+      </li>
+      <li 
+        onClick={() => handleSubCategory("speaker")}
+      className="flex flex-col items-center cursor-pointer justify-center shadow shadow-slate-300 rounded-md p-2 md:p-5 lg:p-5 hover:bg-[#49B2FF] transition duration-300 hover:text-white w-full max-w-[150px]">
         <Speaker className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
-        <p className="mt-2 text-sm font-semibold">Speaker</p>
-      </div>
-      <div className="flex flex-col items-center justify-center border border-gray-300 rounded-md py-8 hover:bg-red-500 transition hover:text-white w-full max-w-[150px]">
+        <p className="mt-2 text-sm text-center font-semibold">Speaker</p>
+      </li>
+      <li 
+        onClick={() => handleSubCategory("fan")}
+      className="flex flex-col items-center cursor-pointer justify-center shadow shadow-slate-300 rounded-md p-2 md:p-5 lg:p-5 hover:bg-[#49B2FF] transition duration-300 hover:text-white w-full max-w-[150px]">
         <Fan className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
-        <p className="mt-2 text-sm font-semibold">Fan</p>
-      </div>
-      <div className="flex flex-col items-center justify-center border border-gray-300 rounded-md py-8 hover:bg-red-500 transition hover:text-white w-full max-w-[150px]">
+        <p className="mt-2 text-sm text-center font-semibold">Fan</p>
+      </li>
+      <li 
+        onClick={() => handleSubCategory("calculator")}
+      className="flex flex-col items-center cursor-pointer justify-center shadow shadow-slate-300 rounded-md p-2 md:p-5 lg:p-5 hover:bg-[#49B2FF] transition duration-300 hover:text-white w-full max-w-[150px]">
         <Calculator  className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
-        <p className="mt-2 text-sm font-semibold">Calculator</p>
-      </div>
-      <div className="flex flex-col items-center justify-center border border-gray-300 rounded-md py-8 hover:bg-red-500 transition hover:text-white w-full max-w-[150px]">
+        <p className="mt-2 text-sm text-center font-semibold">Calculator</p>
+      </li>
+      <li 
+        onClick={() => handleSubCategory("power bank")}
+      className="flex flex-col items-center cursor-pointer justify-center shadow shadow-slate-300 rounded-md p-2 md:p-5 lg:p-5 hover:bg-[#49B2FF] transition duration-300 hover:text-white w-full max-w-[150px]">
         <Cable  className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
-        <p className="mt-2 text-sm font-semibold">Power Bank</p>
-      </div>
-    </div>
+        <p className="mt-2 text-sm text-center font-semibold">Power Bank</p>
+      </li>
+    </ul>
   );
 };
 

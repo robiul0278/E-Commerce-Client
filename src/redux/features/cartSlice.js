@@ -4,6 +4,7 @@ const initialState = {
     products: [],
     totalQuantity: 0,
     totalPrice: 0,
+    shipping: 120,
 };
 
 const cartSlice = createSlice({
@@ -21,7 +22,7 @@ const cartSlice = createSlice({
                 state.products.push({
                     id: newItem._id,
                     price: newItem.price,
-                    title: newItem.title,
+                    name: newItem.name,
                     image: newItem.image,
                     quantity: 1,
                     totalPrice: newItem.price,

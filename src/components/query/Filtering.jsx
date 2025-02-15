@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 
-const Filtering = ({ setSort, setCategory, setBrand, handleReset, filterBrand, filterCategory }) => {
+const Filtering = ({ setSort, setSubCategory, setBrand, handleReset, filterBrand, filterCategory }) => {
+
   return (
     <div className="space-y-3 p-5">
       <div className="">
@@ -13,7 +14,7 @@ const Filtering = ({ setSort, setCategory, setBrand, handleReset, filterBrand, f
           onChange={(e) => setSort(e.target.value)}
           className="block w-full pl-3 pr-10 py-2 border border-gray-700 bg-white sm:text-sm"
         >
-          <option disabled>Sort by Price</option>
+          <option value="">Default Price</option>
           <option value="asc">Low to High</option>
           <option value="desc">High to Low</option>
         </select>
@@ -38,7 +39,7 @@ const Filtering = ({ setSort, setCategory, setBrand, handleReset, filterBrand, f
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-1">Filter By Category</label>
         <select
-          onChange={(e) => setCategory(e.target?.value)}
+          onChange={(e) => setSubCategory(e.target?.value)}
           className="block w-full pl-3 pr-10 py-2 border border-gray-700 bg-white sm:text-sm"
         >
           <option value="">All Categories</option>

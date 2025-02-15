@@ -1,20 +1,24 @@
 /* eslint-disable react/prop-types */
 import { Navigate, useLocation } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
 import Loading from "../pages/Loading";
 import useUserData from "../hooks/useUserData";
 
-const AdminPrivateRoute = ({children}) => {
-    const {user, loading} = useAuth();
-    const [userData] = useUserData();
+const AdminPrivateRoute = ({ children }) => {
+    const [userData, isLoading] = useUserData();
     const location = useLocation();
 
-    if (loading || !userData?.role) {
+    // Show loading screen if data is still being fetched
+    if (isLoading) {
         return <Loading />;
     }
-  if (user && userData?.role === "admin") {
-    return children;
-  }
-  return <Navigate to="/" state={{from: location}} replace />;
-}
+
+    // Check if user has the admin role
+    if (userData?.role === "admin") {
+        return children;
+    }
+
+    // Redirect non-admin users to home page
+    return <Navigate to="/" state={{ from: location }} replace />;
+};
+
 export default AdminPrivateRoute;

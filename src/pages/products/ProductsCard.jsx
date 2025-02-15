@@ -15,65 +15,59 @@ const ProductsCard = ({ product }) => {
     e.stopPropagation()
     e.preventDefault()
     dispatch(addToCart(product))
-    toast.success('Product Added Successfully!');
+    toast.success('Added to Cart!');
   }
 
   const handleAddWishlist = (e, product) => {
     e.stopPropagation()
     e.preventDefault()
     dispatch(addToWishlist(product));
-    toast.success("Added to wishlist!");
   };
 
   return (
-    <div className="max-w-xs bg-white overflow-hidden relative group">
-      {/* Discount Badge */}
-      <div className="absolute bg-red-500 text-white text-xs font-bold rounded px-3 py-1 left-2 top-2 z-10">
-        35%
-      </div>
-
-      {/* Heart Icon */}
-      <button onClick={(e) => handleAddWishlist(e, product)} type="button" className={`absolute bg-gray-200 rounded-full text-black font-bold px-2 py-2 right-2 top-2 z-10 
-    ${products?.products.some((item) => item._id === product._id) ? "bg-red-400 text-white cursor-not-allowed" : "hover:bg-red-400 hover:text-white"}`}
-        disabled={products?.products.some((item) => item._id === product._id)} >
-        <FaRegHeart />
-      </button>
-
-      {/* Product Image */}
-      <div className="relative">
-        <img
-          src={product?.image || "https://via.placeholder.com/150"}
-          loading="lazy"
-          alt="AK-900 Wired Keyboard"
-          className="w-full object-cover bg-gray-100 p-5"
-        />
-        {/* Add to Cart Button */}
-        <button
-          onClick={(e) => handleAddToCart(e, product)}
-          className="absolute bottom-0 left-0 right-0 bg-gray-400 hover:bg-gray-500 text-white text-sm font-bold py-2 opacity-100 group-hover:opacity-100 transition-opacity duration-300"
-        >
+    <div className="max-w-xs bg-white relative h-full flex flex-col min-h-[300px] md:min-h-[330px] lg:max-h-[365px] lg:min-h-[330px] md:max-h-[365px] shadow shadow-slate-300 rounded-md">
+    {/* Heart Icon */}
+    <button
+      onClick={(e) => handleAddWishlist(e, product)}
+      type="button"
+      className={`absolute rounded-full font-bold px-2 py-2 right-2 top-2 z-10 
+        ${products?.products.some((item) => item._id === product._id) ? "text-white cursor-not-allowed bg-[#49B2FF]" : "bg-gray-200 hover:bg-[#49B2FF] transition duration-300 hover:text-white"}`}
+      disabled={products?.products.some((item) => item._id === product._id)}
+    >
+      <FaRegHeart />
+    </button>
+  
+    {/* Product Image */}
+    <div className="w-full aspect-[4/3] bg-stone-100">
+      <img
+        src={product?.image || "https://via.placeholder.com/150"}
+        loading="lazy"
+        alt="AK-900 Wired Keyboard"
+        className="w-full h-full object-cover rounded-md"
+      />
+    </div>
+  
+    {/* Card Footer */}
+    <div className="flex flex-col gap-2 px-2 md:px-4 lg:px-4 pb-2 flex-grow">
+      <Link to={product?._id ? `/view/${product._id}` : "#"} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+        {/* Product Title */}
+        <h2 className="text-gray-800 font-semibold text-sm hover:underline transition duration-300">{product?.name}</h2>
+        {/* Price Section */}
+        <div className="mt-1 flex items-center space-x-2">
+          <span className="text-[#49B2FF] font-semibold text-[14px]">{product?.price}৳</span>
+        </div>
+      </Link>
+      <div className="flex items-center justify-between md:text-xs lg:text-xs mt-auto">
+        <button className="rounded border border-[#49B2FF] bg-[#49B2FF] p-1 md:p-1.5 lg:p-1.5 px-3 md:px-4 lg:px-4 font-semibold text-white text-[10px] md:text-xs lg:text-xs duration-300 hover:scale-95 hover:bg-sky-600">
+          Buy Now
+        </button>
+        <button onClick={(e) => handleAddToCart(e, product)} className="rounded border border-[#49B2FF] p-1 md:p-1.5 lg:p-1.5 px-2 md:px-3 lg:px-3 font-semibold text-[#49B2FF] duration-300 hover:bg-[#49B2FF] text-[10px] md:text-xs lg:text-xs hover:text-white hover:scale-95">
           Add to Cart
         </button>
       </div>
-
-      {/* Card Content */}
-      <Link to={product?._id ? `/view/${product._id}` : "#"} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="p-4 ">
-        {/* Product Title */}
-        <h2 className="text-gray-800 font-semibold text-sm hover:underline">{product?.title}</h2>
-        {/* Price Section */}
-        <div className="mt-2 flex items-center space-x-2">
-          <span className="text-red-500 font-semibold text-md">$960</span>
-          <span className="text-gray-500 line-through">$1160</span>
-        </div>
-
-        {/* Rating */}
-        <div className="mt-1 flex items-center text-yellow-400">
-          {Array(4).fill("⭐").join("")}
-          <span className="text-gray-500 ml-2">(75)</span>
-        </div>
-      </Link>
     </div>
+  </div>
+  
   )
 }
-
 export default ProductsCard;
