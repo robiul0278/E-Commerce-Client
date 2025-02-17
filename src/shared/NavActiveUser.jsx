@@ -18,7 +18,7 @@ const NavActiveUser = () => {
                 <div className="lg:w-8 w-7 rounded-full">
                     <img
                         className="rounded-full "
-                        src={`${userData?.photoURL || "/profile.png"}`}
+                        src={userData?.photoURL ? "/profile.png" : "Login" }
                     />
                 </div>
             </button>

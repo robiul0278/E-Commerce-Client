@@ -10,7 +10,7 @@ const DashboardLayout = () => {
         <div className="flex h-screen">
             {/* Sidebar */}
             <div
-                className={`bg-blue-500 shadow-lg h-screen fixed top-0 left-0 py-6 px-10 font-[sans-serif] flex flex-col overflow-auto z-50 transition-transform transform ${
+                className={`bg-slate-800 shadow-xl h-screen fixed top-0 left-0 py-6 px-10 font-[sans-serif] flex flex-col overflow-auto z-50 transition-transform transform ${
                     isSidebarOpen ? "translate-x-0 w-64" : "-translate-x-full w-16"
                 } md:translate-x-0 md:w-64`}
             >

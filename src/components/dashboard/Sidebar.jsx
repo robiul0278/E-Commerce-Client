@@ -70,7 +70,7 @@ const Sidebar = () => {
 
   return (
     <nav
-      className=" h-screen fixed top-0 left-0  py-6 px-10 font-[sans-serif] flex flex-col overflow-auto">
+      className="h-screen fixed top-0 left-0  py-6 px-8 font-[sans-serif] flex flex-col overflow-auto">
       <div className="flex flex-wrap items-center cursor-pointer pb-5">
         <div className="relative">
           <img src={`${userData?.photoURL || "/profile.png"}`} className="w-12 h-12 rounded-full border-white" />

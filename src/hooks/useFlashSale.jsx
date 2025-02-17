@@ -1,19 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "./useAxiosSecure";
 
-const useFlashSale = () => {
+const useFlashSale = (search, page , limit ) => {
     const axiosSecure = useAxiosSecure();
 
-    const { data: flashSaleData = [], isLoading, error, refetch } = useQuery({
-        queryKey: ["flash-sale"],
+    const { data: flashSaleData = {}, isLoading, refetch } = useQuery({
+        queryKey: ["flash-sale", search, page, limit], // Ensure re-fetching on change
         queryFn: async () => {
-                const res = await axiosSecure.get("/flash-sale");
-                return res.data;
+            const res = await axiosSecure.get("/flash-sale", {
+                params: { search, page, limit },
+            });
+            return res.data;
         },
-        staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
     });
 
-    return [ flashSaleData, isLoading, error, refetch ];
+    return [ flashSaleData, isLoading, refetch ];
 };
 
 export default useFlashSale;

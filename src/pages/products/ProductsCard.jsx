@@ -25,7 +25,7 @@ const ProductsCard = ({ product }) => {
   };
 
   return (
-    <div className="max-w-xs bg-white relative h-full flex flex-col min-h-[300px] md:min-h-[330px] lg:max-h-[365px] lg:min-h-[330px] md:max-h-[365px] shadow shadow-slate-300 rounded-md">
+    <div className="max-w-xs bg-white relative h-full flex flex-col min-h-[300px] md:min-h-[330px] lg:max-h-[365px] lg:min-h-[330px] md:max-h-[365px] shadow shadow-slate-300 rounded-box">
     {/* Heart Icon */}
     <button
       onClick={(e) => handleAddWishlist(e, product)}
@@ -38,23 +38,24 @@ const ProductsCard = ({ product }) => {
     </button>
   
     {/* Product Image */}
-    <div className="w-full aspect-[4/3] bg-stone-100">
+    <div className="w-full rounded-box aspect-[4/3] bg-stone-100">
       <img
         src={product?.image || "https://via.placeholder.com/150"}
         loading="lazy"
         alt="AK-900 Wired Keyboard"
-        className="w-full h-full object-cover rounded-md"
+        className="w-full h-full object-cover rounded-2xl"
       />
     </div>
   
     {/* Card Footer */}
-    <div className="flex flex-col gap-2 px-2 md:px-4 lg:px-4 pb-2 flex-grow">
+    <div className="flex flex-col gap-2 pb-4 md:px-4 lg:px-4  flex-grow">
       <Link to={product?._id ? `/view/${product._id}` : "#"} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
         {/* Product Title */}
         <h2 className="text-gray-800 font-semibold text-sm hover:underline transition duration-300">{product?.name}</h2>
         {/* Price Section */}
         <div className="mt-1 flex items-center space-x-2">
           <span className="text-[#49B2FF] font-semibold text-[14px]">{product?.price}৳</span>
+          <span className="text-[#445a69] line-through font-semibold text-[14px]">{product?.originalPrice}৳</span>
         </div>
       </Link>
       <div className="flex items-center justify-between md:text-xs lg:text-xs mt-auto">

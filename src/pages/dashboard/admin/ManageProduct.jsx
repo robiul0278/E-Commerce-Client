@@ -28,7 +28,6 @@ const ManageProducts = () => {
       toast.error("Please log in to remove product");
       return;
     }
-
     try {
       const response = await axios.delete(`https://gadget-shop-server-bay.vercel.app/delete-product/${productId}`);
 
@@ -41,6 +40,25 @@ const ManageProducts = () => {
     } catch (error) {
       console.error("Error deleting product:", error);
       toast.error("Failed to delete the product!");
+    }
+  };
+  // handle Remove To Product
+  const handleAddToFlashSAle = async (productId) => {
+    const flashData =  {
+      productId,
+      userRole: userData?.role
+    }
+    try {
+      const response = await axios.patch(`http://localhost:5000/add-flash-sale`, flashData);
+
+      if (response.status === 200) {
+        toast.success("Added to FLash Sale!");
+        refetch()
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
   };
 
@@ -137,7 +155,7 @@ const ManageProducts = () => {
                           {product.price.toFixed(2)}৳
                         </td>
                         <td className="px-6 py-4">
-                        <Switch id="airplane-mode" />
+                        <Switch onClick={() => handleAddToFlashSAle(product._id)} id="airplane-mode" />
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <button onClick={() => handleEditProduct(product)} className="mr-4" title="Edit">
