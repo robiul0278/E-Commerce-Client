@@ -71,26 +71,29 @@
    git clone https://github.com/robiul0278/Mobile-Shop-Client
    git clone https://github.com/robiul0278/Mobile-Shop-Server
 
+ ```bash
+    cd client
+    npm install
 
-cd client
-npm install
+ ```bash
+    cd server
+    npm install
 
-cd server
-npm install
+ ```bash
+    PORT=5000
+    MONGO_URI=<your-mongo-db-uri>
+    STRIPE_SECRET_KEY=<your-stripe-secret-key>
+    FIREBASE_API_KEY=<your-firebase-api-key>
+    FIREBASE_AUTH_DOMAIN=<your-firebase-auth-domain>
+    FIREBASE_PROJECT_ID=<your-firebase-project-id>
+    FIREBASE_STORAGE_BUCKET=<your-firebase-storage-bucket>
+    FIREBASE_MESSAGING_SENDER_ID=<your-firebase-messaging-sender-id>
+    FIREBASE_APP_ID=<your-firebase-app-id>
 
+ ```bash
+    cd server
+    npm start
 
-PORT=5000
-MONGO_URI=<your-mongo-db-uri>
-STRIPE_SECRET_KEY=<your-stripe-secret-key>
-FIREBASE_API_KEY=<your-firebase-api-key>
-FIREBASE_AUTH_DOMAIN=<your-firebase-auth-domain>
-FIREBASE_PROJECT_ID=<your-firebase-project-id>
-FIREBASE_STORAGE_BUCKET=<your-firebase-storage-bucket>
-FIREBASE_MESSAGING_SENDER_ID=<your-firebase-messaging-sender-id>
-FIREBASE_APP_ID=<your-firebase-app-id>
-
-cd server
-npm start
-
-cd client
-npm start
+ ```bash
+    cd client
+    npm start
