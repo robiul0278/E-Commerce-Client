@@ -18,6 +18,7 @@ import ManageOrders from "../pages/dashboard/admin/ManageOrders";
 import OverView from "../pages/dashboard/admin/OverView";
 import FlashSale from "../pages/dashboard/admin/FlashSale";
 import Profile from "../pages/dashboard/user/Profile";
+import MyOrder from "../pages/dashboard/user/MyOrder";
 
 
 export const router = createBrowserRouter([
@@ -66,6 +67,10 @@ export const router = createBrowserRouter([
             {
                 path: "/dashboard/profile",
                 element: <Profile />
+            },
+            {
+                path: "/dashboard/my-order",
+                element: <MyOrder />
             },
             {
                 path: "/dashboard/overview", 

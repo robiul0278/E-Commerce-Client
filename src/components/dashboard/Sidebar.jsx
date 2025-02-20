@@ -5,14 +5,21 @@ import useUserData from "../../hooks/useUserData";
 import { MdOutlineInventory2 } from "react-icons/md";
 import { RiStickyNoteAddLine } from "react-icons/ri";
 import { CiViewTable } from "react-icons/ci";
+import { ListOrdered } from "lucide-react";
 
 
 const userRoutes = [
   {
     id: 1,
-    title: "My Profile",
+    title: "Profile",
     route: "/dashboard/profile",
     icon:  <CiViewTable size={22} className="mr-1" />
+  },
+  {
+    id: 2,
+    title: "My Order",
+    route: "/dashboard/my-order",
+    icon:  <ListOrdered size={22} className="mr-1" />
   },
 ]
 const adminRoutes = [
