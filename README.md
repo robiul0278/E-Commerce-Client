@@ -31,12 +31,12 @@
 ## User Authentication Credentials
 
 ### Admin
-- **Email**: `mobileshop10@gmail.com`
-- **Password**: `Mobile123@`
+- **Email**: `admin@gmail.com`
+- **Password**: `Admin123!`
 
 ### Buyer
-- **Email**: `mobileshop40@gmail.com`
-- **Password**: `Mobile123@`
+- **Email**: `user@.com`
+- **Password**: `User123!`
 
 ---
 
