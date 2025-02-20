@@ -14,11 +14,10 @@ import ProductView from "../pages/ProductView";
 import ManageUser from "../pages/dashboard/admin/ManageUser";
 import ManageProducts from "../pages/dashboard/admin/ManageProduct";
 import AddProduct from "../pages/dashboard/admin/AddProduct";
-import OrderDetails from "../pages/dashboard/user/OrderDetails";
-import Profile from "../pages/dashboard/Profile";
 import ManageOrders from "../pages/dashboard/admin/ManageOrders";
 import OverView from "../pages/dashboard/admin/OverView";
 import FlashSale from "../pages/dashboard/admin/FlashSale";
+import Profile from "../pages/dashboard/user/Profile";
 
 
 export const router = createBrowserRouter([
@@ -111,10 +110,6 @@ export const router = createBrowserRouter([
                         <ManageOrders />
                     </AdminPrivateRoute>
 
-            },
-            {
-                path: "/dashboard/my-order",
-                element: <OrderDetails />
             },
         ]
     }

@@ -10,16 +10,17 @@ import toast from 'react-hot-toast';
 import { LiaSpinnerSolid } from "react-icons/lia";
 import { use } from 'react';
 import useAuth from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
   const cart = useSelector((state) => state.cart)
   const token = localStorage.getItem("access-token") || "";
   const [userData, ,] = useUserData();
   const [loading, setLoading] = useState(false);
-  const totalPayment = cart.totalPrice + cart.shipping;
+  const navigate = useNavigate();
 
-  const {user} = useAuth();
-  console.log(user);
+
+  const totalPayment = cart.totalPrice + cart.shipping;
 
   const {
     reset,
@@ -29,6 +30,14 @@ const Checkout = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+
+  function generateOrderNumber() {
+    const prefix = 'ORD'; // You can customize this prefix
+    const randomNumber = Math.floor(Math.random() * 1000000); // Random number between 0 and 999999
+    return `${prefix}-${randomNumber.toString().padStart(6, '0')}`; // Format: ORD-000001
+  }
+  
 
   // ************************** Shipping Address
   const [divisions, setDivisions] = useState([]);
@@ -76,7 +85,10 @@ const Checkout = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
+  const orderNumber = generateOrderNumber();
+
     const purchaseData = {
+      orderNumber,
       userName: data.name,
       phoneNumber: data.number,
       email: data.email,
@@ -89,6 +101,8 @@ const Checkout = () => {
       totalProduct: cart?.totalQuantity,
       totalPayment: totalPayment,
       userId: userData._id,
+      status: "Processing",
+      date: new Date(),
     }
 
     console.log(purchaseData);
@@ -106,7 +120,8 @@ const Checkout = () => {
       if (response.status === 201) {
         toast.success("Product purchase successfully!");
         setLoading(false);
-        // reset();
+        reset();
+        navigate("/dashboard/profile")
         // console.log("Product Response:", response);
       } else {
         toast.error("⚠️ Failed to purchase product. Please try again.");

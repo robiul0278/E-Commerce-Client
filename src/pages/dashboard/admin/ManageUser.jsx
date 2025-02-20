@@ -23,7 +23,7 @@ const ManageUser = () => {
       confirmButtonText: "Yes, change it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.patch(`http://localhost:5000/user/${id}`, Role, {
+        axios.patch(`https://gadget-shop-server-bay.vercel.app/user/${id}`, Role, {
           headers: {
             authorization: `Bearer ${token}`,
           }

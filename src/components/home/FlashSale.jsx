@@ -103,7 +103,7 @@ const FlashSale = () => {
               swiper.params.navigation.nextEl = nextRef.current;
             }}
           >
-            {flashSaleData?.products.map((product) => (
+            {flashSaleData?.products?.map((product) => (
               <SwiperSlide key={product.id} className="p-0.5 md:p-2 lg:p-2">
                 <ProductsCard product={product} />
               </SwiperSlide>

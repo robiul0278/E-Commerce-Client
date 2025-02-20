@@ -4,9 +4,9 @@ import CategoryBanner from "../../components/home/CategoryBanner"
 import Features from "../../components/home/Features"
 import FlashSale from "../../components/home/FlashSale"
 import Hero from "../../components/home/Hero"
-// import NewArrival from "../../components/home/NewArrival"
 import OurProducts from "../../components/home/OurProducts"
 import PhoneTablets from "../../components/home/PhoneTablets"
+import Read from "../../components/home/Read"
 import NavbarSearch from "../../components/NavbarSearch"
 
 const HomePage = () => {
@@ -16,13 +16,12 @@ const HomePage = () => {
                 <NavbarSearch />
             </div>
             <Hero/>
-            {/* <Banner /> */}
             <Category />
             <FlashSale />
             <CategoryBanner />
             <PhoneTablets />
             <OurProducts />
-            {/* <NewArrival /> */}
+            <Read/>
             <Features />
         </div>
     )

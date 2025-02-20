@@ -48,7 +48,7 @@ const ProductsCard = ({ product }) => {
     </div>
   
     {/* Card Footer */}
-    <div className="flex flex-col gap-2 pb-4 md:px-4 lg:px-4  flex-grow">
+    <div className="flex flex-col gap-2 p-4  flex-grow">
       <Link to={product?._id ? `/view/${product._id}` : "#"} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
         {/* Product Title */}
         <h2 className="text-gray-800 font-semibold text-sm hover:underline transition duration-300">{product?.name}</h2>

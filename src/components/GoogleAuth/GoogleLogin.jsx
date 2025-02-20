@@ -45,6 +45,10 @@ const GoogleLogin = () => {
                         } else {
                             console.error("Axios Error:", err);
                             toast.error("Failed to save user data!");
+                            const from = location.state?.from || '/';
+                            navigate(from);
+                            window.scrollTo({ top: 0, behavior: "smooth" })
+                            // toast.success("Welcome back!");
                         }
                     })
                     .finally(() => {

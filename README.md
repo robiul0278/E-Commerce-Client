@@ -14,16 +14,17 @@
 ### Role-Based Access
 - **Buyer**:
   - Browse products and make purchases through a dedicated dashboard.
-- **Seller**:
-  - Add new products, update listings, and manage inventory via the seller dashboard.
 - **Admin**:
   - Oversee user accounts, manage roles, and ensure smooth platform operations through an admin dashboard.
+  - **Flash Sale Logic**:
+    - Admins can set up flash sales with a countdown timer.
+    - Configure sale duration and products on sale.
 
 ### Authentication
 - Role-specific authentication ensures users only access features available to their roles.
 
 ### Dashboard Features
-- Buyers, sellers, and admins each have tailored dashboards to interact with the platform efficiently.
+- Buyers and admins each have tailored dashboards to interact with the platform efficiently.
 
 ---
 
@@ -31,10 +32,6 @@
 
 ### Admin
 - **Email**: `mobileshop10@gmail.com`
-- **Password**: `Mobile123@`
-
-### Seller
-- **Email**: `mobileshop20@gmail.com`
 - **Password**: `Mobile123@`
 
 ### Buyer
@@ -71,78 +68,29 @@
 
 1. **Clone the repositories**:
    ```bash
-   git clone <https://github.com/robiul0278/Mobile-Shop-Client>
-   git clone <https://github.com/robiul0278/Mobile-Shop-Server>
-   ```
+   git clone https://github.com/robiul0278/Mobile-Shop-Client
+   git clone https://github.com/robiul0278/Mobile-Shop-Server
 
-2. **Install dependencies**:
-   For the client:
-   ```bash
-   cd client
-   npm install
-   ```
-   For the server:
-   ```bash
-   cd server
-   npm install
-   ```
 
-3. **Environment Variables**:
-   - Create a `.env` file in the server directory.
-   - Add the following environment variables:
-     ```env
-     PORT=5000
-     MONGO_URI=<your-mongo-db-uri>
-     STRIPE_SECRET_KEY=<your-stripe-secret-key>
-     FIREBASE_API_KEY=<your-firebase-api-key>
-     FIREBASE_AUTH_DOMAIN=<your-firebase-auth-domain>
-     FIREBASE_PROJECT_ID=<your-firebase-project-id>
-     FIREBASE_STORAGE_BUCKET=<your-firebase-storage-bucket>
-     FIREBASE_MESSAGING_SENDER_ID=<your-firebase-messaging-sender-id>
-     FIREBASE_APP_ID=<your-firebase-app-id>
-     ```
+cd client
+npm install
 
-4. **Start the server**:
-   ```bash
-   cd server
-   npm start
-   ```
+cd server
+npm install
 
-5. **Start the client**:
-   ```bash
-   cd client
-   npm start
-   ```
 
-6. **Access the application**:
-   - Open your browser and navigate to `http://localhost:5173/`.
+PORT=5000
+MONGO_URI=<your-mongo-db-uri>
+STRIPE_SECRET_KEY=<your-stripe-secret-key>
+FIREBASE_API_KEY=<your-firebase-api-key>
+FIREBASE_AUTH_DOMAIN=<your-firebase-auth-domain>
+FIREBASE_PROJECT_ID=<your-firebase-project-id>
+FIREBASE_STORAGE_BUCKET=<your-firebase-storage-bucket>
+FIREBASE_MESSAGING_SENDER_ID=<your-firebase-messaging-sender-id>
+FIREBASE_APP_ID=<your-firebase-app-id>
 
----
+cd server
+npm start
 
-## How to Use the Website
-
-1. **Access Role-Specific Features**:
-   - Log in with the provided credentials to explore buyer, seller, and admin functionalities.
-
-2. **Buyer Features**:
-   - Browse available products.
-   - Add items to your cart and proceed to checkout.
-
-3. **Seller Features**:
-   - Add new product listings.
-   - Update or delete existing products.
-
-4. **Admin Features**:
-   - Manage user accounts (view, update, or delete users).
-   - Oversee the website's operations.
-
----
-
-## Contributions
-
-Feel free to contribute to this project by creating pull requests or raising issues in the respective GitHub repositories.
-
----
-
-## License
-This project is licensed under the MIT License. For more details, refer to the LICENSE file in the repositories.
+cd client
+npm start

@@ -79,7 +79,7 @@ const endItem = Math.min(page * limit, totalProducts);
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/flash-sale", productData, {
+      const response = await axios.post("https://gadget-shop-server-bay.vercel.app/flash-sale", productData, {
         headers: { authorization: `Bearer ${token}` },
       });
 
@@ -110,7 +110,7 @@ const endItem = Math.min(page * limit, totalProducts);
     }
 
     try {
-      await axios.patch(`http://localhost:5000/flash-sale/${flashSaleData._id}`, updateData, {
+      await axios.patch(`https://gadget-shop-server-bay.vercel.app/flash-sale/${flashSaleData._id}`, updateData, {
         headers: { authorization: `Bearer ${token}` },
       })
         .then((response) => {
@@ -147,7 +147,7 @@ const endItem = Math.min(page * limit, totalProducts);
     }
 
     try {
-      await axios.patch(`http://localhost:5000/remove-flash-sale-product`, removeData, {
+      await axios.patch(`https://gadget-shop-server-bay.vercel.app/remove-flash-sale-product`, removeData, {
         headers: { authorization: `Bearer ${token}` },
       })
         .then((response) => {

@@ -53,10 +53,10 @@ const Navbar = () => {
                 <div className="flex lg:w-[1170px] mx-auto items-center justify-between w-full  lg:px-2 py-3 bg-white">
                     {/* Logo Section */}
                     <div className='ml-2'>
-    <a href="/" className="font-bold text-xl sm:text-2xl md:text-3xl text-[#49B2FF]">
-        E-Commerce
-    </a>
-</div>
+                        <NavLink href="/" className="font-bold text-xl sm:text-2xl md:text-3xl text-[#49B2FF]">
+                            E-Commerce
+                        </NavLink>
+                    </div>
 
                     {/* Desktop Navigation Links */}
                     <ul className="hidden lg:flex">
@@ -169,6 +169,17 @@ const Navbar = () => {
 
                     {/* Menu Items */}
                     <ul className="mt-10 space-y-2 w-full text-start p-4">
+                        <li>
+                            <NavLink
+                                to="/"
+                                className="text-[15px] font-semibold"
+                                onClick={toggleMenu}
+                            >
+                                <a className="font-bold text-xl sm:text-2xl md:text-3xl text-[#49B2FF]">
+                                    E-Commerce
+                                </a>
+                            </NavLink>
+                        </li>
                         <li>
                             <NavLink
                                 to="/"

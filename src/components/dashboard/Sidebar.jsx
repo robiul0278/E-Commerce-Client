@@ -14,12 +14,6 @@ const userRoutes = [
     route: "/dashboard/profile",
     icon:  <CiViewTable size={22} className="mr-1" />
   },
-  {
-    id: 2,
-    title: "My Order",
-    route: "/dashboard/my-order",
-    icon: <MdOutlineInventory2 size={22} />
-  },
 ]
 const adminRoutes = [
   {
@@ -28,14 +22,14 @@ const adminRoutes = [
     route: "/dashboard/overview",
     icon: <MdOutlineInventory2 size={20} />
   },
+  // {
+  //   id: 2,
+  //   title: "Manage Orders",
+  //   route: "/dashboard/manage-orders",
+  //   icon: <MdOutlineInventory2 size={20} />
+  // },
   {
     id: 2,
-    title: "Manage Orders",
-    route: "/dashboard/manage-orders",
-    icon: <MdOutlineInventory2 size={20} />
-  },
-  {
-    id: 3,
     title: "Add Product",
     route: "/dashboard/add-product",
     icon: <RiStickyNoteAddLine size={20} />

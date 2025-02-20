@@ -51,8 +51,8 @@ const AddProduct = () => {
             toast.error("Please upload an image first.");
             return;
         }
-        console.log("Form Data:", data);
-        console.log("Image Type:", typeof data.image, "Value:", data.image);
+        // console.log("Form Data:", data);
+        // console.log("Image Type:", typeof data.image, "Value:", data.image);
         
         setUploading(true);
         const productData = { 

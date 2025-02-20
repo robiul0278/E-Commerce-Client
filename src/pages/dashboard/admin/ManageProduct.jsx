@@ -1,66 +1,12 @@
-/* eslint-disable no-unused-vars */
-import axios from "axios";
-import { useState } from "react";
-import toast from "react-hot-toast"
-import useUserData from "../../../hooks/useUserData";
 import useProduct from "../../../hooks/useProduct";
 import {
   Search,
-  ChevronDown,
-  Trash2,
-  PenLine,
 } from 'lucide-react';
-import { Switch } from "antd";
+import ManageProductTable from "../../../components/dashboard/ManageProductTable";
 
 const ManageProducts = () => {
-  const [userData] = useUserData()
-  const [allProducts, isLoading, refetch] = useProduct();
-  const [selectedTimeRange, setSelectedTimeRange] = useState('7days');
-
-  const handleEditProduct = (product) => {
-    // setModalProduct(product)
-    document.getElementById('my_modal_4').showModal()
-  }
-
-  // handle Remove To Product
-  const handleDeleteProduct = async (productId) => {
-    if (!userData?.email) {
-      toast.error("Please log in to remove product");
-      return;
-    }
-    try {
-      const response = await axios.delete(`https://gadget-shop-server-bay.vercel.app/delete-product/${productId}`);
-
-      if (response.data.message === "Product deleted successfully!") {
-        toast.success("Product deleted successfully!");
-        refetch()
-      } else {
-        toast.error(response.data.message || "Failed to delete the product!");
-      }
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      toast.error("Failed to delete the product!");
-    }
-  };
-  // handle Remove To Product
-  const handleAddToFlashSAle = async (productId) => {
-    const flashData =  {
-      productId,
-      userRole: userData?.role
-    }
-    try {
-      const response = await axios.patch(`http://localhost:5000/add-flash-sale`, flashData);
-
-      if (response.status === 200) {
-        toast.success("Added to FLash Sale!");
-        refetch()
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  };
+  const [allProducts, isLoading] = useProduct();
+  // const [selectedTimeRange, setSelectedTimeRange] = useState('7days');
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -87,7 +33,7 @@ const ManageProducts = () => {
               </div>
 
               {/* Time Range Filter */}
-              <div className="relative">
+              {/* <div className="relative">
                 <select
                   value={selectedTimeRange}
                   onChange={(e) => setSelectedTimeRange(e.target.value)}
@@ -98,7 +44,7 @@ const ManageProducts = () => {
                   <option value="90days">Last 90 Days</option>
                 </select>
                 <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-3 pointer-events-none" />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -136,36 +82,7 @@ const ManageProducts = () => {
                 {!isLoading ? <>
                   {allProducts?.products.map((product) => {
                     return (
-                      <tr key={product.id} className="hover:bg-gray-50">
-                        <td className="px-6 whitespace-nowrap text-sm font-medium text-blue-600">
-                          <img src={product?.image} alt="table navigate ui" className="h-16 w-16 object-cover bg-gray-300" />
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-gray-900">
-                            {product.name}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {product.email}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {product.stock}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {product.price.toFixed(2)}৳
-                        </td>
-                        <td className="px-6 py-4">
-                        <Switch onClick={() => handleAddToFlashSAle(product._id)} id="airplane-mode" />
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <button onClick={() => handleEditProduct(product)} className="mr-4" title="Edit">
-                            <PenLine size={22} className="text-blue-600" />
-                          </button>
-                          <button onClick={() => handleDeleteProduct(product._id)} className="mr-4" title="Delete">
-                            <Trash2 size={22} className="text-rose-600" />
-                          </button>
-                        </td>
-                      </tr>
+                     <ManageProductTable key={product.id} product={product} />
                     );
                   })}
                 </> : <>
