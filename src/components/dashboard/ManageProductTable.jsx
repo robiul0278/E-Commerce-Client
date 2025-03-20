@@ -3,94 +3,101 @@ import { PenLine, Trash2 } from "lucide-react";
 import useUserData from "../../hooks/useUserData";
 import toast from "react-hot-toast";
 import axios from "axios";
-import useFlashSale from "../../hooks/useFlashSale";
 import { Button } from "antd";
+import { useDeleteProductMutation, useGetFlashProductsQuery } from "../../redux/api/api";
+import Swal from "sweetalert2";
 
 const ManageProductTable = ({ product }) => {
-    const [flashSaleData,,refetch] = useFlashSale();
+    const { data, refetch } = useGetFlashProductsQuery();
+    const [deleteProduct, { isLoading }] = useDeleteProductMutation();
     const [userData] = useUserData()
-    const token = localStorage.getItem("access-token");
 
-
-    // Check if flashSaleData is an array or if it has products as an array
-    const isInFlashSale = Array.isArray(flashSaleData?.products)
-        ? flashSaleData.products.some((item) => item._id === product._id)
+    // Check if data is an array or if it has products as an array
+    const isInFlashSale = Array.isArray(data?.data?.products)
+        ? data?.data?.products.some((item) => item?._id === product?._id)
         : false;
-
-    console.log(isInFlashSale);
-
 
     // handle Remove To Product
     const handleDeleteProduct = async (productId) => {
-        if (!userData?.email) {
-            toast.error("Please log in to remove product");
-            return;
-        }
-        try {
-            const response = await axios.delete(`https://gadget-shop-server-bay.vercel.app/delete-product/${productId}`);
-
-            if (response.data.message === "Product deleted successfully!") {
-                toast.success("Product deleted successfully!");
-                refetch()
-            } else {
-                toast.error(response.data.message || "Failed to delete the product!");
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then(async (result) => {  // Marked as async
+            if (result.isConfirmed) {
+                try {
+                    const response = await deleteProduct(productId).unwrap();
+                    if (response.success) {
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your file has been deleted.",
+                            icon: "success",
+                        });
+                    }
+                } catch (error) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: `Failed to delete the product.${error}}`,
+                        icon: "error",
+                    });
+                }
             }
-        } catch (error) {
-            console.error("Error deleting product:", error);
-            toast.error("Failed to delete the product!");
-        }
+        });
     };
+
     // handle Remove To Product
     const handleAddToFlashSale = async (productId) => {
         const flashData = {
             productId,
-            userRole: userData?.role
+            userRole: userData?.data?.role
         }
         try {
-            await axios.patch(`https://gadget-shop-server-bay.vercel.app/add-flash-sale`, flashData)
-            .then((response) => {
-                if (response.status === 200) {
-                    toast.success("Added to FLash Sale!");
-                    refetch()
-                } else {
-                    toast.error(response.data.message);
-                }
-            })
+            await axios.patch(`http://localhost:5000/api/v1/flash-sale/add-product`, flashData)
+                .then((response) => {
+                    if (response.status === 200) {
+                        toast.success("Added to FLash Sale!");
+                        refetch()
+                    } else {
+                        toast.error(response.data.message);
+                    }
+                })
         } catch (error) {
             toast.error(error.response.data.message);
         }
     };
 
 
-    const handleRemoveFromFlashSale =async (productId) => {
+    const handleRemoveFromFlashSale = async (productId) => {
         const removeData = {
-            flashSaleId: flashSaleData?._id,
+            flashSaleId: data?._id,
             productId
-          }
-      
-          if (!flashSaleData?._id) {
+        }
+
+        if (!data?._id) {
             return toast.error("Please Create a Flash Sale!!");
-          }
-      
-          try {
-            await axios.patch(`https://gadget-shop-server-bay.vercel.app/remove-flash-sale-product`, removeData, {
-              headers: { authorization: `Bearer ${token}` },
-            })
-              .then((response) => {
-                if (response.status === 200) {
-                  toast.error("Product Removed!");
-                  refetch()
-                } else {
-                  toast.error("⚠️ Failed to remove product. Please try again.");
-                }
-              })
-              .catch((error) => {
-                console.log(error);
-              })
-      
-          } catch (error) {
+        }
+
+        try {
+            await axios.patch(`http://localhost:5000/remove-flash-sale-product`, removeData)
+                .then((response) => {
+                    if (response.status === 200) {
+                        toast.error("Product Removed!");
+                        refetch()
+                    } else {
+                        toast.error("⚠️ Failed to remove product. Please try again.");
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+
+        } catch (error) {
             toast.error(error.response?.data?.message || "An error occurred. Please try again.");
-          }
+        }
     }
 
 
@@ -104,9 +111,6 @@ const ManageProductTable = ({ product }) => {
                     {product.name}
                 </div>
             </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {product.email}
-            </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                 {product.stock}
             </td>
@@ -117,27 +121,30 @@ const ManageProductTable = ({ product }) => {
             <td className="">
                 {isInFlashSale ? (
                     <Button
-                        onClick={() => handleRemoveFromFlashSale(product._id)}
+                        onClick={() => handleRemoveFromFlashSale(product?._id)}
                         className="bg-slate-200 text-red-700"
                     >
-                        Remove
+                        Remove Item
                     </Button>
                 ) : (
                     <Button
-                        onClick={() => handleAddToFlashSale(product._id)}
-                        className="bg-blue-400 text-white"
+                        onClick={() => handleAddToFlashSale(product?._id)}
+                        className="bg-blue-400 text-white px-7"
                     >
-                        Add to
+                        Add Item
                     </Button>
                 )}
             </td>
-            <td className=" px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <button className="mr-4" title="Edit">
+            <td className="whitespace-nowrap text-right text-sm font-medium">
+                <Button className="mr-4" title="Edit">
                     <PenLine size={22} className="text-blue-600" />
-                </button>
-                <button onClick={() => handleDeleteProduct(product._id)} className="mr-4" title="Delete">
+                </Button>
+                <Button
+                    onClick={() => handleDeleteProduct(product?._id)}
+                    disabled={isLoading}
+                    className="mr-4" title="Delete">
                     <Trash2 size={22} className="text-rose-600" />
-                </button>
+                </Button>
             </td>
         </tr>
     )

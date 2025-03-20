@@ -23,7 +23,7 @@ const ManageUser = () => {
       confirmButtonText: "Yes, change it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.patch(`https://gadget-shop-server-bay.vercel.app/user/${id}`, Role, {
+        axios.patch(`http://localhost:5000/user/${id}`, Role, {
           headers: {
             authorization: `Bearer ${token}`,
           }
@@ -60,7 +60,7 @@ const ManageUser = () => {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`https://gadget-shop-server-bay.vercel.app/user/${id}`)
+        axios.delete(`http://localhost:5000/user/${id}`)
           .then((res) => {
             if (res.data.deletedCount > 0) {
               Swal.fire({
@@ -116,10 +116,10 @@ const ManageUser = () => {
                 <thead className="bg-gray-200">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                       Image
+                      Image
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                       Name
+                      Name
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Email

@@ -9,7 +9,7 @@ const ProductView = () => {
 
   useEffect(() => {
     if (!id) return;
-    axios.get(`https://gadget-shop-server-bay.vercel.app/all-product/${id}`)
+    axios.get(`http://localhost:5000/all-product/${id}`)
       .then((response) => {
         setProduct(response.data);
       })

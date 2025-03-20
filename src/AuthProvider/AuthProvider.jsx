@@ -46,12 +46,12 @@ const AuthProvider = ({ children }) => {
     const LoginUser = async (email, password) => {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            return userCredential; 
+            return userCredential;
         } catch (error) {
             throw new Error(handleFirebaseError(error));
         }
     }
-    
+
 
     const Logout = () => {
         return signOut(auth)
@@ -65,16 +65,17 @@ const AuthProvider = ({ children }) => {
             throw new Error(handleFirebaseError(error));
         }
     };
-    
+
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
             if (currentUser) {
-                axios.post(`https://gadget-shop-server-bay.vercel.app/jsonwebtoken`, { email: currentUser?.email }).then(data => {
-                    if (data.data) {
+                setLoading(true);
+                axios.post(`http://localhost:5000/api/v1/user/jsonwebtoken`, { email: currentUser?.email })
+                .then(data => {
+                    if (data.status === 200) {
                         localStorage.setItem("access-token", data?.data?.token);
-                        // console.log(localStorage.getItem("access-token")); 
                         setLoading(false);
                     }
                 })

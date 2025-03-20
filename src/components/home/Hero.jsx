@@ -91,21 +91,21 @@ const Hero = () => {
 
         <div>
           <img
-            src="https://res.cloudinary.com/dj905w8qy/image/upload/v1730248649/lwfmgckyhnqcalqvbl4c.jpg"
+            src="https://www.applegadgetsbd.com/_next/image?url=https%3A%2F%2Fadminapi.applegadgetsbd.com%2Fstorage%2Fmedia%2Flarge%2Fi-phone-16-series-5788.png&w=1080&q=75"
             alt="Banner 2"
           />
           {/* <p className="legend text-lg font-semibold bg-opacity-75 bg-black text-white p-2 rounded">Banner 2</p> */}
         </div>
         <div>
           <img
-            src="https://res.cloudinary.com/dj905w8qy/image/upload/v1730248669/kkamemycyanh3aa9cniw.jpg"
+            src="https://www.applegadgetsbd.com/_next/image?url=https%3A%2F%2Fadminapi.applegadgetsbd.com%2Fstorage%2Fmedia%2Flarge%2FMac-mini-M4-Chip-Slider-4626.jpg&w=1080&q=75"
             alt="Banner 1"
           />
           {/* <p className="legend text-lg font-semibold bg-opacity-75 bg-black text-white p-2 rounded">Banner 1</p> */}
         </div>
         <div>
           <img
-            src="https://res.cloudinary.com/dj905w8qy/image/upload/v1730248617/sjn5hdm4cpbi90kzngnb.jpg"
+            src="https://www.applegadgetsbd.com/_next/image?url=https%3A%2F%2Fadminapi.applegadgetsbd.com%2Fstorage%2Fmedia%2Flarge%2Fsamsung-slider-8904.jpg&w=1080&q=75"
             alt="Banner 3"
           />
           {/* <p className="legend text-lg font-semibold bg-opacity-75 bg-black text-white p-2 rounded">Banner 3</p> */}

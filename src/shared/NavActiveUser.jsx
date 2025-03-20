@@ -25,7 +25,7 @@ const NavActiveUser = () => {
             <ul
                 tabIndex={0}
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow border">
-                {userData.role === "admin" ? <li className="mb-2">
+                {userData?.data?.role === "admin" ? <li className="mb-2">
                 <NavLink to="/dashboard/overview">Dashboard</NavLink>
                 </li> : <li className="mb-2">
                 <NavLink to="/dashboard/profile">Profile</NavLink>

@@ -65,6 +65,9 @@ const adminRoutes = [
 const Sidebar = () => {
   const { Logout } = useAuth();
   const [userData, isLoading,] = useUserData();
+
+  console.log(userData.data.role);
+
   const handleLogout = () => {
     Logout();
   }
@@ -84,7 +87,7 @@ const Sidebar = () => {
 
       <ul className="space-y-10 flex-1 mt-4 mb-10 ">
         {!isLoading ? <>
-          {userData?.role === "user" &&
+          {userData?.data.role === "user" &&
             userRoutes.map((route) => (
               <li key={route.id}>
                 <NavLink
@@ -96,7 +99,7 @@ const Sidebar = () => {
                 </NavLink>
               </li>
             ))}
-          {userData?.role === "admin" &&
+          {userData?.data.role === "admin" &&
             adminRoutes.map((route) => (
               <li key={route.id}>
                 <NavLink

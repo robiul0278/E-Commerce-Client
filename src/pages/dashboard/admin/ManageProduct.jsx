@@ -1,11 +1,11 @@
-import useProduct from "../../../hooks/useProduct";
 import {
   Search,
 } from 'lucide-react';
 import ManageProductTable from "../../../components/dashboard/ManageProductTable";
+import { useGetProductsQuery } from '../../../redux/api/api';
 
 const ManageProducts = () => {
-  const [allProducts, isLoading] = useProduct();
+  const {data: allProducts, isLoading} = useGetProductsQuery({undefined});
   // const [selectedTimeRange, setSelectedTimeRange] = useState('7days');
 
   return (
@@ -31,20 +31,6 @@ const ManageProducts = () => {
                 />
                 <Search className="w-5 h-5 text-gray-400 absolute right-4 top-2.5" />
               </div>
-
-              {/* Time Range Filter */}
-              {/* <div className="relative">
-                <select
-                  value={selectedTimeRange}
-                  onChange={(e) => setSelectedTimeRange(e.target.value)}
-                  className="appearance-none pl-4 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="7days">Last 7 Days</option>
-                  <option value="30days">Last 30 Days</option>
-                  <option value="90days">Last 90 Days</option>
-                </select>
-                <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-3 pointer-events-none" />
-              </div> */}
             </div>
           </div>
         </div>
@@ -62,25 +48,22 @@ const ManageProducts = () => {
                     Product Name
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Create
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Stock
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Price
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider ">
                     Flash Sale
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {!isLoading ? <>
-                  {allProducts?.products.map((product) => {
+                  {allProducts?.data?.result.map((product) => {
                     return (
                      <ManageProductTable key={product.id} product={product} />
                     );

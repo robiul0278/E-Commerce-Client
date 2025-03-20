@@ -4,7 +4,6 @@ import useAxiosSecure from "./useAxiosSecure";
 
 const useUserData = () => {
   const axiosSecure = useAxiosSecure();
-  const token = localStorage.getItem("access-token");
   const { user } = useAuth();
   const email = user?.email;
 
@@ -13,11 +12,7 @@ const useUserData = () => {
     enabled: !!email,
     refetchInterval: 3000, // Fetch data every 2 seconds
     queryFn: async () => {
-      const res = await axiosSecure.get(`/user/${email}`,{
-        headers: {
-          authorization: `Bearer ${token}`,
-      },
-      });
+      const res = await axiosSecure.get(`/user/${email}`);
       return res.data;
     },
   });

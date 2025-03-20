@@ -5,20 +5,17 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import { Navigation, Autoplay } from "swiper/modules";
-import axios from "axios";
 import Loading from "../../pages/Loading";
 import ProductsCard from "../../pages/products/ProductsCard";
 import { ChevronsRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useGetProductsQuery } from "../../redux/api/api";
 
 const PhoneTablets = () => {
-  const [loading, setLoading] = useState(false);
-  const [products, setProducts] = useState([]);
   const [slidesPerView, setSlidesPerView] = useState(5);
   // Refs for custom navigation buttons
   const prevRef = useRef(null);
   const nextRef = useRef(null);
-
   const navigate = useNavigate();
 
   const handleCategory = (category) => {
@@ -26,42 +23,28 @@ const PhoneTablets = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
   };
 
-  // Fetch products from API
+  const category = "phones-tablets"
+  const {data: product, isLoading} = useGetProductsQuery({category})
+
+  // Update slidesPerView based on screen width
   useEffect(() => {
-    setLoading(true);
-    const fetch = async () => {
-      try {
-        const res = await axios.get(`https://gadget-shop-server-bay.vercel.app/all-product?category=${"phones-tablets"}`);
-        setProducts(res.data.products);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setLoading(false);
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSlidesPerView(5); // Large screens
+      } else if (window.innerWidth >= 768) {
+        setSlidesPerView(3); // Tablets
+      } else if (window.innerWidth >= 640) {
+        setSlidesPerView(2); // Mobile devices
+      } else {
+        setSlidesPerView(2); // Very small screens (optional)
       }
     };
-    fetch();
+
+    handleResize(); // Call it initially to set the right value
+
+    window.addEventListener("resize", handleResize); // Listen for resize events
+    return () => window.removeEventListener("resize", handleResize); // Cleanup the listener on unmount
   }, []);
-
-
-    // Update slidesPerView based on screen width
-    useEffect(() => {
-        const handleResize = () => {
-          if (window.innerWidth >= 1024) {
-            setSlidesPerView(5); // Large screens
-          } else if (window.innerWidth >= 768) {
-            setSlidesPerView(3); // Tablets
-          } else if (window.innerWidth >= 640) {
-            setSlidesPerView(2); // Mobile devices
-          } else {
-            setSlidesPerView(2); // Very small screens (optional)
-          }
-        };
-    
-        handleResize(); // Call it initially to set the right value
-    
-        window.addEventListener("resize", handleResize); // Listen for resize events
-        return () => window.removeEventListener("resize", handleResize); // Cleanup the listener on unmount
-      }, []);
 
   return (
     <section className="p-5 lg:p-0 lg:my-16">
@@ -75,10 +58,10 @@ const PhoneTablets = () => {
           {/* Custom navigation buttons */}
           <div className="flex items-center justify-center">
             <div className="flex items-center justify-center lg:space-x-5 space-x-2 text-black ">
-              <button 
-               
-              onClick={() => handleCategory("phones-tablets")}
-              className="flex items-center text-[10px] lg:text-[12px] text-gray-500 transition duration-300 hover:text-[#49B2FF] hover:scale-95">
+              <button
+
+                onClick={() => handleCategory("phones-tablets")}
+                className="flex items-center text-[10px] lg:text-[12px] text-gray-500 transition duration-300 hover:text-[#49B2FF] hover:scale-95">
                 <span className="font-semibold">All</span>
                 <ChevronsRight className="lg:w-5 w-4" />
               </button>
@@ -96,7 +79,7 @@ const PhoneTablets = () => {
       </div>
       {/* Product Section */}
       <div className="mt-5">
-        {loading ? (
+        {isLoading ? (
           <Loading />
         ) : (
           <Swiper
@@ -116,9 +99,9 @@ const PhoneTablets = () => {
               swiper.params.navigation.nextEl = nextRef.current;
             }}
           >
-            {products.map((product) => (
+            {product?.data?.result.map((product) => (
               <SwiperSlide key={product.id} className="md:p-2 lg:p-2">
-                <ProductsCard product={product}  />
+                <ProductsCard product={product} />
               </SwiperSlide>
             ))}
           </Swiper>

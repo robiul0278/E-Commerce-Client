@@ -62,7 +62,7 @@ const ProfileUpdateModal = ({ onClose }) => {
         }
 
         // await new Promise(resolve => setTimeout(resolve, 1000));
-        axios.patch(`https://gadget-shop-server-bay.vercel.app/update-profile/${userData?._id}`, updateDAta, {
+        axios.patch(`http://localhost:5000/update-profile/${userData?._id}`, updateDAta, {
             headers: {
                 authorization: `Bearer ${token}`,
             }
@@ -72,10 +72,10 @@ const ProfileUpdateModal = ({ onClose }) => {
                 if (res.status === 200) {
                     refetch();
                     setLoading(false);
-                } 
+                }
             })
             .catch((error) => {
-                  console.log(error);
+                console.log(error);
             })
     };
 

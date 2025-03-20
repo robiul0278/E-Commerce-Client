@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import useFlashSale from "../../hooks/useFlashSale";
+import { useGetFlashProductsQuery } from "../../redux/api/api";
 
 const Countdown = () => {
-    const [flashData] = useFlashSale();
-    const endTime = flashData?.endTime;
+      const {data} = useGetFlashProductsQuery();
+    const endTime = data?.data?.endTime;
     const [timeLeft, setTimeLeft] = useState({
         days: 0,
         hours: 0,
@@ -44,27 +44,27 @@ const Countdown = () => {
       }, [endTime]);
     
   return (
-    <div className="grid grid-flow-col gap-2 text-center auto-cols-max font-bold">
-      <div className="flex border shadow shadow-slate-200 flex-col p-3 rounded-box text-slate-700">
-        <span className="countdown font-mono text-2xl">
+    <div className="grid grid-flow-col lg:gap-2 md:gap-2 gap-1 text-center auto-cols-max font-bold">
+      <div className="flex item-center justify-center px-2  border flex-col rounded-box text-slate-700 text-[12px]">
+        <span className="countdown font-mono text-[12px] lg:text-2xl md:text-2xl">
           <span style={{ "--value": timeLeft.days }}></span>
         </span>
         days
       </div>
-      <div className="flex border shadow shadow-slate-200 flex-col p-3 rounded-box text-slate-700">
-        <span className="countdown font-mono text-2xl">
+      <div className="flex item-center justify-center px-2  border flex-col p-3 rounded-box text-slate-700 text-[12px]">
+        <span className="countdown font-mono text-[12px] lg:text-2xl md:text-2xl">
           <span style={{ "--value": timeLeft.hours }}></span>
         </span>
         hours
       </div>
-      <div className="flex border shadow shadow-slate-200 flex-col p-3 rounded-box text-slate-700">
-        <span className="countdown font-mono text-2xl">
+      <div className="flex item-center justify-center px-2  border flex-col p-3 rounded-box text-slate-700 text-[12px]">
+        <span className="countdown font-mono text-[12px] lg:text-2xl md:text-2xl">
           <span style={{ "--value": timeLeft.minutes }}></span>
         </span>
         min
       </div>
-      <div className="flex border shadow shadow-slate-200 flex-col p-3 rounded-box text-slate-700">
-        <span className="countdown font-mono text-2xl">
+      <div className="flex item-center justify-center px-2  border flex-col p-3 rounded-box text-slate-700 text-[12px]">
+        <span className="countdown font-mono text-[12px] lg:text-2xl md:text-2xl">
           <span style={{ "--value": timeLeft.seconds }}></span>
         </span>
         sec

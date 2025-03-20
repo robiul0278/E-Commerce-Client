@@ -29,7 +29,7 @@ const EditProduct = ({ modalProduct, latestData, setLatestData }) => {
     // Add product to database
     const token = localStorage.getItem("access-token");
 
-    axios.put(`https://gadget-shop-server-bay.vercel.app/update-product/${_id}`, productData, {
+    axios.put(`http://localhost:5000/update-product/${_id}`, productData, {
       headers: {
         authorization: `Bearer ${token}`,
       },
@@ -146,7 +146,7 @@ const EditProduct = ({ modalProduct, latestData, setLatestData }) => {
             className="mt-8 px-6 py-2.5 w-full text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-all">Update Product</button>
           <div className="modal-action">
             <form method="dialog">
-              <button  onClick={handleModalCancel}  className="btn">Close</button>
+              <button onClick={handleModalCancel} className="btn">Close</button>
             </form>
           </div>
         </form>

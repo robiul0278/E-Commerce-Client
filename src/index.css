@@ -7,6 +7,15 @@ body{
     background-color: #f1eaea;
 }
 
+.pagination button {
+  margin-right: 5px;
+}
+
+.pagination .selected {
+  background-color: #0e78e1;
+  color: white;
+}
+
 @layer base {
     input {
       @apply border-gray-300 focus:border-[#49B2FF] focus:ring-[#49B2FF];

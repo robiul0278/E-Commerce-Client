@@ -17,7 +17,7 @@ const Category = () => {
     //     setLoading(true);
     //     const fetch = async () => {
     //         try {
-    //             const res = await axios.get(`https://gadget-shop-server-bay.vercel.app/all-product?limit=${12}`);
+    //             const res = await axios.get(`http://localhost:5000/all-product?limit=${12}`);
     //             setProducts(res.data.products);
     //             setLoading(false);
     //         } catch (error) {
@@ -58,7 +58,7 @@ const Category = () => {
             </div>
             {/* Product Section */}
             <div className="">
-                    {/* <Swiper
+                {/* <Swiper
                         modules={[Navigation]}
                         className="mySwiper"
                         slidesPerView={5}
@@ -78,7 +78,7 @@ const Category = () => {
                             </SwiperSlide>
                         ))}
                     </Swiper> */}
-                     <CategoryCard/>
+                <CategoryCard />
             </div>
         </section>
     );

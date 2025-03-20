@@ -13,10 +13,10 @@ const AuthRegister = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-   const togglePassword = () => setShowPassword(!showPassword);
+    const togglePassword = () => setShowPassword(!showPassword);
 
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-   const toggleConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+    const toggleConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
     // State to store error message
     const {
@@ -35,17 +35,14 @@ const AuthRegister = () => {
         const userData = {
             name: data.name,
             email: data.email,
-            photoURL: "",
-            role: "user",
-            createdAt: new Date(),
         }
 
         RegisterUser(email, password)
             .then(() => {
-                axios.post("https://gadget-shop-server-bay.vercel.app/user", userData)
+                axios.post("http://localhost:5000/api/v1/user/create-user", userData)
                     .then((res) => {
                         console.log(res);
-                        if (res.data.insertedId) {
+                        if (res.data.success === true) {
                             toast.success('Login successful!');
                             setLoading(false);
                             navigate('/');
@@ -96,8 +93,8 @@ const AuthRegister = () => {
                                 className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-300 focus:border-blue-600 px-2 py-3 outline-none"
                                 {...register("email", { required: true })}
                             />
-                           <span className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-600 p-2 z-50">
-                            <CiMail className="w-5 h-5"/>
+                            <span className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-600 p-2 z-50">
+                                <CiMail className="w-5 h-5" />
                             </span>
                         </div>
                         {errors.email && <span className='text-red-500 font-mono text-sm'>Email is required !</span>}

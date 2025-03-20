@@ -37,7 +37,7 @@ const Checkout = () => {
     const randomNumber = Math.floor(Math.random() * 1000000); // Random number between 0 and 999999
     return `${prefix}-${randomNumber.toString().padStart(6, '0')}`; // Format: ORD-000001
   }
-  
+
 
   // ************************** Shipping Address
   const [divisions, setDivisions] = useState([]);
@@ -85,7 +85,7 @@ const Checkout = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
-  const orderNumber = generateOrderNumber();
+    const orderNumber = generateOrderNumber();
 
     const purchaseData = {
       orderNumber,
@@ -108,7 +108,7 @@ const Checkout = () => {
     console.log(purchaseData);
     try {
       const response = await axios.post(
-        "https://gadget-shop-server-bay.vercel.app/purchase",
+        "http://localhost:5000/purchase",
         purchaseData,
         {
           headers: {
@@ -217,7 +217,7 @@ const Checkout = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                       <div>
                         <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
-                         Name
+                          Name
                         </label>
                         <input
                           type="text"
@@ -428,7 +428,7 @@ const Checkout = () => {
                     >
                       {loading ? (
                         <>
-                <LiaSpinnerSolid />
+                          <LiaSpinnerSolid />
                           Purchasing...
                         </>
                       ) : (

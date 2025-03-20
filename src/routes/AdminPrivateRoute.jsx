@@ -13,7 +13,7 @@ const AdminPrivateRoute = ({ children }) => {
     }
 
     // Check if user has the admin role
-    if (userData?.role === "admin") {
+    if (userData?.data?.role === "admin") {
         return children;
     }
 

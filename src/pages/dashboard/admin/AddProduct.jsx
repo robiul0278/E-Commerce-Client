@@ -1,12 +1,9 @@
 import { useForm } from "react-hook-form";
-import useAuth from "../../../hooks/useAuth";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
 
 const AddProduct = () => {
-    const { user } = useAuth();
-    const token = localStorage.getItem("access-token");
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
 
@@ -19,8 +16,8 @@ const AddProduct = () => {
         formState: { errors },
     } = useForm();
 
-     // Watch image URL
-     const imageUrl = watch("image");
+    // Watch image URL
+    const imageUrl = watch("image");
 
 
     const handleFileUpload = async (event) => {
@@ -46,40 +43,31 @@ const AddProduct = () => {
 
 
     const onSubmit = async (data) => {
-          // Ensure image is a string URL before sending
-          if (!data.image || typeof data.image !== "string") {
+        // Ensure image is a string URL before sending
+        if (!data.image || typeof data.image !== "string") {
             toast.error("Please upload an image first.");
             return;
         }
         // console.log("Form Data:", data);
         // console.log("Image Type:", typeof data.image, "Value:", data.image);
-        
+
         setUploading(true);
-        const productData = { 
+        const productData = {
             name: data.name,
             price: parseFloat(data.price),
             brand: data.brand,
             category: data.category,
             sub_category: data.subCategory,
             stock: parseFloat(data.stock),
-            image: data?.image,  // ✅
+            image: data?.image,
             description: data.description,
-            email: user?.email,
-            status: "pending"
         };
 
         try {
             const response = await axios.post(
-                "https://gadget-shop-server-bay.vercel.app/add-product",
-                productData,
-                {
-                    headers: {
-                        authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
-            if (response.status === 201) {
+                "http://localhost:5000/api/v1/products/create",
+                productData);
+            if (response.data.success === true) {
                 toast.success("Product added successfully!");
                 setUploading(false);
                 reset();
@@ -94,12 +82,12 @@ const AddProduct = () => {
     }
     return (
         <div className="font-[sans-serif]">
-         {/* Header */}
-         <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <h1 className="text-xl font-semibold text-gray-900">Create Product</h1>
-        </div>
-      </header>
+            {/* Header */}
+            <header className="bg-white shadow-sm">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                    <h1 className="text-xl font-semibold text-gray-900">Create Product</h1>
+                </div>
+            </header>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="mx-auto max-w-6xl shadow-lg p-8 relative bg-white rounded">
@@ -155,7 +143,7 @@ const AddProduct = () => {
                         <div>
                             <label className="text-gray-800 text-sm block mb-2">Category</label>
                             <select
-                                defaultValue="" 
+                                defaultValue=""
                                 className="w-full rounded py-2.5 px-4 border border-gray-300 text-sm"
                                 {...register("category", { required: "Product category is required!" })}
                             >
@@ -203,22 +191,22 @@ const AddProduct = () => {
                                 className="w-full rounded py-2.5 px-4 border border-gray-300 text-sm"
                                 {...register("stock", { required: "Stock quantity is required!" })}
                             />
-                           {errors.stock && <span className='text-red-500 text-xs'>{errors.stock.message}</span>}
+                            {errors.stock && <span className='text-red-500 text-xs'>{errors.stock.message}</span>}
 
                         </div>
 
                         <div className="flex gap-5">
-                        <div>
-                        <label className="text-gray-800 text-sm block mb-2">Upload Image</label>
-                            <input
-                                 type="file" accept="image/*" onChange={handleFileUpload}
-                                className="w-full text-gray-400 font-semibold text-sm bg-white border file:cursor-pointer cursor-pointer file:border-0 file:py-2.5 file:px-4 file:mr-4 file:bg-gray-100 file:hover:bg-gray-200 file:text-gray-500 rounded"
-                            />
-                             {loading && <p className="text-xs text-[#49B2FF]">Uploading image...</p>}
-                              {/* Image Preview */}
-                        </div>
-                        {imageUrl ? <img src={imageUrl} width="100"  className="border" /> : <></>}
-                            
+                            <div>
+                                <label className="text-gray-800 text-sm block mb-2">Upload Image</label>
+                                <input
+                                    type="file" accept="image/*" onChange={handleFileUpload}
+                                    className="w-full text-gray-400 font-semibold text-sm bg-white border file:cursor-pointer cursor-pointer file:border-0 file:py-2.5 file:px-4 file:mr-4 file:bg-gray-100 file:hover:bg-gray-200 file:text-gray-500 rounded"
+                                />
+                                {loading && <p className="text-xs text-[#49B2FF]">Uploading image...</p>}
+                                {/* Image Preview */}
+                            </div>
+                            {imageUrl ? <img src={imageUrl} width="100" className="border" /> : <></>}
+
                         </div>
                         <div className="col-span-full">
                             <label className="text-gray-800 text-sm block mb-2">Product Description</label>

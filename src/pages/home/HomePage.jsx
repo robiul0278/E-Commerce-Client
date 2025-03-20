@@ -1,7 +1,6 @@
 
 import Category from "../../components/home/Category"
 import CategoryBanner from "../../components/home/CategoryBanner"
-import Features from "../../components/home/Features"
 import FlashSale from "../../components/home/FlashSale"
 import Hero from "../../components/home/Hero"
 import OurProducts from "../../components/home/OurProducts"
@@ -22,7 +21,6 @@ const HomePage = () => {
             <PhoneTablets />
             <OurProducts />
             <Read/>
-            <Features />
         </div>
     )
 }
