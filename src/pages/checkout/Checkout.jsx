@@ -1,32 +1,21 @@
-/* eslint-disable no-unused-vars */
 import { useForm } from 'react-hook-form';
 import { CreditCard, Package2, Truck } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import empty from "../../../public/empty.svg";
-import useUserData from '../../hooks/useUserData';
-import toast from 'react-hot-toast';
 import { LiaSpinnerSolid } from "react-icons/lia";
-import { use } from 'react';
 import useAuth from '../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { useCreateOrderMutation, useGetMyUserDataQuery } from '../../redux/api/api';
 
 const Checkout = () => {
   const cart = useSelector((state) => state.cart)
-  const token = localStorage.getItem("access-token") || "";
-  const [userData, ,] = useUserData();
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
+  const { user } = useAuth();
+  const { data: userData } = useGetMyUserDataQuery(user?.email);
+  const [createOrder, {isLoading}] = useCreateOrderMutation();
 
   const totalPayment = cart.totalPrice + cart.shipping;
 
   const {
-    reset,
-    watch,
     register,
-    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm();
@@ -38,53 +27,7 @@ const Checkout = () => {
     return `${prefix}-${randomNumber.toString().padStart(6, '0')}`; // Format: ORD-000001
   }
 
-
-  // ************************** Shipping Address
-  const [divisions, setDivisions] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [upazilas, setUpazilas] = useState([]);
-
-  const selectedDivision = watch("division");
-  const selectedDistrict = watch("district");
-
-  // Fetch divisions on mount
-  useEffect(() => {
-    axios.get("https://bdapis.com/api/v1.2/divisions")
-      .then(response => setDivisions(response.data.data || []))
-      .catch(error => console.error("Error fetching divisions:", error));
-  }, []);
-
-  // Fetch districts when division changes
-  useEffect(() => {
-    if (selectedDivision) {
-      axios.get(`https://bdapis.com/api/v1.2/division/${selectedDivision}`)
-        .then(response => setDistricts(response.data.data || []))
-        .catch(error => console.error("Error fetching districts:", error));
-    } else {
-      setDistricts([]);
-      setValue("district", ""); // Reset district selection
-      setUpazilas([]);
-      setValue("upazila", ""); // Reset upazila selection
-    }
-  }, [selectedDivision, setValue]);
-
-  // Fetch upazilas when district changes
-  useEffect(() => {
-    if (selectedDistrict) {
-      axios.get(`https://bdapis.com/api/v1.2/district/${selectedDistrict}`)
-        .then(response => setUpazilas(response.data.data[0].upazillas || []))
-        .catch(error => console.error("Error fetching upazilas:", error));
-    } else {
-      setUpazilas([]);
-      setValue("upazila", "");
-    }
-  }, [selectedDistrict, setValue]);
-  // ************************** Shipping Address
-
-
-
   const onSubmit = async (data) => {
-    setLoading(true);
     const orderNumber = generateOrderNumber();
 
     const purchaseData = {
@@ -95,41 +38,16 @@ const Checkout = () => {
       address: data.address,
       division: data.division,
       district: data.district,
-      upazila: data.upazila,
+      upazilla: data.upazilla,
       postalCode: data.postalCode,
       products: cart?.products,
       totalProduct: cart?.totalQuantity,
       totalPayment: totalPayment,
-      userId: userData._id,
+      userId: userData?.data?._id,
       status: "Processing",
-      date: new Date(),
+      payment: "Pending"
     }
-
-    console.log(purchaseData);
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/purchase",
-        purchaseData,
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.status === 201) {
-        toast.success("Product purchase successfully!");
-        setLoading(false);
-        reset();
-        navigate("/dashboard/profile")
-        // console.log("Product Response:", response);
-      } else {
-        toast.error("⚠️ Failed to purchase product. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error purchase product:", error);
-    }
-
+    createOrder(purchaseData);
   };
 
   return (
@@ -237,11 +155,11 @@ const Checkout = () => {
                         <input
                           type="number"
                           placeholder='0123456789'
-                          {...register('phone', { required: 'Last name is required' })}
+                          {...register('number', { required: 'Last name is required' })}
                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                         />
-                        {errors.phone && (
-                          <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
+                        {errors.number && (
+                          <p className="mt-1 text-sm text-red-600">{errors.number.message}</p>
                         )}
                       </div>
 
@@ -274,7 +192,7 @@ const Checkout = () => {
                     <div className="space-y-6">
                       <div>
                         <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-                          Street Address
+                          Address
                         </label>
                         <input
                           type="text"
@@ -290,41 +208,38 @@ const Checkout = () => {
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
                           <label className="block text-sm font-medium text-gray-700">Division</label>
-                          <select
-                            {...register("division", { required: "Division is required" })}
-                            className="mt-1 block w-full px-3 py-2 rounded-md border  border-gray-300 focus:border-blue-500 focus:ring-blue-500">
-                            <option value="">Select a Division</option>
-                            {divisions?.map((div) => (
-                              <option key={div.id} value={div?.division}>{div?.division}</option>
-                            ))}
-                          </select>
+                          <input
+                          type="text"
+                          placeholder='division'
+                          {...register('division', { required: 'Address is required' })}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        />
+
                           {errors.division && <p className="text-sm text-red-600">{errors.division.message}</p>}
                         </div>
 
                         {/* District Select */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700">District</label>
-                          <select {...register("district", { required: "District is required" })} disabled={!districts.length} className="mt-1 block w-full px-3 py-2 rounded-md border  border-gray-300 focus:border-blue-500 focus:ring-blue-500">
-                            <option value="">Select a District</option>
-                            {districts.map((dist) => (
-                              <option key={dist.id} value={dist.district}>{dist.district}</option>
-                            ))}
-                          </select>
+                          <input
+                          type="text"
+                          placeholder='district'
+                          {...register('district', { required: 'Address is required' })}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        />
                           {errors.district && <p className="text-sm text-red-600">{errors.district.message}</p>}
                         </div>
 
                         {/* Upazila Select */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700">Upazila</label>
-                          <select
-                            {...register("upazila", { required: "Upazila is required" })} disabled={!upazilas.length}
-                            className="mt-1 block w-full px-3 py-2 rounded-md border  border-gray-300 focus:border-blue-500 focus:ring-blue-500">
-                            <option value="">Select an Upazila</option>
-                            {upazilas?.map((upa) => (
-                              <option key={upa.id} value={upa}>{upa}</option>
-                            ))}
-                          </select>
-                          {errors.upazila && <p className="text-sm text-red-600">{errors.upazila.message}</p>}
+                          <input
+                          type="text"
+                          placeholder='upazilla'
+                          {...register('upazilla', { required: 'Address is required' })}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        />
+                          {errors.upazilla && <p className="text-sm text-red-600">{errors.upazilla.message}</p>}
                         </div>
                         <div className="md:col-span-1">
                           <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700">
@@ -424,9 +339,9 @@ const Checkout = () => {
                     <button
                       type="submit"
                       className="w-full flex items-center justify-center gap-2 bg-[#49B2FF] text-white py-2 px-4 rounded-md hover:bg-[#2c84c2] focus:outline-none focus:ring-2 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
-                      disabled={loading}
+                      disabled={isLoading}
                     >
-                      {loading ? (
+                      {isLoading ? (
                         <>
                           <LiaSpinnerSolid />
                           Purchasing...

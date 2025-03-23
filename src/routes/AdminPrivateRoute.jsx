@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
 import { Navigate, useLocation } from "react-router-dom";
 import Loading from "../pages/Loading";
-import useUserData from "../hooks/useUserData";
+import { useGetMyUserDataQuery } from "../redux/api/api";
+import useAuth from "../hooks/useAuth";
 
 const AdminPrivateRoute = ({ children }) => {
-    const [userData, isLoading] = useUserData();
+    const {user} = useAuth();
+    const {data: userData, isLoading} = useGetMyUserDataQuery(user?.email);
     const location = useLocation();
 
     // Show loading screen if data is still being fetched

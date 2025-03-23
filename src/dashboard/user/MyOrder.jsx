@@ -1,9 +1,7 @@
-import { Loader2, CheckCircle2, AlertCircle, Package, } from 'lucide-react';
-import useMyOrder from "../../../hooks/useMyOrder";
-import Loading from '../../Loading';
+// import { Loader2, CheckCircle2, AlertCircle, Package, } from 'lucide-react';
+// import Loading from '../../Loading';
 
 const MyOrder = () => {
-    const [myOrder, isLoading] = useMyOrder()
     return (
         <div className='min-h-screen'>
             <div className="bg-white shadow-sm">
@@ -15,11 +13,11 @@ const MyOrder = () => {
                     </div>
                 </div>
             </div>
-            <div className='max-w-7xl mx-auto px-4 py-8'>
+            {/* <div className='max-w-7xl mx-auto px-4 py-8'>
                 <div className="space-y-4">
                     {!isLoading ? (
                         <>
-                            {myOrder?.map((order) => (
+                            {myOrders?.map((order) => (
                                 <div
                                     key={order.id}
                                     className="bg-white rounded-xl overflow-hidden   mx-auto mb-4"
@@ -90,7 +88,7 @@ const MyOrder = () => {
                         </>
                     )}
                 </div>
-            </div>
+            </div> */}
         </div>
 
     )

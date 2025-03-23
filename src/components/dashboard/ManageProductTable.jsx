@@ -1,16 +1,21 @@
 /* eslint-disable react/prop-types */
 import { PenLine, Trash2 } from "lucide-react";
-import useUserData from "../../hooks/useUserData";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { Button } from "antd";
-import { useDeleteProductMutation, useGetFlashProductsQuery } from "../../redux/api/api";
+import { useDeleteProductMutation, useGetFlashProductsQuery, useGetMyUserDataQuery, useRemoveFlashProductMutation } from "../../redux/api/api";
 import Swal from "sweetalert2";
+import UpdateProductModal from "./UpdateProductModal";
+import { useState } from "react";
+import useAuth from "../../hooks/useAuth";
 
 const ManageProductTable = ({ product }) => {
     const { data, refetch } = useGetFlashProductsQuery();
     const [deleteProduct, { isLoading }] = useDeleteProductMutation();
-    const [userData] = useUserData()
+    const [removeProduct] = useRemoveFlashProductMutation();
+     const [isUpdateOpen, setUpdateOpen] = useState(false);
+     const {user} = useAuth();
+     const {data: userData} = useGetMyUserDataQuery(user?.email);
 
     // Check if data is an array or if it has products as an array
     const isInFlashSale = Array.isArray(data?.data?.products)
@@ -72,34 +77,8 @@ const ManageProductTable = ({ product }) => {
 
 
     const handleRemoveFromFlashSale = async (productId) => {
-        const removeData = {
-            flashSaleId: data?._id,
-            productId
-        }
-
-        if (!data?._id) {
-            return toast.error("Please Create a Flash Sale!!");
-        }
-
-        try {
-            await axios.patch(`http://localhost:5000/remove-flash-sale-product`, removeData)
-                .then((response) => {
-                    if (response.status === 200) {
-                        toast.error("Product Removed!");
-                        refetch()
-                    } else {
-                        toast.error("⚠️ Failed to remove product. Please try again.");
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-
-        } catch (error) {
-            toast.error(error.response?.data?.message || "An error occurred. Please try again.");
-        }
+        removeProduct(productId);
     }
-
 
     return (
         <tr key={product?._id} className="hover:bg-gray-50">
@@ -136,9 +115,15 @@ const ManageProductTable = ({ product }) => {
                 )}
             </td>
             <td className="whitespace-nowrap text-right text-sm font-medium">
-                <Button className="mr-4" title="Edit">
+                <Button 
+                 onClick={() => setUpdateOpen(true)}
+                className="mr-4" title="Edit">
                     <PenLine size={22} className="text-blue-600" />
                 </Button>
+                  {/* Update Flash Sale Modal  */}
+              {isUpdateOpen && <UpdateProductModal
+                onClose={() => setUpdateOpen(false)} product={product}
+              />}
                 <Button
                     onClick={() => handleDeleteProduct(product?._id)}
                     disabled={isLoading}

@@ -1,8 +1,8 @@
 import {
   Search,
 } from 'lucide-react';
-import ManageProductTable from "../../../components/dashboard/ManageProductTable";
-import { useGetProductsQuery } from '../../../redux/api/api';
+import ManageProductTable from '../../components/dashboard/ManageProductTable';
+import { useGetProductsQuery } from '../../redux/api/api';
 
 const ManageProducts = () => {
   const {data: allProducts, isLoading} = useGetProductsQuery({undefined});

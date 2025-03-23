@@ -1,10 +1,11 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth"
-import useUserData from "../hooks/useUserData";
+import { useGetMyUserDataQuery } from "../redux/api/api";
 
 const NavActiveUser = () => {
     const {Logout } = useAuth();
-    const [userData] = useUserData();
+    const {user} = useAuth();
+    const {data: userData} = useGetMyUserDataQuery(user?.email);
     const navigate = useNavigate()
 
     const handleLogout = () => {
@@ -18,7 +19,7 @@ const NavActiveUser = () => {
                 <div className="rounded-full border-2 border-blue-600">
                     <img
                         className="rounded-full w-8 h-8 object-cover"
-                        src={`${userData?.photoURL || "/profile.png"}`}
+                        src={`${userData?.data?.photoURL || "/profile.png"}`}
                     />
                 </div>
             </button>

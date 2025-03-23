@@ -11,14 +11,14 @@ import AuthLogin from "../pages/AuthLogin";
 import AuthRegister from "../pages/AuthRegister";
 import Shop from "../pages/shop/Shop";
 import ProductView from "../pages/ProductView";
-import ManageUser from "../pages/dashboard/admin/ManageUser";
-import ManageProducts from "../pages/dashboard/admin/ManageProduct";
-import AddProduct from "../pages/dashboard/admin/AddProduct";
-import ManageOrders from "../pages/dashboard/admin/ManageOrders";
-import OverView from "../pages/dashboard/admin/OverView";
-import FlashSale from "../pages/dashboard/admin/FlashSale";
-import Profile from "../pages/dashboard/user/Profile";
-import MyOrder from "../pages/dashboard/user/MyOrder";
+import Profile from "../dashboard/user/Profile";
+import MyOrder from "../dashboard/user/MyOrder";
+import ManageUser from "../dashboard/admin/ManageUser";
+import AddProduct from "../dashboard/admin/AddProduct";
+import ManageProducts from "../dashboard/admin/ManageProduct";
+import ManageOrders from "../dashboard/admin/ManageOrders";
+import OverView from "../dashboard/admin/OverView";
+import FlashSale from "../dashboard/admin/FlashSale";
 
 
 export const router = createBrowserRouter([

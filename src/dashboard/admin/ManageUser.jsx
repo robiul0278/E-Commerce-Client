@@ -1,85 +1,76 @@
-import axios from "axios";
 import { RiDeleteBinLine } from "react-icons/ri";
 import Swal from "sweetalert2";
-import useAllUser from "../../../hooks/useAllUser";
 import { Search } from "lucide-react";
+import { useDeleteUserMutation, useGetAllUserQuery, useUpdateUserRoleMutation } from "../../redux/api/api";
 
 const ManageUser = () => {
-  const token = localStorage.getItem("access-token");
-  const [allUser, isLoading, refetch] = useAllUser();
+  const { data: allUser, isLoading } = useGetAllUserQuery(undefined);
+  const [updateUserRole] = useUpdateUserRoleMutation();
+  const [deleteUser] = useDeleteUserMutation();
 
 
-  const changeUserRole = (id, role) => {
-
-    const Role = { role };
-
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, change it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios.patch(`http://localhost:5000/user/${id}`, Role, {
-          headers: {
-            authorization: `Bearer ${token}`,
-          }
-        })
-          .then((res) => {
-            console.log(res);
-            if (res.data.matchedCount > 0) {
-              Swal.fire({
-                title: "Role Changed!",
-                text: "Your role has been change",
-                icon: "success"
-              });
-              refetch();
-            } else {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "User not found!",
-              });
+    const changeUserRole = async (id, role) => {
+      const options = {id, role}
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, update it!",
+        }).then(async (result) => {  // Marked as async
+            if (result.isConfirmed) {
+                try {
+                    const response = await updateUserRole(options).unwrap();
+                    if (response.success) {
+                        Swal.fire({
+                            title: "Updated!",
+                            text: "Your role has been changed!.",
+                            icon: "success",
+                        });
+                    }
+                } catch (error) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: `Failed to delete the product.${error}}`,
+                        icon: "error",
+                    });
+                }
             }
-          })
-      }
-    });
-  }
+        });
+    };
 
-  const handleDeleteUser = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios.delete(`http://localhost:5000/user/${id}`)
-          .then((res) => {
-            if (res.data.deletedCount > 0) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted",
-                icon: "success"
-              });
-              refetch();
-            } else {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Something went wrong!",
-              });
+    const handleDeleteUser = async (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then(async (result) => {  // Marked as async
+            if (result.isConfirmed) {
+                try {
+                    const response = await deleteUser(id).unwrap();
+                    if (response.success) {
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your user has been deleted!.",
+                            icon: "success",
+                        });
+                    }
+                } catch (error) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: `Failed to delete the product.${error}}`,
+                        icon: "error",
+                    });
+                }
             }
-          })
-      }
-    });
-  }
+        });
+    };
 
   return (
     <>
@@ -134,7 +125,7 @@ const ManageUser = () => {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {!isLoading ? <>
-                    {allUser.map((user) => {
+                    {allUser?.data?.map((user) => {
                       return (
                         <tr key={user.id} className="hover:bg-gray-50">
                           <td className="px-6 whitespace-nowrap text-sm font-medium text-blue-600">
@@ -268,14 +259,6 @@ const ManageUser = () => {
           </div>
         </main>
       </div>
-
-
-
-
-
-
-
-
     </>
   )
 }

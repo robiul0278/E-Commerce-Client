@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useGetFlashProductsQuery } from "../../redux/api/api";
+import { useGetFlashProductsQuery } from "../redux/api/api";
 
 const Countdown = () => {
       const {data} = useGetFlashProductsQuery();

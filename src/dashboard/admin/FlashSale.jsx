@@ -1,24 +1,23 @@
-/* eslint-disable no-unused-vars */
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { Search } from "lucide-react";
 import { Button } from "antd";
-import CreateFlashSaleModal from "../../../components/dashboard/CreateFlashSaleModal";
-import UpdateFlashSaleModal from "../../../components/dashboard/UpdateFlashSaleModal";
-import Countdown from "../../../components/dashboard/Countdown";
-import { useGetFlashProductsQuery } from "../../../redux/api/api";
+import CreateFlashSaleModal from "../../components/dashboard/CreateFlashSaleModal";
+import UpdateFlashSaleModal from "../../components/dashboard/UpdateFlashSaleModal";
+import Countdown from "../../components/Countdown";
+import { useCreateFlashSaleMutation, useGetFlashProductsQuery, useRemoveFlashProductMutation, useUpdateFlashSaleMutation } from "../../redux/api/api";
 
 const FlashSale = () => {
-  const [loading, setLoading] = useState(false);
-  const [updateLoading, setUpdateLoading] = useState(false);
   const [isCreateOpen, setCreateOpen] = useState(false);
   const [isUpdateOpen, setUpdateOpen] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const {data, refetch} = useGetFlashProductsQuery();
+  const {data: flashData} = useGetFlashProductsQuery();
+  const [removeProduct] = useRemoveFlashProductMutation();
+  const [createFlashSale, {isLoading}] = useCreateFlashSaleMutation();
+  const [updateFlashSale] = useUpdateFlashSaleMutation();
 
   // Handle search input
   const handleSearchChange = (e) => {
@@ -40,101 +39,65 @@ const FlashSale = () => {
   } = useForm();
 
   const handleCreateFlashSale = async (data) => {
-    setLoading(true);
     const productData = {
       name: "exist",
       role: "admin",
-      discount: parseFloat(data.discount),
+      discount: parseFloat(data?.discount),
       products: [],
-      startTime: data.startTime,
-      endTime: data.endTime,
+      startTime: data?.startTime,
+      endTime: data?.endTime,
       status: "pending",
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/api/v1/flash-sale/create", productData);
+      const response = await createFlashSale(productData).unwrap();
 
-      if (response.status === 200) {
+      if (response.success) {
         toast.success("Flash Sale created successfully!");
-        reset(); // Reset form only on success
-        refetch();
-      } else {
-        toast.error("⚠️ Failed to add product. Please try again.");
+        reset();
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
+      console.log(error?.data?.message);
+      toast.error(error?.data?.message || "Please Update Flash sale.");
     }
   };
 
   const handleUpdateFlashSale = async (data) => {
-    setUpdateLoading(true);
     const updateData = {
-      id: data?.data?.flashSale?._id,
-      discount: parseFloat(data.discount),
-      startTime: data.startTime,
-      endTime: data.endTime,
+      id: flashData?.data?._id,
+      discount: parseFloat(data?.discount),
+      startTime: data?.startTime,
+      endTime: data?.endTime,
     }
 
-    if (!data?._id) {
+    if (!flashData?.data?._id) {
       return toast.error("Please Create a Flash Sale!!");
     }
 
     try {
-      await axios.patch("http://localhost:5000/api/v1/flash-sale/update/", updateData)
-        .then((response) => {
-          if (response.status === 200) {
-            toast.success("Flash Sale Update successfully!");
-            reset(); // Reset form only on success
-            refetch()
-            setUpdateLoading(false);
-          } else {
-            toast.error("⚠️ Failed to add product. Please try again.");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          setLoading(false);
-        })
-
+      const response = await updateFlashSale(updateData).unwrap();
+      if (response.success) {
+        toast.success("Flash Sale Update successfully!");
+        reset2();
+      }
     } catch (error) {
-      toast.error(error.response?.data?.message || "An error occurred. Please try again.");
-      setUpdateLoading(false);
+      console.log(error?.data?.message);
+      toast.error(error?.data?.message);
     }
   }
 
-
   const handleRemoveProduct = async (id) => {
+    try {
+      const response = await removeProduct(id).unwrap();
 
-    if (!data.data.products?.length) {
-      return toast.error("Please Create a Flash Sale!!");
+      if (response.success) {
+        toast.success("Product deleted successfully!");
+        reset();
+      }
+    } catch (error) {
+      console.log(error?.data?.message);
+      toast.error(error?.data?.message);
     }
-
-    console.log(id);
-
-    // try {
-    //   await axios.patch(`http://localhost:5000/remove-flash-sale-product`, removeData)
-    //     .then((response) => {
-    //       if (response.status === 200) {
-    //         toast.success("Product Removed!");
-    //         reset2(); // Reset form only on success
-    //         refetch()
-    //         setUpdateLoading(false);
-    //       } else {
-    //         toast.error("⚠️ Failed to remove product. Please try again.");
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //       setLoading(false);
-    //     })
-
-    // } catch (error) {
-    //   toast.error(error.response?.data?.message || "An error occurred. Please try again.");
-    //   setUpdateLoading(false);
-    // }
-
   }
 
   return (
@@ -150,13 +113,13 @@ const FlashSale = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <div className="bg-white rounded-lg shadow-sm p-6">
             <p className="text-sm text-gray-600">Total Product</p>
-            <p className="text-2xl font-semibold mt-2">{data?.data?.products?.length || 0}</p>
-            <p className="text-sm text-green-600 mt-2">↑ {data?.data?.products?.length || 0} products from store</p>
+            <p className="text-2xl font-semibold mt-2">{flashData?.data?.products?.length || 0}</p>
+            <p className="text-sm text-green-600 mt-2">↑ {flashData?.data?.products?.length || 0} products from store</p>
           </div>
           <div className="bg-white rounded-lg shadow-sm p-6">
             <p className="text-sm text-gray-600">Discount Now</p>
-            <p className="text-2xl font-semibold mt-2">{data?.data?.discount || 0}%</p>
-            <p className="text-sm text-yellow-600 mt-2">{data?.data?.discount || 0}% discount from store</p>
+            <p className="text-2xl font-semibold mt-2">{flashData?.data?.discount || 0}%</p>
+            <p className="text-sm text-yellow-600 mt-2">{flashData?.data?.discount || 0}% discount from store</p>
           </div>
           <div className="bg-white flex flex-col gap-2 rounded-lg shadow-sm p-6">
             <p className="text-sm text-gray-600">Discount End</p>
@@ -191,11 +154,11 @@ const FlashSale = () => {
               <Button onClick={() => setUpdateOpen(true)} variant="outline">Update Flash Sale</Button>
               {/* Create Flash Sale Modal  */}
               {isCreateOpen && <CreateFlashSaleModal
-                onClose={() => setCreateOpen(false)} register={register} errors={errors} handleSubmit={handleSubmit} handleCreateFlashSale={handleCreateFlashSale} loading={loading}
+                onClose={() => setCreateOpen(false)} register={register} errors={errors} handleSubmit={handleSubmit} handleCreateFlashSale={handleCreateFlashSale} loading={isLoading}
               />}
               {/* Update Flash Sale Modal  */}
               {isUpdateOpen && <UpdateFlashSaleModal
-                onClose={() => setUpdateOpen(false)} register2={register2} errors2={errors2} handleSubmit2={handleSubmit2} handleUpdateFlashSale={handleUpdateFlashSale} updateLoading={updateLoading}
+                onClose={() => setUpdateOpen(false)} register2={register2} errors2={errors2} handleSubmit2={handleSubmit2} handleUpdateFlashSale={handleUpdateFlashSale} 
               />}
             </div>
           </div>
@@ -225,8 +188,8 @@ const FlashSale = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {data.data.products?.length ? <>
-                  {data.data.products?.map((product) => {
+                {flashData?.data?.products?.length ? <>
+                  {flashData?.data?.products?.map((product) => {
                     return (
 
                       <tr key={product.id} className="hover:bg-gray-50">
@@ -254,64 +217,15 @@ const FlashSale = () => {
                       </tr>
                     );
                   })}
-                </> : <>
-                  <tr className="animate-pulse">
-                    <td className="flex item-center justify-center">
-                      <div className="size-10 rounded-full bg-gray-200"></div>
-                    </td>
-                    <td >
-                      <div className="h-2 rounded bg-gray-200"></div>
-                    </td>
-                    <td>
-                      <div className="h-2 rounded bg-gray-200"></div>
-                    </td>
-                    <td>
-                      <div className="h-2 rounded bg-gray-200"></div>
-                    </td>
-                    <td>
-                      <div className="h-2 rounded bg-gray-200"></div>
-                    </td>
-                  </tr>
-                  <tr className="animate-pulse">
-                    <td className="flex item-center justify-center">
-                      <div className="size-10 rounded-full bg-gray-200"></div>
-                    </td>
-                    <td >
-                      <div className="h-2 rounded bg-gray-200"></div>
-                    </td>
-                    <td>
-                      <div className="h-2 rounded bg-gray-200"></div>
-                    </td>
-                    <td>
-                      <div className="h-2 rounded bg-gray-200"></div>
-                    </td>
-                    <td>
-                      <div className="h-2 rounded bg-gray-200"></div>
-                    </td>
-                  </tr>
-                  <tr className="animate-pulse">
-                    <td className="flex item-center justify-center">
-                      <div className="size-10 rounded-full bg-gray-200"></div>
-                    </td>
-                    <td >
-                      <div className="h-2 rounded bg-gray-200"></div>
-                    </td>
-                    <td>
-                      <div className="h-2 rounded bg-gray-200"></div>
-                    </td>
-                    <td>
-                      <div className="h-2 rounded bg-gray-200"></div>
-                    </td>
-                    <td>
-                      <div className="h-2 rounded bg-gray-200"></div>
-                    </td>
-                  </tr>
-                </>}
+                </> :
+                 <>
+                </>
+                }
               </tbody>
             </table>
           </div>
 
-          {data?.data?.products.length ?
+          {flashData?.data?.products.length ?
      ""
             :
             <div className="flex items-center justify-center py-10">
@@ -336,7 +250,7 @@ const FlashSale = () => {
               <div>
                 <p className="text-sm text-gray-700">
                   Showing {' '}
-                  <span className="font-medium">{data.data.products?.length}</span> results
+                  <span className="font-medium">{flashData?.data?.products?.length}</span> results
                 </p>
               </div>
               {/* Pagination */}

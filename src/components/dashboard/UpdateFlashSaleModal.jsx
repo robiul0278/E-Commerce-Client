@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-const UpdateFlashSaleModal = ({ onClose, register2, errors2, handleSubmit2, handleUpdateFlashSale, updateLoading }) => {
+const UpdateFlashSaleModal = ({ onClose, register2, errors2, handleSubmit2, handleUpdateFlashSale }) => {
     const modalRef = useRef(null);
 
     useEffect(() => {
@@ -47,15 +47,10 @@ const UpdateFlashSaleModal = ({ onClose, register2, errors2, handleSubmit2, hand
             </div>
             <button
               type="submit"
-              disabled={updateLoading}
-              className={`text-white w-max bg-blue-400 hover:bg-blue-500 tracking-wide text-sm px-4 py-2.5 flex items-center justify-center ${updateLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`text-white w-max bg-blue-400 hover:bg-blue-500 tracking-wide text-sm px-4 py-2.5 flex items-center justify-center`}
             >
-              {updateLoading ? (
-                <>
-                  <svg className="animate-spin h-4 w-4 mr-2 border-t-2 border-white rounded-full" viewBox="0 0 24 24"></svg>
+
                   Update...
-                </>
-              ) : "Update"}
             </button>
       </form>
     </div>

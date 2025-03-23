@@ -1,4 +1,4 @@
-import Countdown from "../../../components/dashboard/Countdown";
+import Countdown from "../../components/Countdown";
 
 const OverView = () => {
     return (

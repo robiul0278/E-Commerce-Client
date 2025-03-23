@@ -1,12 +1,12 @@
+import NavbarSearch from "../../components/NavbarSearch";
+import Category from "./Category";
+import CategoryBanner from "./CategoryBanner";
+import FlashSale from "./FlashSale";
+import Hero from "./Hero";
+import OurProducts from "./OurProducts";
+import PhoneTablets from "./PhoneTablets";
+import Read from "./Read";
 
-import Category from "../../components/home/Category"
-import CategoryBanner from "../../components/home/CategoryBanner"
-import FlashSale from "../../components/home/FlashSale"
-import Hero from "../../components/home/Hero"
-import OurProducts from "../../components/home/OurProducts"
-import PhoneTablets from "../../components/home/PhoneTablets"
-import Read from "../../components/home/Read"
-import NavbarSearch from "../../components/NavbarSearch"
 
 const HomePage = () => {
     return (

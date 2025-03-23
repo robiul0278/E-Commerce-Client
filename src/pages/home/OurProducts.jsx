@@ -9,8 +9,6 @@ import { useGetProductsQuery } from "../../redux/api/api";
 const OurProducts = () => {
   const { data: products, isLoading } = useGetProductsQuery({undefined})
 
-  console.log(products?.data?.result);
-
   return (
     <section className="p-5 lg:p-0">
       <div className="flex flex-col gap-5">

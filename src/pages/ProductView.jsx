@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom";
-import CategoryBanner from "../components/home/CategoryBanner";
+
 import { useEffect, useState } from "react";
 import axios from "axios";
+import CategoryBanner from "./home/CategoryBanner";
 
 const ProductView = () => {
   const { id } = useParams();

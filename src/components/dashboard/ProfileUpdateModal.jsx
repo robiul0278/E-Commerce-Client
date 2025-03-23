@@ -1,14 +1,16 @@
 /* eslint-disable react/prop-types */
 import { Camera, Loader2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import useUserData from "../../hooks/useUserData";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useGetMyUserDataQuery } from "../../redux/api/api";
+import useAuth from "../../hooks/useAuth";
 
 const ProfileUpdateModal = ({ onClose }) => {
     const modalRef = useRef(null);
-    const [userData, , refetch] = useUserData();
+    const {user} = useAuth();
+    const {data: userData} = useGetMyUserDataQuery(user?.email);
     const [loading, setLoading] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
     const token = localStorage.getItem("access-token");
@@ -70,7 +72,6 @@ const ProfileUpdateModal = ({ onClose }) => {
             .then((res) => {
                 console.log(res);
                 if (res.status === 200) {
-                    refetch();
                     setLoading(false);
                 }
             })

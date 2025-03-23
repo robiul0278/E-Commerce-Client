@@ -1,81 +1,17 @@
 import {
-  Search,
   MoreVertical,
   ChevronDown,
-  Package,
-  AlertCircle,
-  CheckCircle,
-  Truck,
-  Clock,
 } from 'lucide-react';
 import { useState } from 'react';
+import { useGetAllOrderQuery } from '../../redux/api/api';
+import { format } from "date-fns";
 
-// Order status types and their corresponding styles
-const statusStyles = {
-  pending: { icon: Clock, className: 'bg-yellow-50 text-yellow-700' },
-  processing: { icon: Package, className: 'bg-blue-50 text-blue-700' },
-  shipped: { icon: Truck, className: 'bg-purple-50 text-purple-700' },
-  delivered: { icon: CheckCircle, className: 'bg-green-50 text-green-700' },
-  cancelled: { icon: AlertCircle, className: 'bg-red-50 text-red-700' },
-};
 
 const  ManageOrders = () => {
   const [selectedStatus, setSelectedStatus] = useState('all');
-  const [selectedTimeRange, setSelectedTimeRange] = useState('7days');
+  const {data: orderData} = useGetAllOrderQuery();
 
-  // Mock data for orders
-  const orders = [
-    {
-      id: 'ORD-2024-1234',
-      customer: 'John Doe',
-      email: 'john.doe@example.com',
-      date: '2024-03-14',
-      total: 559.97,
-      status: 'delivered',
-      items: 2,
-      paymentStatus: 'Paid',
-    },
-    {
-      id: 'ORD-2024-1235',
-      customer: 'Jane Smith',
-      email: 'jane.smith@example.com',
-      date: '2024-03-14',
-      total: 299.99,
-      status: 'processing',
-      items: 1,
-      paymentStatus: 'Paid',
-    },
-    {
-      id: 'ORD-2024-1236',
-      customer: 'Robert Johnson',
-      email: 'robert.j@example.com',
-      date: '2024-03-13',
-      total: 789.50,
-      status: 'shipped',
-      items: 3,
-      paymentStatus: 'Paid',
-    },
-    {
-      id: 'ORD-2024-1237',
-      customer: 'Sarah Williams',
-      email: 'sarah.w@example.com',
-      date: '2024-03-13',
-      total: 159.99,
-      status: 'pending',
-      items: 1,
-      paymentStatus: 'Pending',
-    },
-    {
-      id: 'ORD-2024-1238',
-      customer: 'Michael Brown',
-      email: 'michael.b@example.com',
-      date: '2024-03-12',
-      total: 449.98,
-      status: 'cancelled',
-      items: 2,
-      paymentStatus: 'Refunded',
-    },
-  ];
+  console.log(orderData?.data);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -91,23 +27,13 @@ const  ManageOrders = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-white rounded-lg shadow-sm p-6">
             <p className="text-sm text-gray-600">Total Orders</p>
-            <p className="text-2xl font-semibold mt-2">1,234</p>
-            <p className="text-sm text-green-600 mt-2">↑ 12% from last month</p>
+            <p className="text-2xl font-semibold mt-2">{orderData?.data?.length}</p>
+            <p className="text-sm text-green-600 mt-2">↑ total oders</p>
           </div>
           <div className="bg-white rounded-lg shadow-sm p-6">
             <p className="text-sm text-gray-600">Pending Orders</p>
             <p className="text-2xl font-semibold mt-2">23</p>
             <p className="text-sm text-yellow-600 mt-2">Requires attention</p>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <p className="text-sm text-gray-600">Total Revenue</p>
-            <p className="text-2xl font-semibold mt-2">$45,678</p>
-            <p className="text-sm text-green-600 mt-2">↑ 8% from last month</p>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <p className="text-sm text-gray-600">Average Order Value</p>
-            <p className="text-2xl font-semibold mt-2">$234</p>
-            <p className="text-sm text-red-600 mt-2">↓ 3% from last month</p>
           </div>
         </div>
 
@@ -122,7 +48,6 @@ const  ManageOrders = () => {
                   placeholder="Search orders..."
                   className="w-full md:w-80 pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-                <Search className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
               </div>
 
               {/* Status Filter */}
@@ -138,21 +63,6 @@ const  ManageOrders = () => {
                   <option value="shipped">Shipped</option>
                   <option value="delivered">Delivered</option>
                   <option value="cancelled">Cancelled</option>
-                </select>
-                <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-3 pointer-events-none" />
-              </div>
-
-              {/* Time Range Filter */}
-              <div className="relative">
-                <select
-                  value={selectedTimeRange}
-                  onChange={(e) => setSelectedTimeRange(e.target.value)}
-                  className="appearance-none pl-4 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="7days">Last 7 Days</option>
-                  <option value="30days">Last 30 Days</option>
-                  <option value="90days">Last 90 Days</option>
-                  <option value="custom">Custom Range</option>
                 </select>
                 <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-3 pointer-events-none" />
               </div>
@@ -193,41 +103,37 @@ const  ManageOrders = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {orders.map((order) => {
-                  const StatusIcon = statusStyles[order.status].icon;
+                {orderData?.data?.map((order) => {
+                  const formattedDate = format(new Date(order.createdAt), "MMMM d 'at' hh:mm a");
                   return (
-                    <tr key={order.id} className="hover:bg-gray-50">
+                    <tr key={order._id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">
-                        {order.id}
+                        {order.orderNumber}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
-                          {order.customer}
+                          {order.userName}
                         </div>
                         <div className="text-sm text-gray-500">{order.email}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {order.date}
+                        {formattedDate}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div
-                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            statusStyles[order.status].className
-                          }`}
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium `}
                         >
-                          <StatusIcon className="w-4 h-4 mr-1" />
-                          {order.status.charAt(0).toUpperCase() +
-                            order.status.slice(1)}
+                          {order.status}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {order.items} items
+                        {order.totalProduct} items
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        ${order.total.toFixed(2)}
+                        {order.totalPayment} BDT
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {order.paymentStatus}
+                        {order.payment}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button className="text-gray-400 hover:text-gray-500">

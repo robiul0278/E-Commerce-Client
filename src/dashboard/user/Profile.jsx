@@ -1,12 +1,12 @@
-import ProfileUpdateModal from '../../../components/dashboard/ProfileUpdateModal';
-import useUserData from '../../../hooks/useUserData';
+import ProfileUpdateModal from '../../components/dashboard/ProfileUpdateModal';
 import { LiaEdit } from 'react-icons/lia';
 import { useState } from 'react';
-import useMyOrder from '../../../hooks/useMyOrder';
+import { useGetMyUserDataQuery } from '../../redux/api/api';
+import useAuth from '../../hooks/useAuth';
 
 const Profile = () => {
-  const [userData] = useUserData();
-  const [myOrder] = useMyOrder();
+  const { user } = useAuth();
+  const { data: userData } = useGetMyUserDataQuery(user?.email);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -36,11 +36,11 @@ const Profile = () => {
           </div>
 
           {/* Orders Card */}
-          <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between">
+          {/* <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between">
             <p className="text-2xl font-bold text-gray-800">Total Orders</p>
             <p className="text-4xl font-semibold text-gray-600 mt-2">{myOrder?.length || 0}</p>
             <p className="text-sm text-gray-500 mt-2">You have placed {myOrder?.length || 0} orders</p>
-          </div>
+          </div> */}
         </div>
 
         {/* Modal for Profile Update */}

@@ -1,11 +1,11 @@
 
 import { NavLink } from "react-router-dom"
 import useAuth from "../../hooks/useAuth"
-import useUserData from "../../hooks/useUserData";
 import { MdOutlineInventory2 } from "react-icons/md";
 import { RiStickyNoteAddLine } from "react-icons/ri";
 import { CiViewTable } from "react-icons/ci";
 import { ListOrdered } from "lucide-react";
+import { useGetMyUserDataQuery } from "../../redux/api/api";
 
 
 const userRoutes = [
@@ -29,12 +29,12 @@ const adminRoutes = [
     route: "/dashboard/overview",
     icon: <MdOutlineInventory2 size={20} />
   },
-  // {
-  //   id: 2,
-  //   title: "Manage Orders",
-  //   route: "/dashboard/manage-orders",
-  //   icon: <MdOutlineInventory2 size={20} />
-  // },
+  {
+    id: 2,
+    title: "Manage Orders",
+    route: "/dashboard/manage-orders",
+    icon: <MdOutlineInventory2 size={20} />
+  },
   {
     id: 2,
     title: "Add Product",
@@ -64,9 +64,8 @@ const adminRoutes = [
 
 const Sidebar = () => {
   const { Logout } = useAuth();
-  const [userData, isLoading,] = useUserData();
-
-  console.log(userData.data.role);
+  const {user} = useAuth();
+  const {data: userData, isLoading} = useGetMyUserDataQuery(user?.email);
 
   const handleLogout = () => {
     Logout();
