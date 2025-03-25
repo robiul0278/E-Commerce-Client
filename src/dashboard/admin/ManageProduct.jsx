@@ -3,10 +3,16 @@ import {
 } from 'lucide-react';
 import ManageProductTable from '../../components/dashboard/ManageProductTable';
 import { useGetProductsQuery } from '../../redux/api/api';
+import { useState } from 'react';
+import Pagination from '../../components/pagination';
 
 const ManageProducts = () => {
-  const {data: allProducts, isLoading} = useGetProductsQuery({undefined});
-  // const [selectedTimeRange, setSelectedTimeRange] = useState('7days');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+  const {data: allProducts, isLoading} = useGetProductsQuery({searchTerm,limit,page});
+
+  const totalPage = [...Array(allProducts?.data?.meta?.totalPage).keys()].map(i => i + 1);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -25,8 +31,9 @@ const ManageProducts = () => {
               {/* Search */}
               <div className="relative">
                 <input
+                onChange={(e) => setSearchTerm(e.target.value)}
                   type="text"
-                  placeholder="Search orders..."
+                  placeholder="Search by name..."
                   className="w-full md:w-80 pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
                 <Search className="w-5 h-5 text-gray-400 absolute right-4 top-2.5" />
@@ -127,43 +134,16 @@ const ManageProducts = () => {
 
           {/* Pagination */}
           <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-            <div className="flex-1 flex justify-between sm:hidden">
-              <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                Previous
-              </button>
-              <button className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                Next
-              </button>
-            </div>
             <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm text-gray-700">
-                  Showing <span className="font-medium">1</span> to{' '}
-                  <span className="font-medium">5</span> of{' '}
-                  <span className="font-medium">1,234</span> results
+                  Showing{' '}
+                  <span className="font-medium">{allProducts?.data?.result?.length}</span> of{' '}
+                  <span className="font-medium">{allProducts?.data?.meta?.total}</span> results
                 </p>
               </div>
               <div>
-                <nav
-                  className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
-                  aria-label="Pagination"
-                >
-                  <button className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                    Previous
-                  </button>
-                  <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    1
-                  </button>
-                  <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    2
-                  </button>
-                  <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    3
-                  </button>
-                  <button className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                    Next
-                  </button>
-                </nav>
+                <Pagination setLimit={setLimit} setPage={setPage} page={page} totalPage={totalPage} limit={limit} />
               </div>
             </div>
           </div>

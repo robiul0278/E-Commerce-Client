@@ -5,12 +5,13 @@ import empty from "../../../public/empty.svg";
 import { LiaSpinnerSolid } from "react-icons/lia";
 import useAuth from '../../hooks/useAuth';
 import { useCreateOrderMutation, useGetMyUserDataQuery } from '../../redux/api/api';
+import Swal from 'sweetalert2';
 
 const Checkout = () => {
   const cart = useSelector((state) => state.cart)
   const { user } = useAuth();
   const { data: userData } = useGetMyUserDataQuery(user?.email);
-  const [createOrder, {isLoading}] = useCreateOrderMutation();
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
 
   const totalPayment = cart.totalPrice + cart.shipping;
 
@@ -44,10 +45,27 @@ const Checkout = () => {
       totalProduct: cart?.totalQuantity,
       totalPayment: totalPayment,
       userId: userData?.data?._id,
-      status: "Processing",
-      payment: "Pending"
+      status: "processing",
+      payment: "pending"
     }
-    createOrder(purchaseData);
+      ;
+    try {
+      const response = await createOrder(purchaseData).unwrap();
+      if (response.success) {
+        Swal.fire({
+          title: "Success!",
+          text: "Your order has been successfully!.",
+          icon: "success",
+        });
+      }
+    } catch (error) {
+      console.log(error?.data);
+      Swal.fire({
+        title: "Error!",
+        text: `${error?.data?.message}`,
+        icon: "error",
+      });
+    }
   };
 
   return (
@@ -209,11 +227,11 @@ const Checkout = () => {
                         <div>
                           <label className="block text-sm font-medium text-gray-700">Division</label>
                           <input
-                          type="text"
-                          placeholder='division'
-                          {...register('division', { required: 'Address is required' })}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                        />
+                            type="text"
+                            placeholder='division'
+                            {...register('division', { required: 'Address is required' })}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                          />
 
                           {errors.division && <p className="text-sm text-red-600">{errors.division.message}</p>}
                         </div>
@@ -222,11 +240,11 @@ const Checkout = () => {
                         <div>
                           <label className="block text-sm font-medium text-gray-700">District</label>
                           <input
-                          type="text"
-                          placeholder='district'
-                          {...register('district', { required: 'Address is required' })}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                        />
+                            type="text"
+                            placeholder='district'
+                            {...register('district', { required: 'Address is required' })}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                          />
                           {errors.district && <p className="text-sm text-red-600">{errors.district.message}</p>}
                         </div>
 
@@ -234,11 +252,11 @@ const Checkout = () => {
                         <div>
                           <label className="block text-sm font-medium text-gray-700">Upazila</label>
                           <input
-                          type="text"
-                          placeholder='upazilla'
-                          {...register('upazilla', { required: 'Address is required' })}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                        />
+                            type="text"
+                            placeholder='upazilla'
+                            {...register('upazilla', { required: 'Address is required' })}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                          />
                           {errors.upazilla && <p className="text-sm text-red-600">{errors.upazilla.message}</p>}
                         </div>
                         <div className="md:col-span-1">

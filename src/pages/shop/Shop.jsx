@@ -19,8 +19,8 @@ const Shop = () => {
 
     const {data: product, isLoading} = useGetProductsQuery({searchTerm, sort, limit, page})
 
-    const totalPage = [...Array(product?.data?.meta?.totalPage).keys()]
-
+    // const totalPage = [...Array(product?.data?.meta?.totalPage).keys()]
+    const totalPage = [...Array(product?.data?.meta?.totalPage).keys()].map(i => i + 1);
     // ============== Ant =============================
     const {
         token: { colorBgContainer, borderRadiusLG },

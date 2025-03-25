@@ -20,10 +20,18 @@ export const baseApi = createApi({
   // =========================
   endpoints: (builder) => ({
     getAllUser: builder.query({
-      query: () => ({
-        url: `/user`,
-        method: "GET",
-      }),
+      query: (options) => {
+        console.log(options);
+        return {
+          url: `/user`,
+          method: "GET",
+          params:{
+            searchTerm: options.searchTerm,
+            limit: options.limit,
+            page: options.page,
+          }
+        }
+      },
       providesTags: ["User"],
     }),
     getMyUserData: builder.query({
@@ -152,14 +160,31 @@ export const baseApi = createApi({
       invalidatesTags: ["Order"],
     }),
     getAllOrder: builder.query({
-      query: () => ({
+      query: (options) => ({
         url: `/order`,
         method: "GET",
+        params: {
+          searchTerm: options.searchTerm,
+          limit: options.limit,
+          page: options.page,
+          status: options.status,
+        }
       }),
       providesTags: ["Order"],
+    }),
+    changeOrderStatus: builder.mutation({
+      query: (options) => {
+        console.log(options);
+        return {
+          url: `/order/status/${options.id}`,
+          method: "PATCH",
+          body: { status: options.status }
+        }
+      },
+      invalidatesTags: ["Order"],
     }),
   }),
 });
 
 
-export const { useGetAllUserQuery, useGetMyUserDataQuery, useUpdateUserRoleMutation, useDeleteUserMutation, useGetProductsQuery, useUpdateProductMutation, useDeleteProductMutation, useGetFlashProductsQuery, useRemoveFlashProductMutation,useCreateFlashSaleMutation,useUpdateFlashSaleMutation, useCreateOrderMutation,useGetAllOrderQuery } = baseApi;
+export const { useGetAllUserQuery, useGetMyUserDataQuery, useUpdateUserRoleMutation, useDeleteUserMutation, useGetProductsQuery, useUpdateProductMutation, useDeleteProductMutation, useGetFlashProductsQuery, useRemoveFlashProductMutation,useCreateFlashSaleMutation,useUpdateFlashSaleMutation, useCreateOrderMutation,useGetAllOrderQuery, useChangeOrderStatusMutation } = baseApi;

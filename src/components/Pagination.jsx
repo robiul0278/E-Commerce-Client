@@ -4,18 +4,18 @@ import { Button } from "antd";
 const Pagination = ({setLimit, setPage,page,totalPage,limit}) => {
   const handleLimitChange = (e) => {
     const item = parseInt(e.target.value)
-    console.log(item);
+    // console.log(item);
     setLimit(item);
-    setPage(0)
+    setPage(1)
 }
 
 const handlePrv = () => {
-    if(page > 0){
+    if(page > 1){
         setPage(page - 1)
     }
 }
 const handleNext = () => {
-    if(page < totalPage.length - 1){
+    if(page < totalPage.length ){
         setPage(page + 1)
     }
 }
@@ -31,7 +31,7 @@ const handleNext = () => {
     }
     <Button onClick={handleNext}>Next</Button>
     <select value={limit} onChange={handleLimitChange}>
-        <option value={15}>15</option>
+        <option value={10}>10</option>
         <option value={20}>20</option>
         <option value={30}>30</option>
         <option value={40}>40</option>
