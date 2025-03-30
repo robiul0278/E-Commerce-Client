@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useGetFlashProductsQuery } from "../redux/api/api";
 
 const Countdown = () => {
-      const {data} = useGetFlashProductsQuery();
-    const endTime = data?.data?.endTime;
+      const {data: flashData} = useGetFlashProductsQuery('');
+
+      // console.log(flashData?.data?.flashData.endTime);
+    const endTime = flashData?.data?.flashData.endTime;
     const [timeLeft, setTimeLeft] = useState({
         days: 0,
         hours: 0,

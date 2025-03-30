@@ -5,15 +5,15 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation, Autoplay } from "swiper/modules";
 import Loading from "../../pages/Loading";
-import ProductsCard from "../../pages/products/ProductsCard";
 import { ChevronsRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useGetFlashProductsQuery } from "../../redux/api/api";
 import Countdown from "../../components/Countdown";
+import FlashProductCard from "../products/FlashProductCard";
 
 const FlashSale = () => {
   const [slidesPerView, setSlidesPerView] = useState(5);
-  const { data, isLoading } = useGetFlashProductsQuery();
+  const { data: flashData, isLoading } = useGetFlashProductsQuery('');
 
   // Refs for custom navigation buttons
   const prevRef = useRef(null);
@@ -41,14 +41,14 @@ const FlashSale = () => {
 
   return (
 <>
-{data?.data?.products?.length ? <>
+{flashData?.data.result.length ? <>
   <section className="p-5 lg:p-0 lg:my-16">
   <div className="flex flex-row justify-between lg:gap-5 md:gap-5">
 
     <div className="flex items-center justify-center md:gap-4 lg:gap-5 gap-2">
       <div className="flex items-center gap-2">
         <div className="w-3 h-7 rounded bg-[#49B2FF]" />
-        <h1 className="text-[#49B2FF]">Today`&apos;`s</h1>
+        <h1 className="text-[#49B2FF]">Today&apos;s</h1>
       </div>
       <Countdown />
     </div>
@@ -102,9 +102,9 @@ const FlashSale = () => {
           swiper.params.navigation.nextEl = nextRef.current;
         }}
       >
-        {data?.data?.products?.map((product) => (
+        {flashData?.data.result.map((product) => (
           <SwiperSlide key={product.id} className="p-0.5 md:p-2 lg:p-2">
-            <ProductsCard product={product} />
+            <FlashProductCard product={product} />
           </SwiperSlide>
         ))}
       </Swiper>

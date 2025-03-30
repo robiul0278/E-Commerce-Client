@@ -14,7 +14,7 @@ const Shop = () => {
     // const [brand, setBrand] = useState("");
     const [searchParams] = useSearchParams();
     const searchTerm = searchParams.get("search") || "";
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(15);
 
     const {data: product, isLoading} = useGetProductsQuery({searchTerm, sort, limit, page})

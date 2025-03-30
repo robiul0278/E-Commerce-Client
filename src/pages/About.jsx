@@ -5,11 +5,11 @@ const About = () => {
 <section className="max-w-7xl mx-auto px-6 py-16">
   <div className="grid md:grid-cols-2 gap-8 items-center">
     <div>
-      <img src="https://www.newagebd.com/files/records/news/202304/200373_184.jpg" alt="About Us" className="rounded-lg shadow-lg"/>
+      <img src="https://summalinguae.com/wp-content/uploads/2020/06/shelf-3087406_1920-1.jpg" alt="About Us" className="rounded-lg shadow-lg"/>
     </div>
 
     <div>
-      <h2 className="text-3xl font-bold mb-4">Welcome to Our Mobile Shop</h2>
+      <h2 className="text-3xl font-bold mb-4">Welcome to Our E-Commerce Shop</h2>
       <p className="mb-4">
         At our mobile shop, we are passionate about connecting people through technology. Since our inception, we have been committed to offering the latest mobile devices, accessories, and exceptional customer service.
       </p>
@@ -29,9 +29,9 @@ const About = () => {
 
 
 <section className=" mb-10 text-black py-12 text-center">
-  <h2 className="text-2xl font-bold mb-4">Experience the Best in Mobile Shopping</h2>
+  <h2 className="text-2xl font-bold mb-4">Experience the Best Shopping</h2>
   <p className="mb-6">Visit us today or browse our latest collection online. We’re here to help you stay connected!</p>
-  <a href="/products" className="bg-white text-teal-500 py-2 px-6 rounded-lg shadow hover:bg-gray-700 transition">
+  <a href="/shop" className="bg-white text-teal-500 py-2 px-6 rounded-lg shadow hover:bg-gray-700 transition">
     Browse Our Products
   </a>
 </section>

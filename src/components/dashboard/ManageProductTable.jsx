@@ -1,25 +1,23 @@
 /* eslint-disable react/prop-types */
 import { PenLine, Trash2 } from "lucide-react";
-import toast from "react-hot-toast";
-import axios from "axios";
 import { Button } from "antd";
-import { useDeleteProductMutation, useGetFlashProductsQuery, useGetMyUserDataQuery, useRemoveFlashProductMutation } from "../../redux/api/api";
+import { useAddFlashProductMutation, useDeleteProductMutation, useGetFlashProductsQuery, useRemoveFlashProductMutation } from "../../redux/api/api";
 import Swal from "sweetalert2";
 import UpdateProductModal from "./UpdateProductModal";
 import { useState } from "react";
-import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const ManageProductTable = ({ product }) => {
-    const { data, refetch } = useGetFlashProductsQuery();
+    const { data: flashData } = useGetFlashProductsQuery('');
     const [deleteProduct, { isLoading }] = useDeleteProductMutation();
     const [removeProduct] = useRemoveFlashProductMutation();
      const [isUpdateOpen, setUpdateOpen] = useState(false);
-     const {user} = useAuth();
-     const {data: userData} = useGetMyUserDataQuery(user?.email);
+    const [addFlashProduct] = useAddFlashProductMutation();
+     console.log(flashData);
 
     // Check if data is an array or if it has products as an array
-    const isInFlashSale = Array.isArray(data?.data?.products)
-        ? data?.data?.products.some((item) => item?._id === product?._id)
+    const isInFlashSale = Array.isArray(flashData?.data.result)
+        ? flashData?.data.result.some((item) => item?._id === product?._id)
         : false;
 
     // handle Remove To Product
@@ -55,23 +53,20 @@ const ManageProductTable = ({ product }) => {
     };
 
     // handle Remove To Product
-    const handleAddToFlashSale = async (productId) => {
-        const flashData = {
-            productId,
-            userRole: userData?.data?.role
+    const handleAddToFlashSale = async (id) => {
+
+        const options = {
+            id,
+            flashId: flashData?.data?.flashData?._id
         }
+
         try {
-            await axios.patch(`http://localhost:5000/api/v1/flash-sale/add-product`, flashData)
-                .then((response) => {
-                    if (response.status === 200) {
-                        toast.success("Added to FLash Sale!");
-                        refetch()
-                    } else {
-                        toast.error(response.data.message);
-                    }
-                })
+            const response = await addFlashProduct(options).unwrap();
+            if (response.success) {
+                toast.success("Product added to flash sale!");
+            }
         } catch (error) {
-            toast.error(error.response.data.message);
+            toast.error(`${error?.data.message}`);
         }
     };
 

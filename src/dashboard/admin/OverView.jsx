@@ -7,7 +7,7 @@ const OverView = () => {
     const {data: FlashProduct} =  useGetFlashProductsQuery('');
     const {data: Product} = useGetProductsQuery('');
 
-    console.log(FlashProduct?.data?.products?.length);
+    // console.log(FlashProduct?.data?.meta?.total);
     return (
         <div className="">
             <header className="bg-white shadow-sm">
@@ -34,8 +34,8 @@ const OverView = () => {
                     <div className="bg-white rounded-lg shadow-sm p-6">
                         <p className="text-sm text-gray-600">Total Flash Sale</p>
                         <p className="text-2xl font-semibold mt-2">
-                        {FlashProduct?.data?.products?.length}</p>
-                        <p className="text-sm text-green-600 mt-2">↑ 8% from last month</p>
+                        {FlashProduct?.data?.meta?.total}</p>
+                        <p className="text-sm text-green-600 mt-2">↑ active flash sale</p>
                     </div>
                     <div className="bg-white flex flex-col gap-2 rounded-lg shadow-sm p-4">
                         <p className="text-sm text-gray-600">Discount End</p>

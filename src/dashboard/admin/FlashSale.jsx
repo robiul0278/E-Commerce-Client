@@ -8,21 +8,23 @@ import CreateFlashSaleModal from "../../components/dashboard/CreateFlashSaleModa
 import UpdateFlashSaleModal from "../../components/dashboard/UpdateFlashSaleModal";
 import Countdown from "../../components/Countdown";
 import { useCreateFlashSaleMutation, useGetFlashProductsQuery, useRemoveFlashProductMutation, useUpdateFlashSaleMutation } from "../../redux/api/api";
+import Pagination from "../../components/pagination";
 
 const FlashSale = () => {
   const [isCreateOpen, setCreateOpen] = useState(false);
   const [isUpdateOpen, setUpdateOpen] = useState(false);
 
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
-  const {data: flashData} = useGetFlashProductsQuery();
+  const {data: flashData} = useGetFlashProductsQuery({searchTerm});
   const [removeProduct] = useRemoveFlashProductMutation();
   const [createFlashSale, {isLoading}] = useCreateFlashSaleMutation();
   const [updateFlashSale] = useUpdateFlashSaleMutation();
 
-  // Handle search input
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
+  // console.log(flashData?.data?.meta.total);
+
+  const totalPage = [...Array(flashData?.data?.meta?.totalPage).keys()].map(i => i + 1);
 
   const {
     reset,
@@ -113,13 +115,13 @@ const FlashSale = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <div className="bg-white rounded-lg shadow-sm p-6">
             <p className="text-sm text-gray-600">Total Product</p>
-            <p className="text-2xl font-semibold mt-2">{flashData?.data?.products?.length || 0}</p>
-            <p className="text-sm text-green-600 mt-2">↑ {flashData?.data?.products?.length || 0} products from store</p>
+            <p className="text-2xl font-semibold mt-2">{flashData?.data?.flashData.productCount || 0}</p>
+            <p className="text-sm text-green-600 mt-2">↑ {flashData?.data?.flashData.productCount || 0} products from store</p>
           </div>
           <div className="bg-white rounded-lg shadow-sm p-6">
             <p className="text-sm text-gray-600">Discount Now</p>
-            <p className="text-2xl font-semibold mt-2">{flashData?.data?.discount || 0}%</p>
-            <p className="text-sm text-yellow-600 mt-2">{flashData?.data?.discount || 0}% discount from store</p>
+            <p className="text-2xl font-semibold mt-2">{flashData?.data?.flashData.discount || 0}%</p>
+            <p className="text-sm text-yellow-600 mt-2">{flashData?.data?.flashData.discount || 0}% discount from store</p>
           </div>
           <div className="bg-white flex flex-col gap-2 rounded-lg shadow-sm p-6">
             <p className="text-sm text-gray-600">Discount End</p>
@@ -141,7 +143,7 @@ const FlashSale = () => {
                   type="text"
                   value={searchTerm}
                   defaultValue=""
-                  onChange={handleSearchChange}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search products..."
                   className="w-full md:w-80 pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
@@ -188,8 +190,8 @@ const FlashSale = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {flashData?.data?.products?.length ? <>
-                  {flashData?.data?.products?.map((product) => {
+                {flashData?.data?.result?.length ? <>
+                  {flashData?.data?.result.map((product) => {
                     return (
 
                       <tr key={product.id} className="hover:bg-gray-50">
@@ -225,7 +227,7 @@ const FlashSale = () => {
             </table>
           </div>
 
-          {flashData?.data?.products.length ?
+          {flashData?.data?.result?.length ?
      ""
             :
             <div className="flex items-center justify-center py-10">
@@ -237,42 +239,17 @@ const FlashSale = () => {
 
           {/* Pagination */}
           <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-            <div className="flex-1 flex justify-between sm:hidden">
-              <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                Previous
-              </button>
-              <button className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                Next
-              </button>
-            </div>
             <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-              {/* Pagination Info */}
               <div>
                 <p className="text-sm text-gray-700">
-                  Showing {' '}
-                  <span className="font-medium">{flashData?.data?.products?.length}</span> results
+                  Showing{' '}
+                  <span className="font-medium">{flashData?.data?.result?.length}</span> of{' '}
+                  <span className="font-medium">{flashData?.data?.meta?.total}</span> results
                 </p>
               </div>
-              {/* Pagination */}
-              {/* <div className="flex justify-center mt-6">
-                <nav className="inline-flex rounded-md shadow-sm" aria-label="Pagination">
-                  <button
-                    disabled={page === 1}
-                    className="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-                  >
-                    Previous
-                  </button>
-                  <span className="px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
-                    Page {page} of {totalPages}
-                  </span>
-                  <button
-                    disabled={page === totalPages}
-                    className="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-                  >
-                    Next
-                  </button>
-                </nav>
-              </div> */}
+              <div>
+                <Pagination setLimit={setLimit} setPage={setPage} page={page} totalPage={totalPage} limit={limit} />
+              </div>
             </div>
           </div>
         </div>

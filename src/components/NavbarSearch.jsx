@@ -16,7 +16,7 @@ const NavbarSearch = () => {
         <div className="flex w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto bg-[#F5F5F5] overflow-hidden">
         <input
             type="text"
-            placeholder="search products..."
+            placeholder="Search..."
             className="w-full px-4 py-2 sm:text-base outline-none bg-[#F5F5F5]"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
