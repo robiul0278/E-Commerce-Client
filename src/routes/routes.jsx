@@ -19,6 +19,7 @@ import ManageProducts from "../dashboard/admin/ManageProduct";
 import ManageOrders from "../dashboard/admin/ManageOrders";
 import OverView from "../dashboard/admin/OverView";
 import FlashSale from "../dashboard/admin/FlashSale";
+import FlashProductView from "../pages/FlashProductView";
 
 
 export const router = createBrowserRouter([
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
             {
                 path: "/view/:id",
                 element: <ProductView />
+            },
+            {
+                path: "/flash-product/:id",
+                element: <FlashProductView />
             },
             {
                 path: "/about",

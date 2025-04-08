@@ -6,7 +6,7 @@ import { Toaster } from 'react-hot-toast'
 
 const MainLayout = () => {
   return (
-    <div className='max-w-[1440px] mx-auto bg-white'>
+    <div>
       <Navbar/>
       <Outlet />
       <Footer />

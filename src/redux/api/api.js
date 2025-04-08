@@ -76,11 +76,22 @@ export const baseApi = createApi({
             sort: options.sort,
             limit: options.limit,
             page: options.page,
-            category: options.category
+            category: options.category,
+            subCategory: options.subCategory,
+            brand: options.brand
           }
         }
       },
       providesTags: ['Product'],
+    }),
+    singleProduct: builder.query({
+      query: (id) => {
+        return {
+          url: `/products/view/${id}`,
+          method: "GET",
+        }
+      },
+      invalidatesTags: ["Product"],
     }),
     updateProduct: builder.mutation({
       query: (options) => {
@@ -111,6 +122,15 @@ export const baseApi = createApi({
         },
       }),
       providesTags: ["FlashSale"],
+    }),
+    singleFlashProduct: builder.query({
+      query: (id) => {
+        return {
+          url: `/flash-sale/${id}`,
+          method: "GET",
+        }
+      },
+      invalidatesTags: ["FlashSale"],
     }),
     addFlashProduct: builder.mutation({
       query: (options) => ({
@@ -198,4 +218,4 @@ export const baseApi = createApi({
 });
 
 
-export const { useGetAllUserQuery, useGetMyUserDataQuery, useUpdateUserRoleMutation, useDeleteUserMutation, useGetProductsQuery, useUpdateProductMutation, useDeleteProductMutation, useGetFlashProductsQuery,useAddFlashProductMutation, useRemoveFlashProductMutation,useCreateFlashSaleMutation,useUpdateFlashSaleMutation, useCreateOrderMutation,useGetAllOrderQuery, useChangeOrderStatusMutation } = baseApi;
+export const { useGetAllUserQuery, useGetMyUserDataQuery, useUpdateUserRoleMutation, useDeleteUserMutation, useGetProductsQuery, useSingleProductQuery, useUpdateProductMutation, useDeleteProductMutation, useGetFlashProductsQuery, useSingleFlashProductQuery,useAddFlashProductMutation, useRemoveFlashProductMutation,useCreateFlashSaleMutation,useUpdateFlashSaleMutation, useCreateOrderMutation,useGetAllOrderQuery, useChangeOrderStatusMutation } = baseApi;

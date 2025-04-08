@@ -8,16 +8,30 @@ import { useSearchParams } from 'react-router-dom';
 import Pagination from '../../components/pagination';
 import { useState } from 'react';
 import { useGetProductsQuery } from '../../redux/api/api';
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 const Shop = () => {
+    const [params] = useSearchParams();
     const [sort, setSort] = useState("");
-    // const [brand, setBrand] = useState("");
-    const [searchParams] = useSearchParams();
-    const searchTerm = searchParams.get("search") || "";
+    const [brand, setBrand] = useState("");
+    const searchTerm = params.get("search") || "";
+    const paramsCategory = params.get("category") || "";
+    const [isCategory, setIsCategory] = useState("");
+    const paramsSubCategory = params.get("subCategory") || "";
+    const [isSubCategory, setSubCategory] = useState("");
+
+
+    
+    const category = isCategory || paramsCategory;
+    const subCategory = isSubCategory || paramsSubCategory;
+
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(15);
 
-    const {data: product, isLoading} = useGetProductsQuery({searchTerm, sort, limit, page})
+    const {data: product, isLoading} = useGetProductsQuery({searchTerm, sort, limit, page, category, subCategory, brand});
+
+    const handleReset = () => {
+        window.location.reload();
+    };
 
     // const totalPage = [...Array(product?.data?.meta?.totalPage).keys()]
     const totalPage = [...Array(product?.data?.meta?.totalPage).keys()].map(i => i + 1);
@@ -27,34 +41,31 @@ const Shop = () => {
     } = theme.useToken();
 
     return (
-        <Layout>
+        <Layout className='max-w-7xl mx-auto'>
             <Sider className='hidden lg:flex md:flex' trigger={null} style={{ padding: 10 }} width={300} theme='light' collapsible >
                 <div className="demo-logo-vertical" />
                 <Filtering
                     product={product}
                     setSort={setSort}
-                    // setBrand={setBrand}
-                // setSubCategory={setSubCategory}
-                // handleReset={handleReset}
-                // filterBrand={filterBrand}
-                // filterCategory={filterCategory}
+                    setBrand={setBrand}
+                    setIsCategory={setIsCategory}
+                    setSubCategory={setSubCategory}
+                    handleReset={handleReset}
                 />
             </Sider>
             <Layout>
-                <Header
+                {/* <Header
                     style={{
                         padding: 0,
                         background: colorBgContainer,
                     }}
                 >
-                </Header>
+                </Header> */}
                 <Content
 
                     style={{
                         margin: '16px 16px 0px 16px',
-                        // padding: 30,
                         minHeight: 280,
-                        // background: colorBgContainer,
                         borderRadius: borderRadiusLG,
                     }}
                 >

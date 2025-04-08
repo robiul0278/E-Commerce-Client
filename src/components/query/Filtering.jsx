@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-const Filtering = ({ product, setSort,setBrand }) => {
+const Filtering = ({ product, setSort, setBrand,  setIsCategory,setSubCategory, handleReset }) => {
 
   return (
     <div className="space-y-3 p-5">
@@ -41,10 +41,10 @@ const Filtering = ({ product, setSort,setBrand }) => {
 
 
       {/* Category Filter */}
-      {/* <div>
+      <div>
         <label className="block text-sm font-semibold text-gray-700 mb-1">Filter By Category</label>
         <select
-          onChange={(e) => setSubCategory(e.target?.value)}
+          onChange={(e) => setIsCategory(e.target?.value)}
           className="block w-full pl-3 pr-10 py-2 border border-gray-700 bg-white sm:text-sm"
         >
           <option value="">All Categories</option>
@@ -56,16 +56,16 @@ const Filtering = ({ product, setSort,setBrand }) => {
             )
           )}
         </select>
-      </div> */}
+      </div>
       {/* Category Filter */}
-      {/* <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-1">Filter By Category</label>
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-1">Filter By Product</label>
         <select
           onChange={(e) => setSubCategory(e.target?.value)}
           className="block w-full pl-3 pr-10 py-2 border border-gray-700 bg-white sm:text-sm"
         >
           <option value="">All Categories</option>
-              {[...new Set(product?.data?.result.map((item) => item.category))].map(
+              {[...new Set(product?.data?.result.map((item) => item.subCategory))].map(
             (category) => (
               <option key={category} value={category}>
                 {category}
@@ -73,10 +73,10 @@ const Filtering = ({ product, setSort,setBrand }) => {
             )
           )}
         </select>
-      </div> */}
+      </div>
 
       {/* Reset Button */}
-      {/* <div>
+      <div>
         <button
           type="submit"
           onClick={handleReset}
@@ -84,7 +84,7 @@ const Filtering = ({ product, setSort,setBrand }) => {
         >
           Reset All
         </button>
-      </div> */}
+      </div>
     </div>
   );
 };

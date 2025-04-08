@@ -32,7 +32,7 @@ const PhoneTablets = () => {
       if (window.innerWidth >= 1024) {
         setSlidesPerView(5); // Large screens
       } else if (window.innerWidth >= 768) {
-        setSlidesPerView(3); // Tablets
+        setSlidesPerView(5); // Tablets
       } else if (window.innerWidth >= 640) {
         setSlidesPerView(2); // Mobile devices
       } else {

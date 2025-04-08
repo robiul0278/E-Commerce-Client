@@ -10,7 +10,7 @@ import Read from "./Read";
 
 const HomePage = () => {
     return (
-        <div className="lg:w-[1170px] mx-auto">
+        <div className="max-w-7xl mx-auto">
             <div className="lg:hidden md:hidden flex px-2 pt-2">
                 <NavbarSearch />
             </div>

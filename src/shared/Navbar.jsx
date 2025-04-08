@@ -50,9 +50,9 @@ const Navbar = () => {
                 </div>
 
                 {/* Main Navbar Section */}
-                <div className="flex lg:w-[1170px] mx-auto items-center justify-between w-full  lg:px-2 py-3 bg-white">
+                <div className="flex max-w-7xl mx-auto items-center justify-between w-full  py-3 bg-white">
                     {/* Logo Section */}
-                    <div className='ml-2'>
+                    <div className=''>
                         <NavLink href="/" className="font-bold text-xl sm:text-2xl md:text-3xl text-[#49B2FF]">
                             E-Commerce
                         </NavLink>

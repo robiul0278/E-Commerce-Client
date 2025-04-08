@@ -57,7 +57,7 @@ const AddProduct = () => {
             price: parseFloat(data.price),
             brand: data.brand,
             category: data.category,
-            sub_category: data.subCategory,
+            subCategory: data.subCategory,
             stock: parseFloat(data.stock),
             image: data?.image,
             description: data.description,
@@ -120,22 +120,24 @@ const AddProduct = () => {
                                 className="w-full rounded py-2.5 px-4 border border-gray-300 text-sm"
                                 {...register("brand", { required: "Product brand is required!" })}
                             >
-                                <option value="">Select a Brand</option>
-                                <option value="Apple">Apple</option>
-                                <option value="Samsung">Samsung</option>
-                                <option value="OnePlus">OnePlus</option>
-                                <option value="IQOO">IQOO</option>
-                                <option value="Sony">Sony</option>
-                                <option value="Pixel">Pixel</option>
-                                <option value="Poco">Poco</option>
-                                <option value="Motorola">Motorola</option>
-                                <option value="Go-Pro">Go-Pro</option>
-                                <option value="Walton">Walton</option>
-                                <option value="Realme">Realme</option>
-                                <option value="Oppo">Oppo</option>
-                                <option value="Xiaomi">Xiaomi</option>
-                                <option value="JBL">JBL</option>
-                                <option value="Others">Others</option>
+                          <option value="">Select a Brand</option>
+                            <option value="apple">Apple</option>
+                            <option value="samsung">Samsung</option>
+                            <option value="onePlus">OnePlus</option>
+                            <option value="iqoo">IQOO</option>
+                            <option value="sony">Sony</option>
+                            <option value="pixel">Pixel</option>
+                            <option value="poco">Poco</option>
+                            <option value="motorola">Motorola</option>
+                            <option value="goPro">Go Pro</option>
+                            <option value="walton">Walton</option>
+                            <option value="realme">Realme</option>
+                            <option value="oppo">Oppo</option>
+                            <option value="xiaomi">Xiaomi</option>
+                            <option value="jbl">JBL</option>
+                            <option value="huawei">Huawei</option>
+                            <option value="anker">Anker</option>
+                            <option value="others">Others</option>
                             </select>
                             {errors.brand && <span className='text-red-500 text-xs'>{errors.brand.message}</span>}
                         </div>
@@ -154,7 +156,7 @@ const AddProduct = () => {
                                 <option value="power-accessories">Power & Accessories</option>
                                 <option value="fitness-wearable">Fitness & Wearable</option>
                                 <option value="smart-electronics">Smart Electronics</option>
-                                <option value="camera">Camera</option>
+                                <option value="peripherals">Peripherals</option>
                             </select>
                             {errors.category && <span className='text-red-500 text-xs'>{errors.category.message}</span>}
                         </div>
@@ -164,21 +166,25 @@ const AddProduct = () => {
                                 className="w-full rounded py-2.5 px-4 border border-gray-300 text-sm"
                                 {...register("subCategory", { required: "Product sub-category is required!" })}
                             >
-                                <option value="">Select sub-category</option>
-                                <option value="Smartphones">Smartphones</option>
-                                <option value="Watch">Watch</option>
-                                <option value="Headphone">Headphone</option>
-                                <option value="Camera">Camera</option>
-                                <option value="Tablets">Tablets</option>
-                                <option value="Speaker">Speaker</option>
-                                <option value="Laptop">Laptop</option>
-                                <option value="Router">Router</option>
-                                <option value="Desktop">Desktop</option>
-                                <option value="Fan">Fan</option>
-                                <option value="Calculator">Calculator</option>
-                                <option value="Adapter">Adapter</option>
-                                <option value="Power Bank">Power Bank</option>
-                                <option value="TWS">TWS</option>
+                                <option value="">Select Sub Category</option>
+                                <option value="smartphones">Smartphones</option>
+                                <option value="watch">Watch</option>
+                                <option value="headphone">Headphone</option>
+                                <option value="camera">Camera</option>
+                              
+                                <option value="tablets">Tablets</option>
+                                <option value="speaker">Speaker</option>
+                                <option value="laptop">Laptop</option>
+                                <option value="router">Router</option>
+                                <option value="desktop">Desktop</option>
+                                <option value="fan">Fan</option>
+                                <option value="calculator">Calculator</option>
+                                <option value="adapter">Adapter</option>
+                                <option value="powerBank">Power Bank</option>
+                                <option value="tws">TWS</option>
+                                <option value="mouse">Mouse</option>
+                                <option value="coverAndGlass">Cover & Glass</option>
+                                <option value="smartTv">Smart TV</option>
                             </select>
                             {errors.subCategory && <span className='text-red-500 text-xs'>{errors.subCategory.message}</span>}
                         </div>

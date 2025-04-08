@@ -15,6 +15,8 @@ const FlashSale = () => {
   const [slidesPerView, setSlidesPerView] = useState(5);
   const { data: flashData, isLoading } = useGetFlashProductsQuery('');
 
+  console.log(flashData);
+
   // Refs for custom navigation buttons
   const prevRef = useRef(null);
   const nextRef = useRef(null);
@@ -25,7 +27,7 @@ const FlashSale = () => {
       if (window.innerWidth >= 1024) {
         setSlidesPerView(5); // Large screens
       } else if (window.innerWidth >= 768) {
-        setSlidesPerView(3); // Tablets
+        setSlidesPerView(5); // Tablets
       } else if (window.innerWidth >= 640) {
         setSlidesPerView(2); // Mobile devices
       } else {

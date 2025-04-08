@@ -58,10 +58,10 @@ const ProductsCard = ({ product }) => {
         </div>
       </Link>
       <div className="flex items-center justify-between md:text-xs lg:text-xs mt-auto">
-        <button className="rounded border border-[#49B2FF] bg-[#49B2FF] p-1 md:p-1.5 lg:p-1.5 px-3 md:px-4 lg:px-4 font-semibold text-white text-[10px] md:text-xs lg:text-xs duration-300 hover:scale-95 hover:bg-sky-600">
+        {/* <button className="rounded border border-[#49B2FF] bg-[#49B2FF] p-1 md:p-1.5 lg:p-1.5 px-3 md:px-4 lg:px-4 font-semibold text-white text-[10px] md:text-xs lg:text-xs duration-300 hover:scale-95 hover:bg-sky-600">
           Buy Now
-        </button>
-        <button onClick={(e) => handleAddToCart(e, product)} className="rounded border border-[#49B2FF] p-1 md:p-1.5 lg:p-1.5 px-2 md:px-3 lg:px-3 font-semibold text-[#49B2FF] duration-300 hover:bg-[#49B2FF] text-[10px] md:text-xs lg:text-xs hover:text-white hover:scale-95">
+        </button> */}
+        <button onClick={(e) => handleAddToCart(e, product)} className="w-full rounded border border-[#49B2FF] p-1 md:p-1.5 lg:p-1.5 px-2 md:px-3 lg:px-3 font-semibold text-[#49B2FF] duration-300 hover:bg-[#49B2FF] text-[10px] md:text-xs lg:text-xs hover:text-white hover:scale-95">
           Add to Cart
         </button>
       </div>
