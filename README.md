@@ -1,16 +1,15 @@
 # Mobile Shop (An Online Gadget Website)
 
 ## Live Link
-[https://mymobile-shop.netlify.app/](#)
+[https://ee-commerce-shop.netlify.app/](#)
 
 ## GitHub Repositories
-- **Client Repository**: [https://github.com/robiul0278/Mobile-Shop-Client](#)
-- **Server Repository**: [https://github.com/robiul0278/Mobile-Shop-Server](#)
+- **Client Repository**: [https://github.com/robiul0278/E-Commerce-Client](#)
+- **Server Repository**: [https://github.com/robiul0278/E-Commerce-Server](#)
 
 ---
 
 ## Features
-
 ### Role-Based Access
 - **Buyer**:
   - Browse products and make purchases through a dedicated dashboard.

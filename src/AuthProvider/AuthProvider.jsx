@@ -72,7 +72,7 @@ const AuthProvider = ({ children }) => {
             setUser(currentUser);
             if (currentUser) {
                 setLoading(true);
-                axios.post(`http://localhost:5000/api/v1/user/jsonwebtoken`, { email: currentUser?.email })
+                axios.post(`https://e-commerce-server-azure.vercel.app/api/v1/user/jsonwebtoken`, { email: currentUser?.email })
                 .then(data => {
                     if (data.status === 200) {
                         localStorage.setItem("access-token", data?.data?.token);

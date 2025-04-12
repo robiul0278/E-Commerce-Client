@@ -26,7 +26,7 @@ const GoogleLogin = () => {
                 };
 
                 // Send user data to backend
-                axios.post("http://localhost:5000/user", authData)
+                axios.post("https://e-commerce-server-azure.vercel.app/user", authData)
                     .then((res) => {
                         if (res.data.insertedId) {
                             const from = location.state?.from || '/';

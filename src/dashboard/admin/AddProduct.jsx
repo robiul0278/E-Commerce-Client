@@ -65,7 +65,7 @@ const AddProduct = () => {
 
         try {
             const response = await axios.post(
-                "http://localhost:5000/api/v1/products/create",
+                "https://e-commerce-server-azure.vercel.app/api/v1/products/create",
                 productData);
             if (response.data.success === true) {
                 toast.success("Product added successfully!");

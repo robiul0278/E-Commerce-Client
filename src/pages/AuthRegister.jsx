@@ -39,7 +39,7 @@ const AuthRegister = () => {
 
         RegisterUser(email, password)
             .then(() => {
-                axios.post("http://localhost:5000/api/v1/user/create-user", userData)
+                axios.post("https://e-commerce-server-azure.vercel.app/api/v1/user/create-user", userData)
                     .then((res) => {
                         console.log(res);
                         if (res.data.success === true) {

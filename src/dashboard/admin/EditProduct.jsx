@@ -29,7 +29,7 @@ const EditProduct = ({ modalProduct, latestData, setLatestData }) => {
     // Add product to database
     const token = localStorage.getItem("access-token");
 
-    axios.put(`http://localhost:5000/update-product/${_id}`, productData, {
+    axios.put(`https://e-commerce-server-azure.vercel.app/update-product/${_id}`, productData, {
       headers: {
         authorization: `Bearer ${token}`,
       },

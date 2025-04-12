@@ -64,7 +64,7 @@ const ProfileUpdateModal = ({ onClose }) => {
         }
 
         // await new Promise(resolve => setTimeout(resolve, 1000));
-        axios.patch(`http://localhost:5000/update-profile/${userData?._id}`, updateDAta, {
+        axios.patch(`https://e-commerce-server-azure.vercel.app/update-profile/${userData?._id}`, updateDAta, {
             headers: {
                 authorization: `Bearer ${token}`,
             }
