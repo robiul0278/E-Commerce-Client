@@ -33,7 +33,6 @@ const FlashProductView = () => {
           dispatch(addToCart(product))
           setIsCartOpen(true)
         }
-
     return (
         <section>
             <div className="font-[sans-serif] max-w-7xl bg-gray-100 mx-auto my-16">

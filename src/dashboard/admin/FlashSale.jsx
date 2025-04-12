@@ -9,6 +9,7 @@ import UpdateFlashSaleModal from "../../components/dashboard/UpdateFlashSaleModa
 import Countdown from "../../components/Countdown";
 import { useCreateFlashSaleMutation, useGetFlashProductsQuery, useRemoveFlashProductMutation, useUpdateFlashSaleMutation } from "../../redux/api/api";
 import Pagination from "../../components/pagination";
+import { format } from "date-fns";
 
 const FlashSale = () => {
   const [isCreateOpen, setCreateOpen] = useState(false);
@@ -17,16 +18,16 @@ const FlashSale = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
-  const {data: flashData} = useGetFlashProductsQuery({searchTerm});
+  const { data: flashData } = useGetFlashProductsQuery({ searchTerm });
   const [removeProduct] = useRemoveFlashProductMutation();
-  const [createFlashSale, {isLoading}] = useCreateFlashSaleMutation();
+  const [createFlashSale] = useCreateFlashSaleMutation();
   const [updateFlashSale] = useUpdateFlashSaleMutation();
 
-  // console.log(flashData?.data?.meta.total);
 
   const totalPage = [...Array(flashData?.data?.meta?.totalPage).keys()].map(i => i + 1);
 
   const {
+    control,
     reset,
     register,
     handleSubmit,
@@ -34,10 +35,11 @@ const FlashSale = () => {
   } = useForm();
 
   const {
-    reset: reset2,
-    register: register2,
-    handleSubmit: handleSubmit2,
-    formState: { errors: errors2 },
+    control: controlB,
+    reset: resetB,
+    register: registerB,
+    handleSubmit: handleSubmitB,
+    formState: { errors: errorsB },
   } = useForm();
 
   const handleCreateFlashSale = async (data) => {
@@ -53,7 +55,6 @@ const FlashSale = () => {
 
     try {
       const response = await createFlashSale(productData).unwrap();
-
       if (response.success) {
         toast.success("Flash Sale created successfully!");
         reset();
@@ -66,13 +67,14 @@ const FlashSale = () => {
 
   const handleUpdateFlashSale = async (data) => {
     const updateData = {
-      id: flashData?.data?._id,
+      id: flashData?.data.flashData._id,
       discount: parseFloat(data?.discount),
       startTime: data?.startTime,
       endTime: data?.endTime,
     }
 
-    if (!flashData?.data?._id) {
+
+    if (!flashData?.data.flashData._id) {
       return toast.error("Please Create a Flash Sale!!");
     }
 
@@ -80,7 +82,7 @@ const FlashSale = () => {
       const response = await updateFlashSale(updateData).unwrap();
       if (response.success) {
         toast.success("Flash Sale Update successfully!");
-        reset2();
+        resetB();
       }
     } catch (error) {
       console.log(error?.data?.message);
@@ -112,21 +114,51 @@ const FlashSale = () => {
       </header>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-2 mb-8">
           <div className="bg-white rounded-lg shadow-sm p-6">
-            <p className="text-sm text-gray-600">Total Product</p>
+          <div className="bg-blue-100 text-blue-600 p-1 px-2 rounded-full">
+              <p className="text-sm text-gray-600">Total Products</p>
+              </div>
             <p className="text-2xl font-semibold mt-2">{flashData?.data?.flashData.productCount || 0}</p>
             <p className="text-sm text-green-600 mt-2">↑ {flashData?.data?.flashData.productCount || 0} products from store</p>
           </div>
           <div className="bg-white rounded-lg shadow-sm p-6">
-            <p className="text-sm text-gray-600">Discount Now</p>
+          <div className="bg-blue-100 text-blue-600 p-1 px-2 rounded-full">
+              <p className="text-sm text-gray-600">Discount Now</p>
+              </div>
             <p className="text-2xl font-semibold mt-2">{flashData?.data?.flashData.discount || 0}%</p>
             <p className="text-sm text-yellow-600 mt-2">{flashData?.data?.flashData.discount || 0}% discount from store</p>
           </div>
           <div className="bg-white flex flex-col gap-2 rounded-lg shadow-sm p-6">
-            <p className="text-sm text-gray-600">Discount End</p>
+          <div className="bg-blue-100 text-blue-600 p-1 px-2 rounded-full">
+              <p className="text-sm text-gray-600">Discount End</p>
+              </div>
             <Countdown />
             <p className="text-sm text-green-600 mt-2">↑ discount end time</p>
+          </div>
+          <div className="bg-white flex flex-col gap-2 rounded-lg shadow-sm p-6">
+            <div className="flex flex-col gap-2">
+              <div className="bg-blue-100 text-blue-600 p-1 px-2 rounded-full">
+              <p className="text-sm text-gray-600">Current Time</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Start Time</p>
+                <p className="text-sm font-medium text-gray-900">
+                  {flashData?.data.flashData.startTime
+                    ? format(new Date(flashData.data.flashData.startTime), "PPPp")
+                    : "N/A"}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">End Time</p>
+                <p className="text-sm font-medium text-gray-900">
+                  {flashData?.data.flashData.endTime
+                    ? format(new Date(flashData.data.flashData.endTime), "PPPp")
+                    : "N/A"}
+                </p>
+              </div>
+
+            </div>
           </div>
 
         </div>
@@ -156,11 +188,11 @@ const FlashSale = () => {
               <Button onClick={() => setUpdateOpen(true)} variant="outline">Update Flash Sale</Button>
               {/* Create Flash Sale Modal  */}
               {isCreateOpen && <CreateFlashSaleModal
-                onClose={() => setCreateOpen(false)} register={register} errors={errors} handleSubmit={handleSubmit} handleCreateFlashSale={handleCreateFlashSale} loading={isLoading}
+                onClose={() => setCreateOpen(false)} register={register} errors={errors} handleSubmit={handleSubmit} handleCreateFlashSale={handleCreateFlashSale} control={control}
               />}
               {/* Update Flash Sale Modal  */}
               {isUpdateOpen && <UpdateFlashSaleModal
-                onClose={() => setUpdateOpen(false)} register2={register2} errors2={errors2} handleSubmit2={handleSubmit2} handleUpdateFlashSale={handleUpdateFlashSale} 
+                onClose={() => setUpdateOpen(false)} register={registerB} errors={errorsB} handleSubmit={handleSubmitB} handleUpdateFlashSale={handleUpdateFlashSale} control={controlB}
               />}
             </div>
           </div>
@@ -220,15 +252,15 @@ const FlashSale = () => {
                     );
                   })}
                 </> :
-                 <>
-                </>
+                  <>
+                  </>
                 }
               </tbody>
             </table>
           </div>
 
           {flashData?.data?.result?.length ?
-     ""
+            ""
             :
             <div className="flex items-center justify-center py-10">
               <h1 className="text-orange-500 font-bold">

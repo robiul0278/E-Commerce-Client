@@ -5,9 +5,9 @@ import NotFound from '../products/NotFound';
 import Filtering from '../../components/query/Filtering';
 import ProductsCard from '../products/ProductsCard';
 import { useSearchParams } from 'react-router-dom';
-import Pagination from '../../components/pagination';
 import { useState } from 'react';
 import { useGetProductsQuery } from '../../redux/api/api';
+import Pagination from '../../components/pagination';
 const { Sider, Content } = Layout;
 const Shop = () => {
     const [params] = useSearchParams();
